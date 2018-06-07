@@ -23,6 +23,7 @@ void OutCommand(int id, String value){
     break;
 
   }
+  refall = true;
 }
 
 void ConsoleCommand(String command, String value){

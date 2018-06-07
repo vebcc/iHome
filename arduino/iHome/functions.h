@@ -12,9 +12,12 @@ void SetDefaultOutput(){
 }
 
 void CheckOutput(){
-  for(int i=0; i<sizeof(inputstatus);i++){
+  if(refall==true){
+    for(int i=0; i<sizeof(inputstatus);i++){
       digitalWrite(inputpin[i], inputstatus[i]);
       //Serial.println("checkoutput");
     }
+    refall=false;
+  }
 }
 

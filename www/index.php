@@ -2,6 +2,7 @@
 if(isset($_GET["name"]) && isset($_GET["value"])){
     $name = $_GET["name"];
     $value = $_GET["value"];
+    $newmessage =  "$$name=$value#";
 
     include 'include/PhpSerial.php';
     $serial = new PhpSerial;
@@ -13,8 +14,8 @@ if(isset($_GET["name"]) && isset($_GET["value"])){
     $serial->confFlowControl("none");
     $serial->deviceOpen();
 
-    //sleep(3);//delay
-    //$serial->sendMessage("biurkoled=change#");
+    //sleep(2);//delay
+    $serial->sendMessage($newmessage);
 
     //$read = $serial->readPort();
 
