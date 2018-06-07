@@ -16,7 +16,7 @@ void CheckConsoleInput(){
                   serialcommand += inputchar;
                   //Serial.println("----------");
                 }else if(newvalue){
-                  if(inputchar == '\n'){
+                  if(inputchar == '#'){
                     nowprint = true;
                   }else{
                     serialvalue += inputchar;
@@ -27,10 +27,10 @@ void CheckConsoleInput(){
                   //Serial.println("WWWWWWWW");
                 }
         }else if(nowprint==true){
-           //Serial.print("Command: ");
-           //Serial.println(serialcommand);
-           //Serial.print("Value: ");
-           //Serial.println(serialvalue);
+           Serial.print("Command: ");
+           Serial.println(serialcommand);
+           Serial.print("Value: ");
+           Serial.println(serialvalue);
            ConsoleCommand(serialcommand, serialvalue);
            serialcommand="";
            serialvalue="";
