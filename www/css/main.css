@@ -1,0 +1,10 @@
+.center{
+    text-align: center;
+}
+.divcenter{
+    margin: 0 auto!important;
+}
+.range{
+    display: inline-block!important;
+    width: 65%!important;
+}
