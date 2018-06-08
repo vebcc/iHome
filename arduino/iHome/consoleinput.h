@@ -37,13 +37,17 @@ void CheckConsoleInput(){
                     }
                   }
         }else if(nowprint==true){
-           Serial.print("Command: ");
-           Serial.println(serialcommand);
-           Serial.print("Value: ");
-           Serial.println(serialvalue);
+           //Serial.print("Command: ");
+           //Serial.println(serialcommand);
+           //Serial.print("Value: ");
+           //Serial.println(serialvalue);
            lastvalue = serialcommand + serialvalue;
-           Serial.println(lastvalue);
-           ConsoleCommand(serialcommand, serialvalue);
+           //Serial.println(lastvalue);
+           if(serialcommand == "values" || serialcommand == "status"){
+              ConsoleWriter(serialcommand, serialvalue);
+           }else{
+              ConsoleCommand(serialcommand, serialvalue);
+           }
            serialcommand="";
            serialvalue="";
            nowprint=false;
