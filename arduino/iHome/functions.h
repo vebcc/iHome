@@ -12,11 +12,13 @@ void SetDefaultOutput(){
 }
 
 void CheckOutput(){
+  int inpval;
   if(refall==true){
     for(int i=0; i<sizeof(inputstatus);i++){
       if(inputvalues[i]!=0){
+        inpval = map(inputvalues[i], 1, 100, 1, 255);
         if(inputstatus[i]){
-          analogWrite(inputpin[i], inputvalues[i]);
+          analogWrite(inputpin[i], inpval);
         }else{
           digitalWrite(inputpin[i], inputstatus[i]);
         }
