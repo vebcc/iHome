@@ -18,7 +18,16 @@ if(isset($_GET["name"]) && isset($_GET["value"])){ // formget
     $serial->sendMessage($newmessage); // send messange
 }
 
-//$commandref = array ('$values=glosnikiled#', '$status=biurkoled#'); // lista komend
+if(isset($_GET["lname"]) && isset($_GET["lvalue"])){ // formget
+    $name = $_GET["lname"];
+    $value = $_GET["lvalue"];
+    $newmessage =  $name.$value;
+
+    //TODO: status = ustawienie w programie wemosa wysylanie on/off statusu jako tekst html
+    $fp = fopen("http://10.0.2.3/$newmessage", "r");
+    $newmessage = fread($fp,"2");
+    fclose($fp);
+}
 
 function getset($lenk, $dev=0){ // pobioeranie danych
     $tosend = "";
@@ -37,6 +46,20 @@ function getset($lenk, $dev=0){ // pobioeranie danych
         }
         $i++;
     }
+    if($dev==0){
+        echo $tosend;
+    }else{
+        return $tosend;
+    }
+}
+
+function getsetlamp($lenk, $dev=0){ // pobioeranie danych
+    $tosend = "";
+
+    $fp = fopen("http://10.0.2.3/$lenk", "r");
+    $tosend = fread($fp,"1");
+    fclose($fp);
+
     if($dev==0){
         echo $tosend;
     }else{
@@ -80,6 +103,33 @@ function getset($lenk, $dev=0){ // pobioeranie danych
                   <div class="center slidecontainer">
                       <span></span><input class="range slider" value="<?php getset("values=glosnikiled"); ?>" id="myRange" type="range" name="glosnikiled" min="1" max="100" step="1" onchange="range(this.value)"><span></span>
                       <p>Jasność: <span id="demo"></span>%</p>
+                  </div>
+              </div>
+
+              <div class="col-md-3">
+                  <h3>Lampa Zimny</h3>
+                  <div class="btn-group center">
+                      <a href="index.php?lname=lamp2&lvalue=change" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?lname=lamp2&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("status=biurkoled", 1)==0){echo 'active';} ?>">On</a>
+                      <a href="index.php?lname=lamp2&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("status=biurkoled", 1)==1){echo 'active';} ?>">Off</a>
+                  </div>
+              </div>
+
+              <div class="col-md-3">
+                  <h3>Lampa Cieply</h3>
+                  <div class="btn-group center">
+                      <a href="index.php?lname=lamp3&lvalue=change" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?lname=lamp3&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("status=biurkoled", 1)==0){echo 'active';} ?>">On</a>
+                      <a href="index.php?lname=lamp3&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("status=biurkoled", 1)==1){echo 'active';} ?>">Off</a>
+                  </div>
+              </div>
+
+              <div class="col-md-3">
+                  <h3>Lampa Lekka</h3>
+                  <div class="btn-group center">
+                      <a href="index.php?lname=lamp1&lvalue=change" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?lname=lamp1&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("status=biurkoled", 1)==0){echo 'active';} ?>">On</a>
+                      <a href="index.php?lname=lamp1&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("status=biurkoled", 1)==1){echo 'active';} ?>">Off</a>
                   </div>
               </div>
 
