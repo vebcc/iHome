@@ -1,6 +1,6 @@
-byte inputpin[] =       {          4,             10,             6,            7,               8};
+byte inputpin[] =       {          4,             10,             2,            7,               8};
 String inputnames[] =   {"biurkoled", "glosnikiled", "biurkoright", "biurkodown", "biurkomonitor"};
-boolean inputstatus[] = {       false,         true,         false,        false,           false};
+boolean inputstatus[] = {       false,         true,          true,        false,           false};
 int inputvalues[] =     {          0,           100,             0,            0,               0};
 
 boolean refall = false;

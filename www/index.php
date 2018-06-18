@@ -23,8 +23,17 @@ if(isset($_GET["lname"]) && isset($_GET["lvalue"])){ // formget
     $value = $_GET["lvalue"];
     $newmessage =  $name.$value;
 
-    //TODO: status = ustawienie w programie wemosa wysylanie on/off statusu jako tekst html
     $fp = fopen("http://10.0.2.3/$newmessage", "r");
+    $newmessage = fread($fp,"2");
+    fclose($fp);
+}
+
+if(isset($_GET["bname"]) && isset($_GET["bvalue"])){ // formget
+    $name = $_GET["bname"];
+    $value = $_GET["bvalue"];
+    $newmessage =  $name."=".$value;
+
+    $fp = fopen("http://10.0.2.4/?$newmessage", "r");
     $newmessage = fread($fp,"2");
     fclose($fp);
 }
@@ -57,6 +66,20 @@ function getsetlamp($lenk, $dev=0){ // pobioeranie danych
     $tosend = "";
 
     $fp = fopen("http://10.0.2.3/$lenk", "r");
+    $tosend = fread($fp,"1");
+    fclose($fp);
+
+    if($dev==0){
+        echo $tosend;
+    }else{
+        return $tosend;
+    }
+}
+
+function getsetbed($lenk, $dev=0){ // pobioeranie danych
+    $tosend = "";
+
+    $fp = fopen("http://10.0.2.4/?$lenk", "r");
     $tosend = fread($fp,"1");
     fclose($fp);
 
@@ -109,45 +132,45 @@ function getsetlamp($lenk, $dev=0){ // pobioeranie danych
               <div class="col-md-3">
                   <h3>Lampa Zimny</h3>
                   <div class="btn-group center">
-                      <a href="index.php?lname=lamp2&lvalue=change" class="btn btn-primary btn-lg">Change</a>
-                      <a href="index.php?lname=lamp2&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("status=biurkoled", 1)==0){echo 'active';} ?>">On</a>
-                      <a href="index.php?lname=lamp2&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("status=biurkoled", 1)==1){echo 'active';} ?>">Off</a>
+                      <a href="index.php?lname=lamp1&lvalue=change" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?lname=lamp1&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("lamp1status", 1)==1){echo 'active';} ?>">On</a>
+                      <a href="index.php?lname=lamp1&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("lamp1status", 1)==0){echo 'active';} ?>">Off</a>
                   </div>
               </div>
 
               <div class="col-md-3">
                   <h3>Lampa Cieply</h3>
                   <div class="btn-group center">
-                      <a href="index.php?lname=lamp3&lvalue=change" class="btn btn-primary btn-lg">Change</a>
-                      <a href="index.php?lname=lamp3&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("status=biurkoled", 1)==0){echo 'active';} ?>">On</a>
-                      <a href="index.php?lname=lamp3&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("status=biurkoled", 1)==1){echo 'active';} ?>">Off</a>
+                      <a href="index.php?lname=lamp2&lvalue=change" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?lname=lamp2&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("lamp2status", 1)==1){echo 'active';} ?>">On</a>
+                      <a href="index.php?lname=lamp2&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("lamp2status", 1)==0){echo 'active';} ?>">Off</a>
                   </div>
               </div>
 
               <div class="col-md-3">
                   <h3>Lampa Lekka</h3>
                   <div class="btn-group center">
-                      <a href="index.php?lname=lamp1&lvalue=change" class="btn btn-primary btn-lg">Change</a>
-                      <a href="index.php?lname=lamp1&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("status=biurkoled", 1)==0){echo 'active';} ?>">On</a>
-                      <a href="index.php?lname=lamp1&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("status=biurkoled", 1)==1){echo 'active';} ?>">Off</a>
+                      <a href="index.php?lname=lamp3&lvalue=change" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?lname=lamp3&lvalue=off" class="btn btn-primary btn-lg <?php if(getsetlamp("lamp3status", 1)==1){echo 'active';} ?>">On</a>
+                      <a href="index.php?lname=lamp3&lvalue=on" class="btn btn-primary btn-lg  <?php if(getsetlamp("lamp3status", 1)==0){echo 'active';} ?>">Off</a>
                   </div>
               </div>
 
               <div class="col-md-3">
                   <h3>Biurko Right</h3>
                   <div class="btn-group center">
-                      <a href="index.php?name=biurkoled&value=change" class="btn btn-primary btn-lg">Change</a>
-                      <a href="index.php?name=biurkoled&value=off" class="btn btn-primary btn-lg">On</a>
-                      <a href="index.php?name=biurkoled&value=on" class="btn btn-primary btn-lg">Off</a>
+                      <a href="index.php?name=biurkoright&value=change" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?name=biurkoright&value=off" class="btn btn-primary btn-lg <?php if(getset("status=biurkoright", 1)==0){echo 'active';} ?>">On</a>
+                      <a href="index.php?name=biurkoright&value=on" class="btn btn-primary btn-lg <?php if(getset("status=biurkoright", 1)==1){echo 'active';} ?>">Off</a>
                   </div>
               </div>
 
               <div class="col-md-3">
                   <h3>Laser Disco</h3>
                   <div class="btn-group center">
-                      <a href="index.php?name=biurkoled&value=change" class="btn btn-primary btn-lg">Change</a>
-                      <a href="index.php?name=biurkoled&value=off" class="btn btn-primary btn-lg">On</a>
-                      <a href="index.php?name=biurkoled&value=on" class="btn btn-primary btn-lg">Off</a>
+                      <a href="index.php?bname=discot&bvalue=2" class="btn btn-primary btn-lg">Change</a>
+                      <a href="index.php?bname=discot&bvalue=0" class="btn btn-primary btn-lg <?php if(getsetbed("discot=3", 1)==1){echo 'active';} ?>">On</a>
+                      <a href="index.php?bname=discot&bvalue=1" class="btn btn-primary btn-lg <?php if(getsetbed("discot=3", 1)==0){echo 'active';} ?>">Off</a>
                   </div>
               </div>
 

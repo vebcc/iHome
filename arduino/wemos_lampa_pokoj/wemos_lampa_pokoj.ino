@@ -44,36 +44,48 @@ void setup() {
   server.on("/lamp1on", []() {   //Swiatlo 1 on
 
     digitalWrite(lampa1, HIGH);
-    server.send(200, "text / plain", "ok");
-
-  });
+    lampa1stat=1;
+      server.send(200, "text / plain", "1");
+     });
 
   server.on("/lamp1off", []() {   //Swiatlo 1 off
 
     digitalWrite(lampa1, LOW);
-    server.send(200, "text / plain", "ok");
-
-  });
+  lampa1stat=0;
+      server.send(200, "text / plain", "0");
+    });
 
   server.on("/lamp1change", []() {   //Swiatlo 1 change
 
     lampa1stat=!lampa1stat;
+    if(lampa1stat){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
     digitalWrite(lampa1, lampa1stat);
-    server.send(200, "text / plain", "ok");
 
   });
+   server.on("/lamp1status", []() {   //Swiatlo 1 on
+
+  if(lampa1stat){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
+     });
 
     server.on("/lamp2on", []() {   //Swiatlo 2 on
 
     digitalWrite(lampa2, HIGH);
-    server.send(200, "text / plain", "ok");
+    server.send(200, "text / plain", "1");
 
   });
 
   server.on("/lamp2off", []() {   //Swiatlo 2 off
 
     digitalWrite(lampa2, LOW);
-    server.send(200, "text / plain", "ok");
+    server.send(200, "text / plain", "0");
 
   });
 
@@ -81,21 +93,33 @@ void setup() {
 
     lampa2stat=!lampa2stat;
     digitalWrite(lampa2, lampa2stat);
-    server.send(200, "text / plain", "ok");
+    if(lampa2stat){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
 
   });
+     server.on("/lamp2status", []() {   //Swiatlo 1 on
+
+  if(lampa2stat){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
+     });
 
     server.on("/lamp3on", []() {   //Swiatlo 3 on
 
     digitalWrite(lampa3, HIGH);
-    server.send(200, "text / plain", "ok");
+    server.send(200, "text / plain", "1");
 
   });
 
   server.on("/lamp3off", []() {   //Swiatlo 3 off
 
     digitalWrite(lampa3, LOW);
-    server.send(200, "text / plain", "ok");
+    server.send(200, "text / plain", "0");
 
   });
 
@@ -103,9 +127,21 @@ void setup() {
 
     lampa3stat=!lampa3stat;
     digitalWrite(lampa3, lampa3stat);
-    server.send(200, "text / plain", "ok");
+    if(lampa3stat){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
 
   });
+     server.on("/lamp3status", []() {   //Swiatlo 1 on
+
+  if(lampa3stat){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
+     });
 
   server.on("/", handleRootPath);    //Associate the handler function to the path
   server.begin();                    //Start the server
