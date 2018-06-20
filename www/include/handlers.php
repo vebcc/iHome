@@ -1,6 +1,6 @@
 <?php
 
-include '../PhpSerial.php'; //biblioteka do seriala
+include 'PhpSerial.php'; //biblioteka do seriala
 $serial = new PhpSerial; // deklaracja nowego seriala
 $serial->deviceSet("/dev/ttyUSB0"); // sciezka do serialmonitora
 $serial->confBaudRate(9600); // baudrate
@@ -10,22 +10,35 @@ $serial->confStopBits(1);
 $serial->confFlowControl("none");
 $serial->deviceOpen(); // open port
 
-function getset($lenk, $dev=0){ // pobieranie danych z lamp po comie
+function getset($id, $lenk, $dev=0){ // pobieranie danych z lamp po comie
     $tosend = "";
-    $towrite = "$$lenk#";
-    global $serial;
+    switch($id){
+        case 1:
+            $towrite = "$$lenk#";
+            global $serial;
+            $serial->sendMessage($towrite);
+            $read = $serial->readPort();
+            $i=0;
+            $thisnot=true;
+            while($thisnot){
+                if($read[$i]!="%"){
+                    $tosend.=$read[$i];
+                }else{
+                    $thisnot=false;
+                }
+                $i++;
+            }
+            break;
 
-    $serial->sendMessage($towrite);
-    $read = $serial->readPort();
-    $i=0;
-    $thisnot=true;
-    while($thisnot){
-        if($read[$i]!="%"){
-            $tosend.=$read[$i];
-        }else{
-            $thisnot=false;
-        }
-        $i++;
+        case 2:
+            $fp = fopen("http://10.0.2.3/$lenk", "r");
+            $tosend = fread($fp,"1");
+            fclose($fp);
+            break;
+
+        case 3:
+
+            break;
     }
     if($dev==0){
         echo $tosend;
@@ -40,28 +53,29 @@ function getset($lenk, $dev=0){ // pobieranie danych z lamp po comie
 
 if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // formget
     $id = $_GET["id"];
+    $name = $_GET["name"];
+    $value = $_GET["value"];
     switch($id){
         case 1:
-            $name = $_GET["name"];
-            $value = $_GET["value"];
             $newmessage =  "$$name=$value#";
-
             $serial->sendMessage($newmessage); // send messange
-
-            getset("status=$name", 0);
+            if($value=="on" || $value=="off" || $value=="change"){
+                getset($id ,"status=$name");
+            }else{
+                getset($id ,"values=$name");
+            }
             break;
+
         case 2:
-
+            $newmessage =  $name.$value;
+            $fp = fopen("http://10.0.2.3/$newmessage", "r");
+            $newmessage = fread($fp,"2");
+            fclose($fp);
+            getset($id ,$name."status");
             break;
-
     }
+
 }
-
-//$name = "biurkoled";
-//$value = "change";
-//$newmessage =  "$$name=$value#";
-
-//$serial->sendMessage($newmessage); // send messange
 
 $serial->deviceClose();
 ?>

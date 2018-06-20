@@ -3,7 +3,7 @@ function range(newVal){
 }
 
 
-var slider = document.getElementById("myRange");
+var slider = document.getElementById("glosnikiledvalue");
 var output = document.getElementById("demo");
 output.innerHTML = slider.value;
 

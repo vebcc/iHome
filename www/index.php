@@ -24,6 +24,16 @@
                 </div>
 
                 <div class="col-md-3">
+                    <h3>Biurko Right</h3>
+                    <div class="btn-group center">
+                        <div id="biurkorightchange" class="btn btn-primary btn-lg">Change</div>
+                        <div id="biurkorighton" class="btn btn-primary btn-lg">On</div>
+                        <div id="biurkorightoff" class="btn btn-primary btn-lg">Off</div>
+                    </div>
+                    <div id="biurkorightstatus" class="status"></div>
+                </div>
+
+                <div class="col-md-3">
                     <h3>Głosniki LED</h3>
                     <div class="btn-group center">
                         <div id="glosnikiledchange" class="btn btn-primary btn-lg">Change</div>
@@ -33,55 +43,54 @@
                     <div id="glosnikiledstatus" class="status"></div>
 
                     <div class="center slidecontainer">
-                        <span></span><input class="range slider" value="" id="myRange" type="range" name="glosnikiled" min="1" max="100" step="1" onchange="range(this.value)"><span></span>
-                        <p>Jasność: <span id="demo"></span>%</p>
+                        <span></span><input class="range slider" value="" id="glosnikiledvalue" type="range" name="glosnikiled" min="1" max="100" step="1"><span></span>
+                        <p>Jasność: <span id="glosnikiledperc"></span>%</p>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <h3>Lampa Zimny</h3>
                     <div class="btn-group center">
-                        <a href="index.php?lname=lamp1&lvalue=change" class="btn btn-primary btn-lg">Change</a>
-                        <a href="index.php?lname=lamp1&lvalue=off" class="btn btn-primary btn-lg">On</a>
-                        <a href="index.php?lname=lamp1&lvalue=on" class="btn btn-primary btn-lg">Off</a>
+                        <div id="lampazimnychange" class="btn btn-primary btn-lg">Change</div>
+                        <div id="lampazimnyon" class="btn btn-primary btn-lg">On</div>
+                        <div id="lampazimnyoff" class="btn btn-primary btn-lg">Off</div>
                     </div>
+                    <div id="lampazimnystatus" class="status"></div>
                 </div>
 
                 <div class="col-md-3">
                     <h3>Lampa Cieply</h3>
                     <div class="btn-group center">
-                        <a href="index.php?lname=lamp2&lvalue=change" class="btn btn-primary btn-lg">Change</a>
-                        <a href="index.php?lname=lamp2&lvalue=off" class="btn btn-primary btn-lg">On</a>
-                        <a href="index.php?lname=lamp2&lvalue=on" class="btn btn-primary btn-lg">Off</a>
+                        <div id="lampacieplychange" class="btn btn-primary btn-lg">Change</div>
+                        <div id="lampacieplyon" class="btn btn-primary btn-lg">On</div>
+                        <div id="lampacieplyoff" class="btn btn-primary btn-lg">Off</div>
                     </div>
+                    <div id="lampacieplystatus" class="status"></div>
                 </div>
 
                 <div class="col-md-3">
                     <h3>Lampa Lekka</h3>
                     <div class="btn-group center">
-                        <a href="index.php?lname=lamp3&lvalue=change" class="btn btn-primary btn-lg">Change</a>
-                        <a href="index.php?lname=lamp3&lvalue=off" class="btn btn-primary btn-lg">On</a>
-                        <a href="index.php?lname=lamp3&lvalue=on" class="btn btn-primary btn-lg">Off</a>
+                        <div id="lampalekkachange" class="btn btn-primary btn-lg">Change</div>
+                        <div id="lampalekkaon" class="btn btn-primary btn-lg">On</div>
+                        <div id="lampalekkaoff" class="btn btn-primary btn-lg">Off</div>
                     </div>
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Biurko Right</h3>
-                    <div class="btn-group center">
-                        <a href="index.php?name=biurkoright&value=change" class="btn btn-primary btn-lg">Change</a>
-                        <a href="index.php?name=biurkoright&value=off" class="btn btn-primary btn-lg">On</a>
-                        <a href="index.php?name=biurkoright&value=on" class="btn btn-primary btn-lg">Off</a>
-                    </div>
+                    <div id="lampalekkastatus" class="status"></div>
                 </div>
 
                 <div class="col-md-3">
                     <h3>Laser Disco</h3>
                     <div class="btn-group center">
+                        <div id="laserdiscochange" class="btn btn-primary btn-lg">Change</div>
+                        <div id="laserdiscoon" class="btn btn-primary btn-lg">On</div>
+                        <div id="laserdiscooff" class="btn btn-primary btn-lg">Off</div>
+
                         <a href="index.php?bname=discot&bvalue=2" class="btn btn-primary btn-lg">Change</a>
                         <a href="index.php?bname=discot&bvalue=0" class="btn btn-primary btn-lg">On</a>
                         <a href="index.php?bname=discot&bvalue=1" class="btn btn-primary btn-lg">Off</a>
                     </div>
                 </div>
+                <div id="laserdisco" class="status"></div>
 
             </div>
 
@@ -90,7 +99,6 @@
 
     </body>
     <script src="jquery/jquery.min.js"></script>
-    <script src="js/range.js"></script>
     <script src="js/handler.js"></script>
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
