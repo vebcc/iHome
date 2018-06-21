@@ -81,14 +81,14 @@ $(document).ready(function(){
     });
 
     //laser disco
-    $('#laserdiscochange').click(function() {
-        $('#laserdiscostatus').load('include/handlers.php?id=3&name=discot&value=2');
-    });
-    $('#laserdiscooff').click(function() {
-        $('#laserdiscostatus').load('include/handlers.php?id=3&name=discot&value=0');
-    });
-    $('#laserdiscooff').click(function() {
-        $('#laserdiscostatus').load('include/handlers.php?id=3&name=discot&value=1');
-    });
+    //$('#laserdiscochange').click(function() {
+    //    $('#laserdiscostatus').load('include/handlers.php?id=3&name=discot&value=2');
+    //});
+    //$('#laserdiscooff').click(function() {
+    //    $('#laserdiscostatus').load('include/handlers.php?id=3&name=discot&value=0');
+    //});
+    //$('#laserdiscooff').click(function() {
+    //    $('#laserdiscostatus').load('include/handlers.php?id=3&name=discot&value=1');
+    //});
 
 });

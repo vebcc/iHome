@@ -46,3 +46,10 @@
 .stadtus{
     display: none;
 }
+#chart_div{
+    text-align: center;
+    width: 100% !important;
+}
+#chart_div > table{
+    margin: 0 auto !important;
+}

@@ -17,7 +17,7 @@
 
                 <div class="col-md-3">
                     <h3>Temperatura Out</h3>
-                    <h3>Temperatura: 22 *C</h3><br>
+                    <h4>Temperatura: <span id="tempout1"></span> *C</h4><br>
                     <div id='chart_div' style='width: 400px; height: 120px;'></div>
 
 
@@ -105,12 +105,14 @@
         </div>
 
     </body>
+    <script src="jquery/jquery.min.js"></script>
+
     <script src="js/tempstat.js"></script>
     <script src='http://bernii.github.io/gauge.js/dist/gauge.min.js'></script>
     <script src='http://bernii.github.io/gauge.js/dist/gauge.coffee'></script>
 
-    <script src="jquery/jquery.min.js"></script>
     <script src="js/handler.js"></script>
+
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </html>
