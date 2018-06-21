@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="css/main.css">
+        <script src='https://www.gstatic.com/charts/loader.js'></script>
     </head>
     <body>
         <div class="container-fluid center">
@@ -12,6 +13,16 @@
                 <h1>Panel iHome</h1>
             </div>
             <div class="row">
+
+
+                <div class="col-md-3">
+                    <h3>Temperatura Out</h3>
+                    <h3>Temperatura: 22 *C</h3><br>
+                    <div id='chart_div' style='width: 400px; height: 120px;'></div>
+
+
+
+                </div>
 
                 <div class="col-md-3">
                     <h3>Biurko Led</h3>
@@ -84,13 +95,9 @@
                         <div id="laserdiscochange" class="btn btn-primary btn-lg">Change</div>
                         <div id="laserdiscoon" class="btn btn-primary btn-lg">On</div>
                         <div id="laserdiscooff" class="btn btn-primary btn-lg">Off</div>
-
-                        <a href="index.php?bname=discot&bvalue=2" class="btn btn-primary btn-lg">Change</a>
-                        <a href="index.php?bname=discot&bvalue=0" class="btn btn-primary btn-lg">On</a>
-                        <a href="index.php?bname=discot&bvalue=1" class="btn btn-primary btn-lg">Off</a>
                     </div>
                 </div>
-                <div id="laserdisco" class="status"></div>
+                <div id="laserdiscostatus" class="status"></div>
 
             </div>
 
@@ -98,6 +105,10 @@
         </div>
 
     </body>
+    <script src="js/tempstat.js"></script>
+    <script src='http://bernii.github.io/gauge.js/dist/gauge.min.js'></script>
+    <script src='http://bernii.github.io/gauge.js/dist/gauge.coffee'></script>
+
     <script src="jquery/jquery.min.js"></script>
     <script src="js/handler.js"></script>
     <!-- Bootstrap core JavaScript -->

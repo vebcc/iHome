@@ -37,7 +37,9 @@ function getset($id, $lenk, $dev=0){ // pobieranie danych z lamp po comie
             break;
 
         case 3:
-
+            $fp = fopen("http://10.0.2.4/$lenk", "r");
+            $tosend = fread($fp,"1");
+            fclose($fp);
             break;
     }
     if($dev==0){
@@ -69,9 +71,22 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
         case 2:
             $newmessage =  $name.$value;
             $fp = fopen("http://10.0.2.3/$newmessage", "r");
+                $newmessage = fread($fp,"2");
+                fclose($fp);
+                getset($id ,$name."status");
+
+            break;
+
+        case 3:
+            $newmessage =  $name."=".$value;
+            if($fp = fopen("http://10.0.2.4/?$newmessage", "r")){
             $newmessage = fread($fp,"2");
             fclose($fp);
-            getset($id ,$name."status");
+            getset($id ,$name."=4");
+            echo "spk";
+            }else{
+                echo "error";
+            }
             break;
     }
 
