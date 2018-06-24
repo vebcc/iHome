@@ -53,42 +53,60 @@ function getset($id, $lenk, $dev=0){ // pobieranie danych z lamp po comie
 // Odbieranie komend i komunikacja z kontrolerami //
 ////////////////////////////////////////////////////
 
+
+
+
 if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // formget
     $id = $_GET["id"];
     $name = $_GET["name"];
     $value = $_GET["value"];
-    switch($id){
-        case 1:
-            $newmessage =  "$$name=$value#";
-            $serial->sendMessage($newmessage); // send messange
-            if($value=="on" || $value=="off" || $value=="change"){
-                getset($id ,"status=$name");
-            }else{
-                getset($id ,"values=$name");
-            }
-            break;
+    if(isset($_GET["onlycheck"]) && $_GET["onlycheck"]==1){
+        switch($id){
+            case 1:
+                getset($id ,"$value=$name", 0);
+                break;
 
-        case 2:
-            $newmessage =  $name.$value;
-            $fp = fopen("http://10.0.2.3/$newmessage", "r");
+            case 2:
+                getset($id ,$name."status", 0);
+                break;
+
+            case 3:
+                getset($id ,$name.$value, 0);
+                break;
+        }
+    }else{
+        switch($id){
+            case 1:
+                $newmessage =  "$$name=$value#";
+                $serial->sendMessage($newmessage); // send messange
+                if($value=="on" || $value=="off" || $value=="change"){
+                    getset($id ,"status=$name");
+                }else{
+                    getset($id ,"values=$name");
+                }
+                break;
+
+            case 2:
+                $newmessage =  $name.$value;
+                $fp = fopen("http://10.0.2.3/$newmessage", "r");
                 $newmessage = fread($fp,"2");
                 fclose($fp);
                 getset($id ,$name."status");
 
-            break;
+                break;
 
-        case 3:
-            $newmessage =  $name.$value;
-            if($fp = fopen("http://10.0.2.4/$newmessage", "r")){
-            $newmessage = fread($fp,"10");
-            fclose($fp);
-                getset($id ,$name.$value);
-            }else{
-                echo "error";
-            }
-            break;
+            case 3:
+                $newmessage =  $name.$value;
+                if($fp = fopen("http://10.0.2.4/$newmessage", "r")){
+                    $newmessage = fread($fp,"10");
+                    fclose($fp);
+                    getset($id ,$name.$value);
+                }else{
+                    echo "error";
+                }
+                break;
+        }
     }
-
 }
 
 $serial->deviceClose();
