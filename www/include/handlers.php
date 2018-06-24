@@ -100,7 +100,7 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
                 if($fp = fopen("http://10.0.2.4/$newmessage", "r")){
                     $newmessage = fread($fp,"10");
                     fclose($fp);
-                    getset($id ,$name.$value);
+                    getset($id ,$name."status");
                 }else{
                     echo "error";
                 }

@@ -1,5 +1,8 @@
 var how=0;
 
+$('#glosnikiledvalue').val(100);
+$('#glosnikiledperc').html(100);
+
 function changeactive(who, forwhat, revers=0){
     if(forwhat==revers){
         $('#'+who+'off').removeClass('active');
@@ -138,12 +141,12 @@ $(document).ready(function(){
             changeactive("lampazimny", result, 1);
         });
     });
-    $('#lampazimnyoff').click(function() {
+    $('#lampazimnyon').click(function() {
         $.get('include/handlers.php?id=2&name=lamp1&value=on', function(result) {
             changeactive("lampazimny", result, 1);
         });
     });
-    $('#lampazimnyon').click(function() {
+    $('#lampazimnyoff').click(function() {
         $.get('include/handlers.php?id=2&name=lamp1&value=off', function(result) {
             changeactive("lampazimny", result, 1);
         });
@@ -157,12 +160,12 @@ $(document).ready(function(){
             changeactive("lampacieply", result, 1);
         });
     });
-    $('#lampacieplyoff').click(function() {
+    $('#lampacieplyon').click(function() {
         $.get('include/handlers.php?id=2&name=lamp2&value=on', function(result) {
             changeactive("lampacieply", result, 1);
         });
     });
-    $('#lampacieplyon').click(function() {
+    $('#lampacieplyoff').click(function() {
         $.get('include/handlers.php?id=2&name=lamp2&value=off', function(result) {
             changeactive("lampacieply", result, 1);
         });
@@ -174,12 +177,12 @@ $(document).ready(function(){
             changeactive("lampalekka", result, 1);
         });
     });
-    $('#lampalekkaoff').click(function() {
+    $('#lampalekkaon').click(function() {
         $.get('include/handlers.php?id=2&name=lamp3&value=on', function(result) {
             changeactive("lampalekka", result, 1);
         });
     });
-    $('#lampalekkaon').click(function() {
+    $('#lampalekkaoff').click(function() {
         $.get('include/handlers.php?id=2&name=lamp3&value=off', function(result) {
             changeactive("lampalekka", result, 1);
         });
