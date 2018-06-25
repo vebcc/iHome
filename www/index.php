@@ -1,118 +1,144 @@
-<html>
+<html lang="pl">
     <head>
-        <title>Panel - iHome</title>
+        <title>Panel Admina - Micron</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/main.css">
-        <script src='https://www.gstatic.com/charts/loader.js'></script>
-    </head>
-    <body>
-        <div class="container-fluid center">
-            <div class="jumbotron">
-                <h1>Panel iHome</h1>
-            </div>
-            <div class="row">
 
+        <?php
+        //set_include_path(get_include_path() . PATH_SEPARATOR . 'D:\Pliki\Git');
+        session_start(); // start sesji
 
-                <div class="col-md-3">
-                    <h3>Temperatura Out</h3>
-                    <h4>Temperatura: <span id="tempout1"></span> *C</h4><br>
-                    <div id='chart_div' style='width: 400px; height: 120px;'></div>
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $actual_ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $actual_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $actual_ip = $_SERVER['REMOTE_ADDR'];
+        }
 
 
 
-                </div>
+        $db = 1; // zmiena pozwalajaca na rozruch pliku connection.php
+        require("include/config.php"); // dane logowania mysql
+        require("include/connection.php"); // polaczenie z baza danych
 
-                <div class="col-md-3">
-                    <h3>Biurko Led</h3>
-                    <div class="btn-group center">
-                        <div id="biurkoledchange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="biurkoledon" class="btn btn-primary btn-lg">On</div>
-                        <div id="biurkoledoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="biurkoledstatus" class="status"></div>
-                </div>
+        if($actual_ip=="188.137.42.5"){
+            $local=true;
+        }else{
+            $local=false;
+        }
 
-                <div class="col-md-3">
-                    <h3>Biurko Right</h3>
-                    <div class="btn-group center">
-                        <div id="biurkorightchange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="biurkorighton" class="btn btn-primary btn-lg">On</div>
-                        <div id="biurkorightoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="biurkorightstatus" class="status"></div>
-                </div>
+        if($local==false){
+            if(!isset($_SESSION["error"])){ // czy sesja zawiera jakis error
+                if(!isset($_SESSION["login"]) && !isset($_SESSION['token']) && !isset($_SESSION['token2'])){ // czy zmienne sesji nie sa ustawione
+                    if (isset($_POST['cookie']) && isset($_POST['logem'])) { // czy zmienne formularza sa ustawione / przeslane
 
-                <div class="col-md-3">
-                    <h3>Głosniki LED</h3>
-                    <div class="btn-group center">
-                        <div id="glosnikiledchange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="glosnikiledon" class="btn btn-primary btn-lg">On</div>
-                        <div id="glosnikiledoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="glosnikiledstatus" class="status"></div>
+                        //$db = 1; // zmiena pozwalajaca na rozruch pliku connection.php
+                        //require("include/config.php"); // dane logowania mysql
+                        //require("include/connection.php"); // polaczenie z baza danych
 
-                    <div class="center slidecontainer">
-                        <span></span><input class="range slider" value="" id="glosnikiledvalue" type="range" name="glosnikiled" min="1" max="100" step="1" value="100"><span></span>
-                        <p>Jasność: <span id="glosnikiledperc"></span>%</p>
-                    </div>
-                </div>
+                        // zapytanie sprawdzajace czy dane ip ma permbana
+                        $db_query = mysqli_query($con,"SELECT COUNT(*) AS fullblock FROM log WHERE ip='$actual_ip' AND log.error='interference';");
+                        $db_row = mysqli_fetch_assoc($db_query);
+                        $ifban = $db_row["fullblock"];
+                        $db_query->free();
 
-                <div class="col-md-3">
-                    <h3>Lampa Zimny</h3>
-                    <div class="btn-group center">
-                        <div id="lampazimnychange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="lampazimnyon" class="btn btn-primary btn-lg">On</div>
-                        <div id="lampazimnyoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="lampazimnystatus" class="status"></div>
-                </div>
+                        if($ifban==0){ // sprawdzanie permbana
 
-                <div class="col-md-3">
-                    <h3>Lampa Cieply</h3>
-                    <div class="btn-group center">
-                        <div id="lampacieplychange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="lampacieplyon" class="btn btn-primary btn-lg">On</div>
-                        <div id="lampacieplyoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="lampacieplystatus" class="status"></div>
-                </div>
+                            // zapytanie sprawdzajace ilosc banow klienta w ciagu miesiaca
+                            $db_query = mysqli_query($con,"SELECT COUNT(*) AS countban FROM log WHERE ip='$actual_ip' AND log.error='loginban' AND log.date >= DATE_ADD(now(), INTERVAL -1 MONTH);");
+                            $db_row = mysqli_fetch_assoc($db_query);
 
-                <div class="col-md-3">
-                    <h3>Lampa Lekka</h3>
-                    <div class="btn-group center">
-                        <div id="lampalekkachange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="lampalekkaon" class="btn btn-primary btn-lg">On</div>
-                        <div id="lampalekkaoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="lampalekkastatus" class="status"></div>
-                </div>
+                            $countban = $db_row["countban"]; // zapisuje ilosc banow klienta
+                            $banvalue = array(0, "MINUTE", 10, "MINUTE", 30, "MINUTE", 1, "HOUR", 1, "DAY", 7, "DAY");
+                            $db_query->free(); // czyszczenie kolejki
+                            $banned = array($banvalue[$countban*2], $banvalue[($countban*2)+1]); // ustawia czas bana na podstawie ilosci poprzednich banow
 
-                <div class="col-md-3">
-                    <h3>Laser Disco</h3>
-                    <div class="btn-group center">
-                        <div id="laserdiscochange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="laserdiscoon" class="btn btn-primary btn-lg">On</div>
-                        <div id="laserdiscooff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                </div>
-                <div id="laserdiscostatus" class="status"></div>
+                            // zapytanie sprawdzajace czy dana osoba ma aktywnego bana tymczasowego
+                            $db_query = mysqli_query($con,"SELECT COUNT(*) AS banned FROM log WHERE ip='$actual_ip' AND log.error='loginban' AND DATE_ADD(log.date, INTERVAL ".$banned[0]." ".$banned[1].") >= now() ORDER BY date DESC LIMIT 1;");
+                            $db_row = mysqli_fetch_assoc($db_query);
+                            $db_query->free();
 
-            </div>
+                            if($db_row["banned"]==0){ // ban tymczasowy
 
+                                $logem = htmlspecialchars(stripslashes(strip_tags(trim($_POST["logem"])))); //pobieranie i sprawdzanie loginu/emailu
+                                $pwd = htmlspecialchars(stripslashes(strip_tags(trim($_POST["pwd"])))); // pobieranie i sprawdzanie hasla
 
-        </div>
+                                $pwd = md5($pwd); // hashowanie hasla
 
-    </body>
-    <script src="jquery/jquery.min.js"></script>
+                                //zapytanie pobierajace  haslo dla danego emaila lub loginu
+                                $db_query = mysqli_query($con,"SELECT users.login, users.email, users.password FROM users WHERE users.login='$logem' OR users.email='$logem';");
 
-    <script src="js/tempstat.js"></script>
-    <script src='http://bernii.github.io/gauge.js/dist/gauge.min.js'></script>
-    <script src='http://bernii.github.io/gauge.js/dist/gauge.coffee'></script>
+                                $db_row = mysqli_fetch_assoc($db_query);
 
-    <script src="js/handler.js"></script>
+                                if($pwd == $db_row["password"]){ // czy hasla sie zgadzaja
+                                    // ZALOGOWANO!
+                                    $login = $db_row["login"]; // pobieranie loginu (po to  gdy np podal email)
+                                    $_SESSION["login"] = $login; // zapis loginu do sesji
+                                    $_SESSION['token'] = md5($_SERVER['HTTP_USER_AGENT']); // zapis user agent do sesji w md5
+                                    $_SESSION['token2'] = md5($actual_ip); // zapis ip klienta do sesji w md5
+                                    header('Location: ./'); // przeniesienie zalogowanego klienta na strone glowna (refresh)
+                                }else{
+                                    $error = "Zły login lub hasło!"; // wyslanie erroru o blednym hasle
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-</html>
+                                    //funkcja wprowadzajaca blad o blednym logowaniu (bledny login lub haslo)
+                                    $db_query = mysqli_query($con,"INSERT INTO `micron`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'faillogin', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
+
+                                    // zapytanie sprawdzajace ile banow w ciagu ostatnich 10 min dostal klient o danym ip
+                                    $db_query = mysqli_query($con,"SELECT COUNT(*) AS ilosc FROM log WHERE ip='$actual_ip' AND log.error='faillogin' AND log.date >= DATE_ADD(now(), INTERVAL -10 MINUTE);");
+                                    $db_row = mysqli_fetch_assoc($db_query);
+                                    $db_query->free(); // czyszczenie kolejki
+
+                                    if($db_row["ilosc"]>=3){ // sprawdzanie czy klient o danym ip dostal juz 3 bany w ciagu 10 minut
+                                        // jesli tak
+                                        // funkcja dodajaca bana do bazy
+                                        $db_query = mysqli_query($con,"INSERT INTO `micron`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'loginban', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
+                                        header('Location: ./'); // przeniesienie klienta na strone glowna (refresh)
+                                    }
+                                }
+                            }else{
+                                switch($banned[1]){ //Konwertowanie tekstu do wyswietlenia
+                                    case "MINUTE":
+                                        $bantext = "Minut";
+                                        break;
+                                    case "HOUR":
+                                        $bantext = "Godzin";
+                                        break;
+                                    case "DAY":
+                                        $bantext = "Dni";
+                                        break;
+                                }
+                                $error = "Jesteś zbanowany na ". $banned[0] . " " . $bantext . "."; // error mowiacy o banie czasowym
+                            }
+                        }else{
+                            $error = "Zostałeś permamentnie zbanowany. Jeżeli uważasz że to błąd skontaktuj się z Administratorem."; // error o perm banie
+                        }
+                    }
+                    require("login.php"); // include formularza logowania
+                }else{
+                    if($_SESSION['token']==md5($_SERVER['HTTP_USER_AGENT']) && $_SESSION['token2']==md5($_SERVER['REMOTE_ADDR'])){ // sprawdzanie czy dane z sesji zgadzaja sie z danymi klienta
+                        $login = $_SESSION['login'];
+                        require("ihome.php"); // include panel admina
+                    }else{
+                        $error = "Zaloguj się ponownie!"; // error przez inne dane sesji i klienta (moze blad moze próba ataku sesji)
+                    }
+                }
+            }else{
+                $error = $_SESSION['error']; // przeslanie error sesji z panelu admina
+                unset($_SESSION['error']); // usuniecie zmiennej error z sesji
+
+                // dodanie do bazy informacji o probie ingerencji przez wejscie w inne pliki niz index.php (rownoznaczne z perm banem)
+                $db_query = mysqli_query($con,"INSERT INTO `micron`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'interference', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
+
+                require("login.php"); // include formularza logowania
+            }
+        }else{
+            $_SESSION["login"] = LOCAL_LOGIN;
+            $_SESSION['token'] = md5($_SERVER['HTTP_USER_AGENT']); // zapis user agent do sesji w md5
+            $_SESSION['token2'] = md5($actual_ip); // zapis ip klienta do sesji w md5
+
+            require("ihome.php"); // include panel admina
+        }
+        $con->close(); // konczenie polaczenia z baza danych
+        ?>
