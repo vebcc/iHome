@@ -1,6 +1,6 @@
 <html lang="pl">
     <head>
-        <title>Panel Admina - Micron</title>
+        <title>Panel Admina - ihome</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
@@ -78,12 +78,15 @@
                                     $_SESSION["login"] = $login; // zapis loginu do sesji
                                     $_SESSION['token'] = md5($_SERVER['HTTP_USER_AGENT']); // zapis user agent do sesji w md5
                                     $_SESSION['token2'] = md5($actual_ip); // zapis ip klienta do sesji w md5
+
+                                    $db_query = mysqli_query($con,"INSERT INTO `ihome`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'globallogin', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
+
                                     header('Location: ./'); // przeniesienie zalogowanego klienta na strone glowna (refresh)
                                 }else{
                                     $error = "Zły login lub hasło!"; // wyslanie erroru o blednym hasle
 
                                     //funkcja wprowadzajaca blad o blednym logowaniu (bledny login lub haslo)
-                                    $db_query = mysqli_query($con,"INSERT INTO `micron`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'faillogin', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
+                                    $db_query = mysqli_query($con,"INSERT INTO `ihome`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'faillogin', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
 
                                     // zapytanie sprawdzajace ile banow w ciagu ostatnich 10 min dostal klient o danym ip
                                     $db_query = mysqli_query($con,"SELECT COUNT(*) AS ilosc FROM log WHERE ip='$actual_ip' AND log.error='faillogin' AND log.date >= DATE_ADD(now(), INTERVAL -10 MINUTE);");
@@ -93,7 +96,7 @@
                                     if($db_row["ilosc"]>=3){ // sprawdzanie czy klient o danym ip dostal juz 3 bany w ciagu 10 minut
                                         // jesli tak
                                         // funkcja dodajaca bana do bazy
-                                        $db_query = mysqli_query($con,"INSERT INTO `micron`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'loginban', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
+                                        $db_query = mysqli_query($con,"INSERT INTO `ihome`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'loginban', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
                                         header('Location: ./'); // przeniesienie klienta na strone glowna (refresh)
                                     }
                                 }
@@ -129,7 +132,7 @@
                 unset($_SESSION['error']); // usuniecie zmiennej error z sesji
 
                 // dodanie do bazy informacji o probie ingerencji przez wejscie w inne pliki niz index.php (rownoznaczne z perm banem)
-                $db_query = mysqli_query($con,"INSERT INTO `micron`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'interference', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
+                $db_query = mysqli_query($con,"INSERT INTO `ihome`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'interference', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
 
                 require("login.php"); // include formularza logowania
             }
@@ -137,6 +140,8 @@
             $_SESSION["login"] = LOCAL_LOGIN;
             $_SESSION['token'] = md5($_SERVER['HTTP_USER_AGENT']); // zapis user agent do sesji w md5
             $_SESSION['token2'] = md5($actual_ip); // zapis ip klienta do sesji w md5
+
+            $db_query = mysqli_query($con,"INSERT INTO `ihome`.`log` (`id`, `error`, `ip`, `date`, `browser`) VALUES (NULL, 'locallogin', '$actual_ip', CURRENT_TIMESTAMP, '".$_SERVER['HTTP_USER_AGENT']."');");
 
             require("ihome.php"); // include panel admina
         }

@@ -7,7 +7,7 @@
 
 
     <div id="content">
-        <h1><a href="http://maslowski.it/" title="Oparte na Micronie" tabindex="-1"><img src="images/micron.png" alt="Oparte na Micronie"></a></h1>
+        <h1><a href="http://maslowski.it/" title="Oparte na Micronie" tabindex="-1"><img id="logo" src="images/ihome.png" alt="Oparte na Micronie"></a></h1>
 
         <form name="loginform" id="loginform" action="index.php" method="post">
             <div class="form-group">
@@ -38,6 +38,6 @@
 
 
 
-        <p id="backtoblog"><a href="http://94.177.231.204/maslo/micron/">← Powrót do Strony Głównej</a></p>
+        <p id="backtoblog"><a href="http://cloud.maslowski.it/ihome/">← Powrót do Strony Głównej</a></p>
 
     </div>
