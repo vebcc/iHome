@@ -43,18 +43,41 @@ void ConsoleCommand(String command, String value) {
 }
 
 void ConsoleWriter(String command, String value){
-  for (int i = 0; i < sizeof(inputnames); i++) {
-    if (value == inputnames[i]) {
-      if(command=="values"){
-        //Serial.print("values=");
-        Serial.print(inputvalues[i]);
-        Serial.println("%");
-      }else if(command=="status"){
-        Serial.print(inputstatus[i]);
-        Serial.println("%");
+  if(value!="all"){
+    if(value!="tempwil"){
+      for (int i = 0; i < sizeof(inputnames); i++) {
+        if (value == inputnames[i]) {
+          if(command=="values"){
+            //Serial.print("values=");
+            Serial.print(inputvalues[i]);
+            Serial.println("%");
+          }else if(command=="status"){
+            Serial.print(inputstatus[i]);
+            Serial.println("%");
+          }
+        }
       }
+    }else{
+      Serial.print(wilgotnosc);
+      Serial.print("-");
+      Serial.print(temperatura);
+      Serial.println("%");
     }
+  }else{
+    for (int i = 0; i < sizeof(inputnames); i++) {
+      Serial.print(inputnames[i]);
+      Serial.print("-");
+      Serial.print(inputstatus[i]);
+      Serial.print("-");
+      Serial.print(inputvalues[i]);
+      Serial.print("/");
+    }
+    Serial.print("tempwil");
+    Serial.print("-");
+    Serial.print(wilgotnosc);
+    Serial.print("-");
+    Serial.print(temperatura);
+    Serial.println("%");
   }
-
 }
 

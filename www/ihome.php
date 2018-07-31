@@ -13,7 +13,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="css/main.css">
-        <script src='https://www.gstatic.com/charts/loader.js'></script>
+        <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->
     </head>
     <body>
         <div class="container-fluid center">
@@ -21,13 +21,32 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                 <h1>Panel iHome</h1>
             </div>
             <a href="index.php?logout=1">Wyloguj się</a>
+
             <div class="row">
 
 
                 <div class="col-md-3">
                     <h3>Temperatura Out</h3>
                     <h4>Temperatura: <span id="tempout1"></span> *C</h4><br>
-                    <div id='chart_div' style='width: 400px; height: 120px;'></div>
+                    <div id='chart_tempout' style='width: 400px; height: 120px;'></div>
+
+
+
+                </div>
+
+                <div class="col-md-3">
+                    <h3>Temperatura In</h3>
+                    <h4>Temperatura: <span id="tempin1"></span> *C</h4><br>
+                    <div id='chart_tempin' style='width: 400px; height: 120px;'></div>
+
+
+
+                </div>
+
+                <div class="col-md-3">
+                    <h3>Wilgotność In</h3>
+                    <h4>Wilgotność: <span id="wilgin1"></span> %</h4><br>
+                    <div id='chart_wilgin' style='width: 400px; height: 120px;'></div>
 
 
 
@@ -115,12 +134,14 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
 
     </body>
     <script src="jquery/jquery.min.js"></script>
+    <script src="js/handler.js"></script>
 
+    <!--
     <script src="js/tempstat.js"></script>
     <script src='http://bernii.github.io/gauge.js/dist/gauge.min.js'></script>
     <script src='http://bernii.github.io/gauge.js/dist/gauge.coffee'></script>
+    -->
 
-    <script src="js/handler.js"></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -143,6 +164,6 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     $_SESSION['error'] = $error; // wstawienie $errora do sesji error
     header('Location: ./'); // przekierowanie do index.php
 }
-    ?>
+?>
 
 

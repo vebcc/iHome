@@ -31,3 +31,13 @@ void CheckOutput(){
   }
 }
 
+void GetTempWil(){
+  //if(dhttimer>1000){
+    wilgotnosc = dht.getHumidity();
+    temperatura = dht.getTemperature();
+  //  dhttimer=0;
+  //}else{
+  //  dhttimer++;
+  //}
+}
+
