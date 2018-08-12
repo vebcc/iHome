@@ -1,44 +1,62 @@
 <?php
+$db = 1; // zmiena pozwalajaca na rozruch pliku connection.php
+require("config.php"); // dane logowania mysql
+require("connection.php"); // polaczenie z baza danych
 
-include 'PhpSerial.php'; //biblioteka do seriala
-$serial = new PhpSerial; // deklaracja nowego seriala
-$serial->deviceSet("/dev/ttyUSB0"); // sciezka do serialmonitora
-$serial->confBaudRate(9600); // baudrate
-$serial->confParity("none");
-$serial->confCharacterLength(8);
-$serial->confStopBits(1);
-$serial->confFlowControl("none");
-$serial->deviceOpen(); // open port
+
+if(isset($_GET["id"]) && isset($_GET["getdata"]) && isset($_GET["maincode"])){ // formget
+    $id = $_GET["id"];
+    $getdata = $_GET["getdata"];
+    $maincode = $_GET["maincode"];
+    // zapytanie sprawdzajace czy maincode sie zgadza
+    $db_query = mysqli_query($con,"SELECT devicedata.value FROM devicedata WHERE devicedata.device_id='$id' AND devicedata.name='maincode';");
+    $db_row = mysqli_fetch_assoc($db_query);
+    $dbmaincode = $db_row["value"];
+    $db_query->free();
+
+    if($maincode==$dbmaincode){
+        if($getdata="ok"){
+            $db_query =mysqli_query($con,"SELECT devicedata.name, devicedata.value FROM devicedata WHERE devicedata.device_id='$id' AND devicedata.name!='maincode';");
+
+            while($db_row = mysqli_fetch_assoc($db_query)){
+                echo $db_row["name"]."=".$db_row["value"].",";
+            }
+        }else{
+            echo "brak ok";
+        }
+    }else{
+        echo "maincode error: ". $maincode . "db: " . $dbmaincode;
+    }
+    $db_query->free();
+}
+
+if(isset($_GET["id"]) && isset($_GET["privcode"])  && isset($_GET["commandid"])){ // formget
+    $id = $_GET["id"];
+    $privcode = $_GET["privcode"];
+    $commandid = $_GET["commandid"];
+
+    $db_query = mysqli_query($con,"SELECT devicedata.value FROM devicedata WHERE devicedata.device_id='$id' AND devicedata.name='privcode';");
+    $db_row = mysqli_fetch_assoc($db_query);
+    $dbprivcode = $db_row["value"];
+    $db_query->free();
+
+    if($privcode==$dbprivcode){
+        switch($commandid){
+            case 1:
+
+                break;
+
+        }
+    }else{
+        echo "privcode error";
+    }
+
+}
+
 
 function getset($id, $lenk, $dev=0){ // pobieranie danych z lamp po comie
     $tosend = "";
     switch($id){
-        case 1:
-            $towrite = "$$lenk#";
-            global $serial;
-            $serial->sendMessage($towrite);
-            $read = $serial->readPort();
-            $i=0;
-            while(true){
-                //if(isset($read[$i])){
-                    if($read[$i]!="%"){
-                        echo $read[$i];
-                        $tosend.=$read[$i];
-                        if($i>100){
-                            echo "Error - Zbyt długi czas oczekiwania na znacznik % kończący komendę.";
-                            break;
-                        }
-                    }else{
-                        break;
-                    }
-                    $i++;
-                //}else{
-                    //echo "Error - Brak danych na serialu";
-                    //break;
-                //}
-            }
-            break;
-
         case 2:
             $fp = fopen("http://10.0.2.3/$lenk", "r");
             $tosend = fread($fp,"1");
@@ -85,16 +103,6 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
         }
     }else{
         switch($id){
-            case 1:
-                $newmessage =  "$$name=$value#";
-                $serial->sendMessage($newmessage); // send messange
-                if($value=="on" || $value=="off" || $value=="change"){
-                    getset($id ,"status=$name");
-                }else{
-                    getset($id ,"values=$name");
-                }
-                break;
-
             case 2:
                 $newmessage =  $name.$value;
                 $fp = fopen("http://10.0.2.3/$newmessage", "r");
@@ -118,5 +126,5 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
     }
 }
 
-$serial->deviceClose();
+$con->close(); // konczenie polaczenia z baza danych
 ?>

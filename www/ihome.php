@@ -8,141 +8,97 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
 ?>
 <html>
     <head>
-        <title>Panel - iHome</title>
+        <title>Panel Sterowania - iHome</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/main.css">
-        <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->
+        <link rel="stylesheet" href="css/new.css">
     </head>
     <body>
         <div class="container-fluid center">
             <div class="jumbotron">
-                <h1>Panel iHome</h1>
-            </div>
-            <a href="index.php?logout=1">Wyloguj się</a>
-
-            <div class="row">
-
-
-                <div class="col-md-3">
-                    <h3>Temperatura Out</h3>
-                    <h4>Temperatura: <span id="tempout1"></span> *C</h4><br>
-                    <div id='chart_tempout' style='width: 400px; height: 120px;'></div>
-
-
-
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Temperatura In</h3>
-                    <h4>Temperatura: <span id="tempin1"></span> *C</h4><br>
-                    <div id='chart_tempin' style='width: 400px; height: 120px;'></div>
-
-
-
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Wilgotność In</h3>
-                    <h4>Wilgotność: <span id="wilgin1"></span> %</h4><br>
-                    <div id='chart_wilgin' style='width: 400px; height: 120px;'></div>
-
-
-
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Biurko Led</h3>
-                    <div class="btn-group center">
-                        <div id="biurkoledchange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="biurkoledon" class="btn btn-primary btn-lg">On</div>
-                        <div id="biurkoledoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="biurkoledstatus" class="status"></div>
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Biurko Right</h3>
-                    <div class="btn-group center">
-                        <div id="biurkorightchange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="biurkorighton" class="btn btn-primary btn-lg">On</div>
-                        <div id="biurkorightoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="biurkorightstatus" class="status"></div>
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Głosniki LED</h3>
-                    <div class="btn-group center">
-                        <div id="glosnikiledchange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="glosnikiledon" class="btn btn-primary btn-lg">On</div>
-                        <div id="glosnikiledoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="glosnikiledstatus" class="status"></div>
-
-                    <div class="center slidecontainer">
-                        <span></span><input class="range slider" value="" id="glosnikiledvalue" type="range" name="glosnikiled" min="1" max="100" step="1" value="100"><span></span>
-                        <p>Jasność: <span id="glosnikiledperc"></span>%</p>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Lampa Zimny</h3>
-                    <div class="btn-group center">
-                        <div id="lampazimnychange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="lampazimnyon" class="btn btn-primary btn-lg">On</div>
-                        <div id="lampazimnyoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="lampazimnystatus" class="status"></div>
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Lampa Cieply</h3>
-                    <div class="btn-group center">
-                        <div id="lampacieplychange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="lampacieplyon" class="btn btn-primary btn-lg">On</div>
-                        <div id="lampacieplyoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="lampacieplystatus" class="status"></div>
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Lampa Lekka</h3>
-                    <div class="btn-group center">
-                        <div id="lampalekkachange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="lampalekkaon" class="btn btn-primary btn-lg">On</div>
-                        <div id="lampalekkaoff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                    <div id="lampalekkastatus" class="status"></div>
-                </div>
-
-                <div class="col-md-3">
-                    <h3>Laser Disco</h3>
-                    <div class="btn-group center">
-                        <div id="laserdiscochange" class="btn btn-primary btn-lg">Change</div>
-                        <div id="laserdiscoon" class="btn btn-primary btn-lg">On</div>
-                        <div id="laserdiscooff" class="btn btn-primary btn-lg active">Off</div>
-                    </div>
-                </div>
-                <div id="laserdiscostatus" class="status"></div>
+               <div class="row">
+                   <div class="col-md-12 row">
+                       <div id="sun" class="col-md-6">
+                           <h3><span class="glyphicon glyphicon-certificate"></span>  <span class="glyphicon glyphicon-triangle-top"></span>04:18 <span class="glyphicon glyphicon-triangle-bottom"></span> 20:42</h3>
+                       </div>
+                       <div id="title" class="col-md-6">
+                           <h2>Panel Sterowania <b>IHome</b></h2>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="col-md-12">
+                       <h2><span class="glyphicon glyphicon-signal"></span> Status</h2>
+                   </div>
+                   <div class="col-md-12 row">
+                       <div class="col-md-4">
+                           <table class="table table-striped">
+                               <tr><th>Włączniki</th><th> </th><th></th></tr>
+                               <tr><td>Masło</td><td>Biurko przód</td><td>ON</td></tr>
+                               <tr><td>Masło</td><td>Biurko Bok</td><td>ON</td></tr>
+                               <tr><td>Masło</td><td>Podświetlenie głośników</td><td>ON</td></tr>
+                               <tr><td>Masło</td><td>Zimna lampa</td><td>ON</td></tr>
+                               <tr><td>Masło</td><td>Ciepła lampa</td><td>ON</td></tr>
+                               <tr><td>Masło</td><td>Laser dyskotekowy</td><td>ON</td></tr>
+                               <tr><td>Masło</td><td>Ciepła słaba lampa</td><td>ON</td></tr>
+                               <tr><td>Szymon</td><td>Lampa główna</td><td>ON</td></tr>
+                           </table>
+                       </div>
+                       <div class="col-md-4">
+                           <table class="table table-striped">
+                               <tr><th>Czujniki</th><th> </th><th> </th></tr>
+                               <tr><td>Masło</td><td>Temperatura</td><td>22*C</td></tr>
+                               <tr><td>Masło</td><td>Wilgotność</td><td>70%</td></tr>
+                               <tr><td>Zewnątrz</td><td>Temperatura</td><td>32*C</td></tr>
+                               <tr><td>Zewnątrz</td><td>Wilgotność</td><td>50%</td></tr>
+                           </table>
+                       </div>
+                       <div class="col-md-4">
+                           <table class="table table-striped">
+                               <tr><th>ID</th><th>Błąd</th><th>Data</th></tr>
+                               <tr><td>32</td><td>Błąd odczytu z czujnika</td><td>22-15-2018</td></tr>
+                               <tr><td>353</td><td>Błąd odczytu z czujnika</td><td>22-15-2018</td></tr>
+                               <tr><td>432</td><td>Bład pobierania danych</td><td>22-15-2018</td></tr>
+                               <tr><td>4233</td><td>Proba wlamania</td><td>22-15-2018</td></tr>
+                               <tr><td>4232</td><td>Przepelniona baza</td><td>22-15-2018</td></tr>
+                            </table>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="col-md-12 row">
+                       <div class="col-md-12">
+                           <h2><span class="glyphicon glyphicon-off"></span> Sterowanie przełącznikami</h2>
+                       </div>
+                       <div class="col-md-12 row">
+                           <div class="col-md-3">
+                               <h2>Masło</h2>
+                               <table class="table table-striped">
+                                   <tr><td>Biurko przód</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Biurko Bok</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Podświetlenie głośników</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Zimna lampa</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Ciepła lampa</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Laser dyskotekowy</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Ciepła słaba lampa</td><td><button>Zmień</button></td></tr>
+                               </table>
+                           </div>
+                           <div class="col-md-3">
+                               <h2>Szymon</h2>
+                               <table class="table table-striped">
+                                   <tr><td>Lampa główna</td><td><button>Zmień</button></td></tr>
+                               </table>
+                           </div>
+                       </div>
+                   </div>
+               </div>
 
             </div>
-
-
         </div>
 
     </body>
     <script src="jquery/jquery.min.js"></script>
-    <script src="js/handler.js"></script>
 
-    <!--
-    <script src="js/tempstat.js"></script>
-    <script src='http://bernii.github.io/gauge.js/dist/gauge.min.js'></script>
-    <script src='http://bernii.github.io/gauge.js/dist/gauge.coffee'></script>
-    -->
-
-
+    <script src="js/newhandler.js"></script>
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </html>
@@ -164,6 +120,6 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     $_SESSION['error'] = $error; // wstawienie $errora do sesji error
     header('Location: ./'); // przekierowanie do index.php
 }
-?>
+    ?>
 
 

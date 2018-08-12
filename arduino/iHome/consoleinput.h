@@ -43,7 +43,7 @@ void CheckConsoleInput(){
            //Serial.println(serialvalue);
            lastvalue = serialcommand + serialvalue;
            //Serial.println(lastvalue);
-           if(serialcommand == "values" || serialcommand == "status"){
+           if(serialcommand == "values" || serialcommand == "status" || serialvalue=="all"){
               ConsoleWriter(serialcommand, serialvalue);
            }else{
               ConsoleCommand(serialcommand, serialvalue);

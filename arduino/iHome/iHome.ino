@@ -17,15 +17,15 @@ int temperatura=0;
 
 void setup() {
   Serial.begin(9600);
-  Serial.print("Ładowanie seriala: ... ");
+  //Serial.print("Ładowanie seriala: ... ");
   delay(100);
-  Serial.println("Gotowe");
+  //Serial.println("Gotowe");
 
   SetDefaultOutput();
 
   dht.setup(8);
 
-  Serial.println("< Arduino jest gotowe! >");
+  //Serial.println("< Arduino jest gotowe! >");
 }
 
 void loop() {

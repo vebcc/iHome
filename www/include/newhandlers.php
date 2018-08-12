@@ -1,44 +1,10 @@
 <?php
 
-include 'PhpSerial.php'; //biblioteka do seriala
-$serial = new PhpSerial; // deklaracja nowego seriala
-$serial->deviceSet("/dev/ttyUSB0"); // sciezka do serialmonitora
-$serial->confBaudRate(9600); // baudrate
-$serial->confParity("none");
-$serial->confCharacterLength(8);
-$serial->confStopBits(1);
-$serial->confFlowControl("none");
-$serial->deviceOpen(); // open port
+
 
 function getset($id, $lenk, $dev=0){ // pobieranie danych z lamp po comie
     $tosend = "";
     switch($id){
-        case 1:
-            $towrite = "$$lenk#";
-            global $serial;
-            $serial->sendMessage($towrite);
-            $read = $serial->readPort();
-            $i=0;
-            while(true){
-                //if(isset($read[$i])){
-                    if($read[$i]!="%"){
-                        echo $read[$i];
-                        $tosend.=$read[$i];
-                        if($i>100){
-                            echo "Error - Zbyt długi czas oczekiwania na znacznik % kończący komendę.";
-                            break;
-                        }
-                    }else{
-                        break;
-                    }
-                    $i++;
-                //}else{
-                    //echo "Error - Brak danych na serialu";
-                    //break;
-                //}
-            }
-            break;
-
         case 2:
             $fp = fopen("http://10.0.2.3/$lenk", "r");
             $tosend = fread($fp,"1");
@@ -85,16 +51,6 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
         }
     }else{
         switch($id){
-            case 1:
-                $newmessage =  "$$name=$value#";
-                $serial->sendMessage($newmessage); // send messange
-                if($value=="on" || $value=="off" || $value=="change"){
-                    getset($id ,"status=$name");
-                }else{
-                    getset($id ,"values=$name");
-                }
-                break;
-
             case 2:
                 $newmessage =  $name.$value;
                 $fp = fopen("http://10.0.2.3/$newmessage", "r");
@@ -117,6 +73,4 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
         }
     }
 }
-
-$serial->deviceClose();
 ?>
