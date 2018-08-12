@@ -77,17 +77,17 @@ $(document).ready(function(){
 
     //biurko led
     $('#biurkoledchange').click(function() {
-        $.get('include/handlers.php?id=1&name=biurkoled&value=change', function(result) {
+        $.get('http://10.0.2.6/out2change', function(result) {
             changeactive("biurkoled", result);
         });
     });
     $('#biurkoledoff').click(function() {
-        $.get('include/handlers.php?id=1&name=biurkoled&value=on', function(result) {
+        $.get('http://10.0.2.6/out2off', function(result) {
             changeactive("biurkoled", result);
         });
     });
     $('#biurkoledon').click(function() {
-        $.get('include/handlers.php?id=1&name=biurkoled&value=off', function(result) {
+        $.get('http://10.0.2.6/out2on', function(result) {
             changeactive("biurkoled", result);
         });
     });
