@@ -36,14 +36,14 @@ if(isset($_GET["id"]) && isset($_GET["privcode"])  && isset($_GET["commandid"]) 
     $commandid = $_GET["commandid"];
     $value = $_GET["commandvalue"];
 
-    echo "id: $id, privcode: $privcode, commandid: $commandid, value: $value";
+    //echo "id: $id, privcode: $privcode, commandid: $commandid, value: $value";
 
     $db_query = mysqli_query($con,"SELECT devicedata.value FROM devicedata WHERE devicedata.device_id='$id' AND devicedata.name='privcode';");
     $db_row = mysqli_fetch_assoc($db_query);
     $dbprivcode = $db_row["value"];
     $db_query->free();
 
-    echo ", dbprivcode: $dbprivcode , ";
+    //echo ", dbprivcode: $dbprivcode , ";
 
     if($privcode==$dbprivcode){
         switch($commandid){
@@ -53,9 +53,14 @@ if(isset($_GET["id"]) && isset($_GET["privcode"])  && isset($_GET["commandid"]) 
             case 2:
                 $db_query = mysqli_query($con,"INSERT INTO `ihome`.`humidity` (`id`, `humi`, `date`, `humi_id`) VALUES (NULL, '$value', CURRENT_TIMESTAMP, '$id');");
                 break;
+            case 3:
+                $db_query = mysqli_query($con,"SELECT MINUTE(NOW()) AS czas;");
+                $db_row = mysqli_fetch_assoc($db_query);
+                echo $db_row["czas"];
+                break;
 
         }
-        echo "dodaje";
+        //echo "dodaje";
     }else{
         echo "privcode error";
     }
