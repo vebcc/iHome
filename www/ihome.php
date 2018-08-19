@@ -20,7 +20,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                <div class="row">
                    <div class="col-md-12 row">
                        <div id="sun" class="col-md-6">
-                           <h3><span class="glyphicon glyphicon-certificate"></span>  <span class="glyphicon glyphicon-triangle-top"></span>04:18 <span class="glyphicon glyphicon-triangle-bottom"></span> 20:42</h3>
+                           <h3><span class="glyphicon glyphicon-certificate"></span>  <span class="glyphicon glyphicon-triangle-top"></span> <span id="sunrise"></span> <span class="glyphicon glyphicon-triangle-bottom"></span> <span id="sunset"></span></h3>
                        </div>
                        <div id="title" class="col-md-6">
                            <h2>Panel Sterowania <b>IHome</b></h2>
@@ -34,23 +34,24 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        <div class="col-md-4">
                            <table class="table table-striped">
                                <tr><th>Włączniki</th><th> </th><th></th></tr>
-                               <tr><td>Masło</td><td>Biurko przód</td><td>ON</td></tr>
-                               <tr><td>Masło</td><td>Biurko Bok</td><td>ON</td></tr>
-                               <tr><td>Masło</td><td>Podświetlenie głośników</td><td>ON</td></tr>
-                               <tr><td>Masło</td><td>Zimna lampa</td><td>ON</td></tr>
-                               <tr><td>Masło</td><td>Ciepła lampa</td><td>ON</td></tr>
-                               <tr><td>Masło</td><td>Laser dyskotekowy</td><td>ON</td></tr>
-                               <tr><td>Masło</td><td>Ciepła słaba lampa</td><td>ON</td></tr>
-                               <tr><td>Szymon</td><td>Lampa główna</td><td>ON</td></tr>
+                               <tr id="1-out2-stat"><td>Masło</td><td>Biurko przód ciepły</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="1-out3-stat"><td>Masło</td><td>Biurko przód zimny</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="1-out1-stat"><td>Masło</td><td>Biurko Bok</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="1-out4-stat"><td>Masło</td><td>Podświetlenie głośników</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="2-out2-stat"><td>Masło</td><td>Zimna lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="2-out3-stat"><td>Masło</td><td>Ciepła lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="3-out1-stat"><td>Masło</td><td>Laser dyskotekowy</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="2-out1-stat"><td>Masło</td><td>Ciepła słaba lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+                               <tr id="4-out1-stat"><td>Szymon</td><td>Lampa główna</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
                            </table>
                        </div>
                        <div class="col-md-4">
                            <table class="table table-striped">
                                <tr><th>Czujniki</th><th> </th><th> </th></tr>
-                               <tr><td>Masło</td><td>Temperatura</td><td>22*C</td></tr>
-                               <tr><td>Masło</td><td>Wilgotność</td><td>70%</td></tr>
-                               <tr><td>Zewnątrz</td><td>Temperatura</td><td>32*C</td></tr>
-                               <tr><td>Zewnątrz</td><td>Wilgotność</td><td>50%</td></tr>
+                               <tr><td>Masło</td><td>Temperatura</td><td><span id="tempin1"></span>*C</td></tr>
+                               <tr><td>Masło</td><td>Wilgotność</td><td><span id="wilin1"></span>%</td></tr>
+                               <tr><td>Zewnątrz</td><td>Temperatura</td><td><span id="tempout1"></span>*C</td></tr>
+                               <tr><td>Zewnątrz</td><td>Wilgotność</td><td><span id="wilout1"></span>%</td></tr>
                            </table>
                        </div>
                        <div class="col-md-4">
@@ -73,21 +74,34 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                            <div class="col-md-3">
                                <h2>Masło</h2>
                                <table class="table table-striped">
-                                   <tr><td>Biurko przód</td><td><button>Zmień</button></td></tr>
-                                   <tr><td>Biurko Bok</td><td><button>Zmień</button></td></tr>
-                                   <tr><td>Podświetlenie głośników</td><td><button>Zmień</button></td></tr>
-                                   <tr><td>Zimna lampa</td><td><button>Zmień</button></td></tr>
-                                   <tr><td>Ciepła lampa</td><td><button>Zmień</button></td></tr>
-                                   <tr><td>Laser dyskotekowy</td><td><button>Zmień</button></td></tr>
-                                   <tr><td>Ciepła słaba lampa</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Biurko przód ciepły</td><td><button id="1-out2-button-change">Zmień</button></td></tr>
+                                   <tr><td>Biurko przód zimny</td><td><button id="1-out3-button-change">Zmień</button></td></tr>
+                                   <tr><td>Biurko Bok</td><td><button id="1-out1-button-change">Zmień</button></td></tr>
+                                   <tr><td>Podświetlenie głośników</td><td><button id="1-out4-button-change">Zmień</button></td></tr>
+                                   <tr><td>Zimna lampa</td><td><button id="2-out2-button-change">Zmień</button></td></tr>
+                                   <tr><td>Ciepła lampa</td><td><button id="2-out3-button-change">Zmień</button></td></tr>
+                                   <tr><td>Laser dyskotekowy</td><td><button id="3-out1-button-change">Zmień</button></td></tr>
+                                   <tr><td>Ciepła słaba lampa</td><td><button id="2-out1-button-change">Zmień</button></td></tr>
                                </table>
                            </div>
                            <div class="col-md-3">
                                <h2>Szymon</h2>
                                <table class="table table-striped">
-                                   <tr><td>Lampa główna</td><td><button>Zmień</button></td></tr>
+                                   <tr><td>Lampa główna</td><td><button id="4-out1-button-change">Zmień</button></td></tr>
                                </table>
                            </div>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="col-md-12 row">
+                       <div class="col-md-12">
+                           <h2><span class="glyphicon glyphicon-signal"></span> Wykresy</h2>
+                       </div>
+                       <div class="col-md-12 row">
+                           <div id="chart_div" style="width: 100%; height: 500px;"></div>
+                       </div>
+                       <div class="col-md-12 row">
+                           <div id="chart_div2" style="width: 100%; height: 500px;"></div>
                        </div>
                    </div>
                </div>
@@ -99,6 +113,12 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     <script src="jquery/jquery.min.js"></script>
 
     <script src="js/newhandler.js"></script>
+    <script src="js/newtempstat.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script src="js/charts.js"></script>
+    <script src="js/whereissun.js"></script>
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </html>

@@ -11,13 +11,21 @@ DHT dht;
 
 ESP8266WebServer server(80);
 
+unsigned long previousMillis = 0;        // will store last temp was read
+unsigned long currentMillis;
+
+long interval = 10000;
+
+unsigned long prevupdate = 0;
+long intervalupdate = 60000;
+
 //int lamppin1 = D5; //GPIO5;
 
 String maincode = "ZbvzxZWDRUmJuDwSgPVPZe9QwHaQLS";
 
 String privcode = " ";
 int dotyk1delay=300;
-String getclientbuttonaddr="http://10.0.2.3/";
+String getclientbuttonaddr="http://10.0.2.3/out2";
 
 String datatest = "lipa";
 
@@ -69,14 +77,9 @@ String getValue(String data, char separator, int index)
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
-void GetTempWil(){
-  if(dhttimer>1000){
+void GetTempHumi(){
     wilgotnosc = dht.getHumidity();
     temperatura = dht.getTemperature();
-    dhttimer=0;
-  }else{
-    dhttimer++;
-  }
 }
 
 void getclient(int what){
@@ -86,13 +89,13 @@ void getclient(int what){
 
     switch(what){
       case 0:
-        http.begin(getclientbuttonaddr + "lamp1off");
+        http.begin(getclientbuttonaddr + "off");
         break;
       case 1:
-        http.begin(getclientbuttonaddr + "lamp1on");
+        http.begin(getclientbuttonaddr + "on");
         break;
       case 2:
-        http.begin(getclientbuttonaddr + "lamp1change");
+        http.begin(getclientbuttonaddr + "change");
         break;
     }
 
@@ -103,6 +106,35 @@ void getclient(int what){
       String payload = http.getString();   //Get the request response payload
       Serial.println(payload);                     //Print the response payload
       lampg = payload;
+    }
+    http.end();   //Close connection
+}
+}
+
+void uploadtempwil(int auid, String getval){
+  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
+    String togetherforever = "";
+
+    HTTPClient http;  //Declare an object of class HTTPClient
+
+    switch(auid){
+      case 1:
+        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=1&commandvalue="+getval;
+      break;
+      case 2:
+        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=2&commandvalue="+getval;
+      break;
+    }
+    http.begin(togetherforever);
+
+    int httpCode = http.GET();                                                                  //Send the request
+
+
+    if (httpCode > 0) { //Check the returning code
+
+      String payload = http.getString();   //Get the request response payload
+      Serial.println(payload);                     //Print the response payload
+      //lampg = payload;
     }
     http.end();   //Close connection
 }
@@ -124,7 +156,7 @@ void getdata(String soinit, String code){
       String payload = http.getString();   //Get the request response payload
       Serial.println(payload);                     //Print the response payload
 
-      for(int i=0;i<9;i++){
+      for(int i=0;i<11;i++){
        datatest = getValue(payload,',',i);
        String outname = getValue(datatest,'=',0);
        String outval = getValue(datatest,'=',1);
@@ -178,6 +210,10 @@ void getdata(String soinit, String code){
          out4val=outval.toInt();
        }else if(outname=="privcode"){
          privcode=outval;
+       }else if(outname=="wiltempinterval"){
+         interval=outval.toInt();
+       }else if(outname=="intervalupdate"){
+         intervalupdate=outval.toInt();
        }
       }
     }
@@ -186,39 +222,8 @@ void getdata(String soinit, String code){
 }
 
 void handleRootPath() {            //Handler for the rooth path
-
-  server.send(200, "text/plain", "Serwer iHome id: 6 ip: 10.0.2.6 lamp: 4 button: 1 status lamp: ");
-    if(out1stat){
-      server.send(200, "text / plain", "0");
-    }else{
-      server.send(200, "text / plain", "1");
-    }
-    server.send(200, "text / plain", ",");
-    if(out2stat){
-      server.send(200, "text / plain", "0");
-    }else{
-      server.send(200, "text / plain", "1");
-    }
-    server.send(200, "text / plain", ",");
-    if(out3stat){
-      server.send(200, "text / plain", "1");
-    }else{
-      server.send(200, "text / plain", "0");
-    }
-    if(out4stat){
-      server.send(200, "text / plain", "1");
-    }else{
-      server.send(200, "text / plain", "0");
-    }
-
-    temp = String(temperatura);
-    wilg = String(wilgotnosc);
-
-    server.send(200, "text / plain", ",t");
-    server.send(200, "text / plain", temp);
-    server.send(200, "text / plain", ",w");
-    server.send(200, "text / plain", wilg);
-
+   String allwynik = "Serwer iHome id: 6 ip: 10.0.2.6 lamp: 4 button: 1 status lamp: "+String(out1stat) + "," + String(out2stat)+ "," + String(out3stat)+ "," + String(out4stat) + "," + String(temperatura) + "," + String(wilgotnosc);
+   server.send(200, "text / plain", allwynik);
 }
 
 void setup() {
@@ -408,35 +413,8 @@ void setup() {
   });
 
   server.on("/statusall", []() {   //status all
-    if(out1stat){
-      server.send(200, "text / plain", "0");
-    }else{
-      server.send(200, "text / plain", "1");
-    }
-    server.send(200, "text / plain", ",");
-    if(out2stat){
-      server.send(200, "text / plain", "0");
-    }else{
-      server.send(200, "text / plain", "1");
-    }
-    server.send(200, "text / plain", ",");
-    if(out3stat){
-      server.send(200, "text / plain", "1");
-    }else{
-      server.send(200, "text / plain", "0");
-    }
-    server.send(200, "text / plain", ",");
-    if(out4stat){
-      server.send(200, "text / plain", "1");
-    }else{
-      server.send(200, "text / plain", "0");
-    }
-    server.send(200, "text / plain", ",");
-    temp = String(temperatura);
-    server.send(200, "text / html", temp);
-    server.send(200, "text / plain", ",");
-    wilg = String(wilgotnosc);
-    server.send(200, "text / html", wilg);
+    String allwynik = String(out1stat) + "," + String(out2stat)+ "," + String(out3stat)+ "," + String(out4stat);
+    server.send(200, "text / plain", allwynik);
   });
 
 
@@ -484,5 +462,15 @@ void loop() {
     delay(dotyk1delay);
   }
 
-  GetTempWil();
+  currentMillis = millis();
+  if(currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    GetTempHumi();
+  }
+
+  if(currentMillis - prevupdate >= intervalupdate) {
+    prevupdate = currentMillis;
+    uploadtempwil(1, String(temperatura));
+    uploadtempwil(2, String(wilgotnosc));
+  }
 }
