@@ -18,14 +18,20 @@ long interval = 10000;
 
 unsigned long prevupdate = 0;
 long intervalupdate = 60000;
+long timetofirstinterval = 0;
 
 //int lamppin1 = D5; //GPIO5;
 
 String maincode = "ZbvzxZWDRUmJuDwSgPVPZe9QwHaQLS";
 
 String privcode = " ";
-int dotyk1delay=300;
+int dotyk1delay=500;
+int dotyk1timetochange=100;
 String getclientbuttonaddr="http://10.0.2.3/out2";
+
+
+
+String minutenow = "0";
 
 String datatest = "lipa";
 
@@ -124,6 +130,9 @@ void uploadtempwil(int auid, String getval){
       case 2:
         togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=2&commandvalue="+getval;
       break;
+      case 3:
+        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=3&commandvalue="+getval;
+      break;
     }
     http.begin(togetherforever);
 
@@ -135,6 +144,16 @@ void uploadtempwil(int auid, String getval){
       String payload = http.getString();   //Get the request response payload
       Serial.println(payload);                     //Print the response payload
       //lampg = payload;
+      if(auid==3){
+        minutenow = payload;
+        int czasowo = minutenow.toInt() * 60 * 1000;
+        while(czasowo>=intervalupdate){
+          czasowo = czasowo-intervalupdate;
+          Serial.println(czasowo);
+          //console.log(czasowo);
+        }
+        timetofirstinterval = intervalupdate-czasowo;
+      }
     }
     http.end();   //Close connection
 }
@@ -156,7 +175,7 @@ void getdata(String soinit, String code){
       String payload = http.getString();   //Get the request response payload
       Serial.println(payload);                     //Print the response payload
 
-      for(int i=0;i<11;i++){
+      for(int i=0;i<12;i++){
        datatest = getValue(payload,',',i);
        String outname = getValue(datatest,'=',0);
        String outval = getValue(datatest,'=',1);
@@ -214,6 +233,8 @@ void getdata(String soinit, String code){
          interval=outval.toInt();
        }else if(outname=="intervalupdate"){
          intervalupdate=outval.toInt();
+       }else if(outname=="dotyk1timetochange"){
+        dotyk1timetochange=outval.toInt();
        }
       }
     }
@@ -270,6 +291,9 @@ void setup() {
 
   getdata("ok", maincode);
 
+
+
+  uploadtempwil(3, "ok");
    //digitalWrite(out1,out1stat);
    //digitalWrite(out2,out2stat);
    //digitalWrite(out3,out3stat);
@@ -446,6 +470,20 @@ void setup() {
     server.send(200, "text / plain", testermg);
   });
 
+    server.on("/minnow", []() {   //datatest
+    server.send(200, "text / plain", String(minutenow));
+  });
+
+      server.on("/czasowo", []() {   //datatest
+    server.send(200, "text / plain", String(timetofirstinterval));
+  });
+
+  server.on("/restart", []() {   //datatest
+    server.send(200, "text / plain", "Restart");
+    ESP.restart();
+  });
+
+
   server.on("/", handleRootPath);    //Associate the handler function to the path
   server.begin();                    //Start the server
   Serial.println("Server listening");
@@ -458,7 +496,10 @@ void loop() {
   server.handleClient();         //Handling of incoming requests
 
   if(digitalRead(dotyk1)==HIGH){
-    getclient(2);
+    delay(dotyk1timetochange);
+    if(digitalRead(dotyk1)==HIGH){
+      getclient(2);
+    }
     delay(dotyk1delay);
   }
 
@@ -468,9 +509,11 @@ void loop() {
     GetTempHumi();
   }
 
-  if(currentMillis - prevupdate >= intervalupdate) {
-    prevupdate = currentMillis;
-    uploadtempwil(1, String(temperatura));
-    uploadtempwil(2, String(wilgotnosc));
+  if(currentMillis>=timetofirstinterval){
+    if(currentMillis - prevupdate >= intervalupdate) {
+      prevupdate = currentMillis;
+      uploadtempwil(1, String(temperatura));
+      uploadtempwil(2, String(wilgotnosc));
+    }
   }
 }
