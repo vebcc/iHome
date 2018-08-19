@@ -4,6 +4,12 @@ google.charts.setOnLoadCallback(drawhumi);
 
 function drawtemp(){
     $.get('include/dbhandler.php?id=6&gettemp=1', function(result) {
+
+        var nowdate = new Date();
+        var hour = nowdate.getHours()
+        //console.log("Date: " + nowdate);
+        //console.log("Hours: " + hour);
+
         var adata = result.split(",");
         var dlug = (adata.length-1)/3;
 
@@ -47,27 +53,41 @@ function drawtemp(){
 
         //data.addColumn('number', 'Temperatura Zewnątrz');
         console.log("dlugość" + ttime2.length);
-        for(var i=0;i<ttime.length;i++){
-            var dodaj=0;
-            for(var x=0;x<ttime2.length;x++){
-                if(ttime[i]==ttime2[x]){
-                   dodaj = 1;
-                    var wart2 = x;
+        var printtime = parseInt(hour);
+        for(var i=0;i<24;i++){
+            printtime++;
+            //console.log("printtime: " + printtime);
+            if(printtime>=24){
+                printtime=0;
+            }
+            var temp1inner = 0;
+            var temp2inner = 0;
+
+            for(var te1=0;te1<ttime.length;te1++){
+                if(printtime==parseInt(ttime[te1])){
+
+                    temp1inner=parseInt(tin[te1]);
+                    //console.log("te1 :" + te1 + " printtime : " + printtime + " ttime : " + ttime[te1] + " temp: " + temp1inner);
+                    break;
                 }
-                //console.log(tin2[x]);
             }
 
-            if(dodaj==0){
-                data.addRow([ttime[i], parseInt(tin[i]), 0]);
-            }else{
-                data.addRow([ttime[i], parseInt(tin[i]), parseInt(tin2[wart2])]);
+            for(var te2=0;te2<ttime2.length;te2++){
+                if(printtime==parseInt(ttime2[te2])){
+                    temp2inner=parseInt(tin2[te2]);
+                    break;
+                }
             }
+            var timeout = printtime+" ";
+            data.addRow([timeout, temp1inner, temp2inner]);
         }
 
 
+
+
         var options = {
-            title: 'Temperatura',
-            hAxis: {title: 'Czas',  titleTextStyle: {color: '#333'}},
+            title: 'Temperatura (°C)',
+            hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
             vAxis: {minValue: 0}
         };
 
@@ -77,8 +97,13 @@ function drawtemp(){
     });
 }
 
+
+
 function drawhumi(){
     $.get('include/dbhandler.php?id=6&gethumi=1', function(result) {
+        var nowdate = new Date();
+        var hour = nowdate.getHours()
+
         var adata = result.split(",");
         var dlug = (adata.length-1)/3;
 
@@ -112,34 +137,51 @@ function drawhumi(){
                 hin2[i]=adata2[(i*3)+2];
             }
 
-        //console.log(htime);
-        //console.log(hin);
+            //console.log(htime);
+            //console.log(hin);
 
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'czas');
-        data.addColumn('number', 'Pokój');
-        data.addColumn('number', 'Zewnątrz');
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'czas');
+            data.addColumn('number', 'Pokój');
+            data.addColumn('number', 'Zewnątrz');
 
-        for(var i=0;i<htime.length;i++){
-            var dodaj=0;
-            for(var x=0;x<htime2.length;x++){
-                if(htime[i]==htime2[x]){
-                    dodaj = 1;
-                    var wart2 = x;
+            var printtime = parseInt(hour);
+            for(var i=0;i<24;i++){
+                printtime++;
+                //console.log("printtime: " + printtime);
+                if(printtime>=24){
+                    printtime=0;
                 }
-                //console.log(tin2[x]);
+                var humi1inner = 0;
+                var humi2inner = 0;
+
+                for(var te1=0;te1<htime.length;te1++){
+                    if(printtime==parseInt(htime[te1])){
+
+                        humi1inner=parseInt(hin[te1]);
+                        console.log("humi1inner: " + humi1inner + "hin: " + hin[te1]);
+                        break;
+                    }
+                }
+
+                for(var te2=0;te2<htime2.length;te2++){
+                    if(printtime==parseInt(htime2[te2])){
+                        humi2inner=parseInt(hin2[te2]);
+                        break;
+                    }
+                }
+
+                var timeout = printtime+" ";
+                data.addRow([timeout, humi1inner, humi2inner]);
             }
-            if(dodaj==0){
-                data.addRow([htime[i], parseInt(hin[i]), 0]);
-            }else{
-                data.addRow([htime[i], parseInt(hin[i]), parseInt(hin2[wart2])]);
-            }
-        }
+
+
+
 
 
         var options = {
-            title: 'Wilgotność',
-            hAxis: {title: 'Czas',  titleTextStyle: {color: '#333'}},
+            title: 'Wilgotność (%)',
+            hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
             vAxis: {minValue: 0}
         };
 
