@@ -1,5 +1,5 @@
 function drawtempin(){
-    $.get('include/newhandlers.php?id=1&name=get&value=temp', function(result) {
+    $.get('include/handlers.php?id=1&name=get&value=temp', function(result) {
         var wyntemp = parseInt(result);
         console.log("resulttemp: " + result);
         console.log("temp: " + wyntemp);
@@ -15,7 +15,7 @@ function drawtempin(){
     });
 }
 function drawwilin(){
-    $.get('include/newhandlers.php?id=1&name=get&value=wil', function(result) {
+    $.get('include/handlers.php?id=1&name=get&value=wil', function(result) {
         var wynhumi = parseInt(result);
         console.log("resulthumi: " + result);
         console.log("humi: " + wynhumi);
@@ -32,7 +32,7 @@ function drawwilin(){
 }
 
 function drawtempout(){
-    $.get('include/newhandlers.php?id=5&name=get&value=temp', function(result) {
+    $.get('include/handlers.php?id=5&name=get&value=temp', function(result) {
         var wyntemp = parseInt(result);
         console.log("resulttemp: " + result);
         console.log("temp: " + wyntemp);
@@ -48,7 +48,7 @@ function drawtempout(){
     });
 }
 function drawwilout(){
-    $.get('include/newhandlers.php?id=5&name=get&value=wil', function(result) {
+    $.get('include/handlers.php?id=5&name=get&value=wil', function(result) {
         var wynhumi = parseInt(result);
         console.log("resulthumi: " + result);
         console.log("humi: " + wynhumi);

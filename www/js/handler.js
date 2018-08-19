@@ -1,211 +1,122 @@
-var how=0;
-
-$('#glosnikiledvalue').val(100);
-$('#glosnikiledperc').html(100);
-
-function changeactive(who, forwhat, revers=0){
+var ress=2;
+//console.log("siema");
+function changeactive(id, who, forwhat, revers=0){
     if(forwhat==revers){
-        $('#'+who+'off').removeClass('active');
-        $('#'+who+'on').addClass('active');
+        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').removeClass('hide');
+        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
     }else{
-        $('#'+who+'on').removeClass('active');
-        $('#'+who+'off').addClass('active');
+        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').removeClass('hide');
+        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
     }
 }
-
-function firststatloader(){
-        console.log("how"+how);
-        switch(how){
-            case 0:
-               $.get('include/handlers.php?id=1&name=biurkoled&value=status&onlycheck=1', function(result) {
-                    changeactive("biurkoled", result);
-                    console.log(result);
-                });
-                break;
-            case 1:
-                $.get('include/handlers.php?id=1&name=biurkoright&value=status&onlycheck=1', function(result) {
-                    changeactive("biurkoright", result);
-                    console.log(result);
-                });
-                break;
-            case 2:
-                $.get('include/handlers.php?id=1&name=glosnikiled&value=status&onlycheck=1', function(result) {
-                    changeactive("glosnikiled", result, 1);
-                });
-                break;
-            case 3:
-                $.get('include/handlers.php?id=1&name=glosnikiled&value=values&onlycheck=1', function(result) {
-                    $('#glosnikiledvalue').val(result);
-                    $('#glosnikiledperc').html(result);
-                    //console.log("result: "+result);
-                });
-                break;
-            case 4:
-                $.get('include/handlers.php?id=2&name=lamp1&value=status&onlycheck=1', function(result) {
-                    changeactive("lampazimny", result, 1);
-                });
-                break;
-            case 5:
-                $.get('include/handlers.php?id=2&name=lamp2&value=status&onlycheck=1', function(result) {
-                    changeactive("lampacieply", result, 1);
-                });
-                break;
-            case 6:
-                $.get('include/handlers.php?id=2&name=lamp3&value=status&onlycheck=1', function(result) {
-                    changeactive("lampalekka", result, 1);
-                });
-                break;
-            case 7:
-                $.get('include/handlers.php?id=3&name=disco&value=status&onlycheck=1', function(result) {
-                    changeactive("laserdisco", result, 1);
-                });
-                break;
-
-        }
-        if(how<7){
-            how++;
-            setTimeout(function(){ firststatloader(); }, 200);
-        }
-}
-
-$(document).ready(function(){
-    //$('div.light').html('<img src="images/off.png" width="50" height="50">')
-
-    setInterval(function() {
-        //$('#timeval').load('includes/time.php');
-    }, 1000);
-
-    //biurko led
-    $('#biurkoledchange').click(function() {
-        $.get('http://10.0.2.6/out2change', function(result) {
-            changeactive("biurkoled", result);
-        });
-    });
-    $('#biurkoledoff').click(function() {
-        $.get('http://10.0.2.6/out2off', function(result) {
-            changeactive("biurkoled", result);
-        });
-    });
-    $('#biurkoledon').click(function() {
-        $.get('http://10.0.2.6/out2on', function(result) {
-            changeactive("biurkoled", result);
-        });
-    });
-
-    //biurko right
-    $('#biurkorightchange').click(function() {
-        $.get('include/handlers.php?id=1&name=biurkoright&value=change', function(result) {
-            changeactive("biurkoright", result);
-        });
-    });
-    $('#biurkorightoff').click(function() {
-        $.get('include/handlers.php?id=1&name=biurkoright&value=on', function(result) {
-            changeactive("biurkoright", result);
-        });
-    });
-    $('#biurkorighton').click(function() {
-        $.get('include/handlers.php?id=1&name=biurkoright&value=off', function(result) {
-            changeactive("biurkoright", result);
-        });
-    });
-
-    //glosnikiled
-    $('#glosnikiledchange').click(function() {
-        $.get('include/handlers.php?id=1&name=glosnikiled&value=change', function(result) {
-            changeactive("glosnikiled", result, 1);
-        });
-    });
-    $('#glosnikiledoff').click(function() {
-        $.get('include/handlers.php?id=1&name=glosnikiled&value=off', function(result) {
-            changeactive("glosnikiled", result, 1);
-        });
-    });
-    $('#glosnikiledon').click(function() {
-        $.get('include/handlers.php?id=1&name=glosnikiled&value=on', function(result) {
-            changeactive("glosnikiled", result, 1);
-        });
-    });
-    $('#glosnikiledvalue').change(function() {
-        newVal = $('#glosnikiledvalue').val();
-        //console.log("newVal: "+newVal);
-        $.get('include/handlers.php?id=1&name=glosnikiled&value='+newVal, function(result) {
-            $('#glosnikiledvalue').val(result);
-            $('#glosnikiledperc').html(result);
-            //console.log("result: "+result);
-        });
-    });
-
-    //lampa zimny
-    $('#lampazimnychange').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp1&value=change', function(result) {
-            changeactive("lampazimny", result, 1);
-        });
-    });
-    $('#lampazimnyon').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp1&value=on', function(result) {
-            changeactive("lampazimny", result, 1);
-        });
-    });
-    $('#lampazimnyoff').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp1&value=off', function(result) {
-            changeactive("lampazimny", result, 1);
-        });
-    });
-
-
-
-    //lampa cieply
-    $('#lampacieplychange').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp2&value=change', function(result) {
-            changeactive("lampacieply", result, 1);
-        });
-    });
-    $('#lampacieplyon').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp2&value=on', function(result) {
-            changeactive("lampacieply", result, 1);
-        });
-    });
-    $('#lampacieplyoff').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp2&value=off', function(result) {
-            changeactive("lampacieply", result, 1);
-        });
-    });
-
-    //lampalekka
-    $('#lampalekkachange').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp3&value=change', function(result) {
-            changeactive("lampalekka", result, 1);
-        });
-    });
-    $('#lampalekkaon').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp3&value=on', function(result) {
-            changeactive("lampalekka", result, 1);
-        });
-    });
-    $('#lampalekkaoff').click(function() {
-        $.get('include/handlers.php?id=2&name=lamp3&value=off', function(result) {
-            changeactive("lampalekka", result, 1);
-        });
-    });
-
-    //laser disco
-    $('#laserdiscochange').click(function() {
-        $.get('include/handlers.php?id=3&name=disco&value=change', function(result) {
-            changeactive("laserdisco", result, 1);
-        });
-    });
-    $('#laserdiscoon').click(function() {
-        $.get('include/handlers.php?id=3&name=disco&value=on', function(result) {
-            changeactive("laserdisco", result, 1);
-        });
-    });
-    $('#laserdiscooff').click(function() {
-        $.get('include/handlers.php?id=3&name=disco&value=off', function(result) {
-            changeactive("laserdisco", result, 1);
-        });
-    });
-
-    firststatloader();
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Status all //
+////////////////
+$.get('include/handlers.php?id=1&name=status&value=all', function(result) {
+    console.log("status1: "+result);
+    var resspl = result.split(",");
+    changeactive("1", "out1", resspl[0], 1);
+    changeactive("1", "out2", resspl[1], 1);
+    changeactive("1", "out3", resspl[2]);
+    changeactive("1", "out4", resspl[3]);
+});
+$.get('include/handlers.php?id=2&name=status&value=all', function(result) {
+    console.log("status2: "+result);
+    var resspl = result.split(",");
+    changeactive("2", "out1", resspl[0]);
+    changeactive("2", "out2", resspl[1]);
+    changeactive("2", "out3", resspl[2]);
+});
+$.get('include/handlers.php?id=4&name=status&value=all', function(result) {
+    console.log("status4: "+result);
+    var resspl = result.split(",");
+    changeactive("4", "out1", resspl[0]);
 });
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 1
+// Maslo //
+///////////
 
+//biurko przod cieply
+$('#1-out2-button-change').click(function() {
+    $.get('include/handlers.php?id=1&name=out2&value=change', function(result) {
+        changeactive("1", "out2", result);
+        console.log("biurko przod cieply: "+result);
+    });
+});
+
+//biurko przod zimny
+$('#1-out3-button-change').click(function() {
+    $.get('include/handlers.php?id=1&name=out3&value=change', function(result) {
+        changeactive("1", "out3", result);
+        console.log("biurko przod zimny: "+result);
+    });
+});
+
+//biurko bok
+$('#1-out1-button-change').click(function() {
+    $.get('include/handlers.php?id=1&name=out1&value=change', function(result) {
+        changeactive("1", "out1", result);
+        console.log("biurko bok: "+result);
+    });
+});
+
+//podswietlenie glosnikow
+$('#1-out4-button-change').click(function() {
+    $.get('include/handlers.php?id=1&name=out4&value=change', function(result) {
+        changeactive("1", "out4", result);
+        console.log("podswietlenie glosnikow: "+result);
+    });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 2
+// Maslo //
+///////////
+
+//ciepla slaba lampa
+$('#2-out1-button-change').click(function() {
+    $.get('include/handlers.php?id=2&name=out1&value=change', function(result) {
+        changeactive("2", "out1", result, 1);
+        console.log("zimna lampa: "+result);
+    });
+});
+
+//zimna lampa
+$('#2-out2-button-change').click(function() {
+    $.get('include/handlers.php?id=2&name=out2&value=change', function(result) {
+        changeactive("2", "out2", result, 1);
+        console.log("ciepla lampa: "+result);
+    });
+});
+
+//ciepla lampa
+$('#2-out3-button-change').click(function() {
+    $.get('include/handlers.php?id=2&name=out3&value=change', function(result) {
+        changeactive("2", "out3", result);
+        console.log("ciepla slaba lampa: "+result);
+    });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 3
+// Maslo //
+///////////
+
+//laser dyskotekowy
+$('#3-out1-button-change').click(function() {
+    $.get('include/handlers.php?id=3&name=out1&value=change', function(result) {
+        changeactive("3", "out1", result);
+        console.log("laser dyskotekowy: "+result);
+    });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 4
+// Szymon //
+////////////
+
+//lampa glowna
+$('#4-out1-button-change').click(function() {
+    $.get('include/handlers.php?id=4&name=out1&value=change', function(result) {
+        changeactive("4", "out1", result);
+        console.log("szymon-lampa glowna: "+result);
+    });
+});

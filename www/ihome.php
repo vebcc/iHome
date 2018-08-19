@@ -112,13 +112,13 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     </body>
     <script src="jquery/jquery.min.js"></script>
 
-    <script src="js/newhandler.js"></script>
-    <script src="js/newtempstat.js"></script>
-
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script src="js/charts.js"></script>
+    <script src="js/diagrams.js"></script>
+    <script src="js/handler.js"></script>
+    <script src="js/temphumistat.js"></script>
     <script src="js/whereissun.js"></script>
+
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </html>
