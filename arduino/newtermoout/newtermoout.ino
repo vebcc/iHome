@@ -19,6 +19,8 @@ long interval = 10000;
 unsigned long prevupdate = 0;
 long intervalupdate = 600000;
 
+long timetofirstinterval = 0;
+
 boolean start = 1;
 String maincode = "a2MRccWsFVW4hqZb34hsRYWvSTwaC2";
 
@@ -28,7 +30,7 @@ String datatest = "lipa";
 
 String testermg = "kappa";
 
-
+String minutenow = "0";
 
 int dhttimer = 0;
 int wilgotnosc=0;
@@ -65,7 +67,7 @@ void GetTempHumi(){
 
 void uploadtempwil(int auid, String getval){
  WiFiClient client;
-    String tuhost = "10.0.2.2";
+   const char* tuhost = "10.0.2.2";
    const int httpPort = 80;
    String url = " ";
 
@@ -81,6 +83,9 @@ void uploadtempwil(int auid, String getval){
     break;
     case 2:
       url = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=7&privcode="+privcode+"&commandid=2&commandvalue="+getval;
+    break;
+    case 3:
+      url = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=7&privcode="+privcode+"&commandid=3&commandvalue="+getval;
     break;
   }
   Serial.print("Requesting URL: ");
@@ -103,13 +108,23 @@ void uploadtempwil(int auid, String getval){
   while(client.available()){
     String line = client.readStringUntil('\r');
     Serial.print(line);
+    if(auid==3){
+        minutenow = line;
+        int czasowo = minutenow.toInt() * 60 * 1000;
+        while(czasowo>=intervalupdate){
+          czasowo = czasowo-intervalupdate;
+          Serial.println(czasowo);
+          //console.log(czasowo);
+        }
+        timetofirstinterval = intervalupdate-czasowo;
+      }
 
   }
 }
 
 void getdata(String soinit, String code){
    WiFiClient client;
-    String tuhost = "10.0.2.2";
+   const char* tuhost = "10.0.2.2";
    const int httpPort = 80;
 
   if (!client.connect(tuhost, httpPort)) {
@@ -139,7 +154,7 @@ void getdata(String soinit, String code){
   while(client.available()){
     String line = client.readStringUntil('\r');
     Serial.print(line);
-    for(int i=0;i<3;i++){
+    for(int i=0;i<3 ;i++){
       datatest = getValue(line,',',i);
       String outname = getValue(datatest,'=',0);
       String outval = getValue(datatest,'=',1);
@@ -189,6 +204,8 @@ void setup() {
   delay(1000);
   getdata("ok", maincode);
 
+  uploadtempwil(3, "ok");
+
    server.on("/gettemp", []() {   //temperatura
       temp = String(temperatura);
       server.send(200, "text / html", temp);
@@ -207,6 +224,19 @@ void setup() {
     server.send(200, "text / plain", testermg);
   });
 
+  server.on("/minnow", []() {   //datatest
+    server.send(200, "text / plain", String(minutenow));
+  });
+
+      server.on("/czasowo", []() {   //datatest
+    server.send(200, "text / plain", String(timetofirstinterval));
+  });
+
+  server.on("/restart", []() {   //datatest
+    server.send(200, "text / plain", "Restart");
+    ESP.restart();
+  });
+
   server.on("/", handleRootPath);    //Associate the handler function to the path
   server.begin();                    //Start the server
   Serial.println("Server listening");
@@ -216,23 +246,17 @@ void setup() {
 void loop() {
   server.handleClient();         //Handling of incoming requests
 
-  if(start==1){
-    start=0;
-    GetTempHumi();
-    delay(500);
-    uploadtempwil(1, String(temperatura));
-    uploadtempwil(2, String(wilgotnosc));
-  }
-
   currentMillis = millis();
   if(currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
     GetTempHumi();
   }
 
-  if(currentMillis - prevupdate >= intervalupdate) {
-    prevupdate = currentMillis;
-    uploadtempwil(1, String(temperatura));
-    uploadtempwil(2, String(wilgotnosc));
+  if(currentMillis>=timetofirstinterval){
+    if(currentMillis - prevupdate >= intervalupdate) {
+      prevupdate = currentMillis;
+      uploadtempwil(1, String(temperatura));
+      uploadtempwil(2, String(wilgotnosc));
+    }
   }
 }

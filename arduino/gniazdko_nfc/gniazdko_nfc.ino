@@ -39,9 +39,10 @@ String testermg = "kappa";
 
 int out1 = D0;
 int out4 = D1; //need to add
-int out2 = D5;
 // D2 - DHT
 // D3 - must be high torun program
+int motionsensor = D4;
+int out2 = D5;
 int dotyk1 = D6; //GPIO6;
 int out3 = D7;
 
@@ -49,6 +50,10 @@ boolean out1stat = true;
 boolean out2stat = true;
 boolean out3stat = false;
 boolean out4stat = false;
+
+boolean sensorpick = false;
+
+boolean motionsensorstat = false;
 
 int dhttimer = 0;
 int wilgotnosc=0;
@@ -133,6 +138,9 @@ void uploadtempwil(int auid, String getval){
       case 3:
         togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=3&commandvalue="+getval;
       break;
+      case 4:
+        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=4&commandvalue="+getval;
+      break;
     }
     http.begin(togetherforever);
 
@@ -175,7 +183,7 @@ void getdata(String soinit, String code){
       String payload = http.getString();   //Get the request response payload
       Serial.println(payload);                     //Print the response payload
 
-      for(int i=0;i<12;i++){
+      for(int i=0;i<14;i++){
        datatest = getValue(payload,',',i);
        String outname = getValue(datatest,'=',0);
        String outval = getValue(datatest,'=',1);
@@ -263,6 +271,7 @@ void setup() {
 
  //pinMode(lamppin1, OUTPUT);
  pinMode(dotyk1, INPUT);
+ pinMode(motionsensor, INPUT);
 
  pinMode(out1, OUTPUT);
  pinMode(out2, OUTPUT);
@@ -474,6 +483,10 @@ void setup() {
     server.send(200, "text / plain", String(minutenow));
   });
 
+  server.on("/motionsensor", []() {   //datatest
+    server.send(200, "text / plain", String(motionsensorstat));
+  });
+
       server.on("/czasowo", []() {   //datatest
     server.send(200, "text / plain", String(timetofirstinterval));
   });
@@ -514,6 +527,22 @@ void loop() {
       prevupdate = currentMillis;
       uploadtempwil(1, String(temperatura));
       uploadtempwil(2, String(wilgotnosc));
+    }
+  }
+
+  if(digitalRead(motionsensor)==HIGH){
+    if(sensorpick==false){
+      Serial.println("Sensor HIGH");
+      motionsensorstat = true;
+      uploadtempwil(4, "1");
+      sensorpick=true;
+    }
+  }else{
+    if(sensorpick==true){
+      Serial.println("Sensor LOW");
+      motionsensorstat = false;
+      uploadtempwil(4, "0");
+      sensorpick=false;
     }
   }
 }

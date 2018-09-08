@@ -8,6 +8,7 @@ int lamppin1 = 0; //GPIO0;
 int dotyk1 = 2; //GPIO2;
 
 int dotyk1delay = 300;
+int dotyk1timetochange=200;
 
 String maincode = "4a4cDety8jMoKyqwNQ8zZ7vmorhquZ";
 
@@ -38,23 +39,40 @@ String getValue(String data, char separator, int index)
 }
 
 void getdata(String soinit, String code){
-  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
+   WiFiClient client;
+   const char* tuhost = "10.0.2.2";
+   const int httpPort = 80;
 
-    HTTPClient http;  //Declare an object of class HTTPClient
+  if (!client.connect(tuhost, httpPort)) {
+    Serial.println("connection failed");
+    return;
+  }
 
-    String togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=5&getdata=" + soinit + "&maincode=" + code;
+  // We now create a URI for the request
+  String url = "/ihome/include/devicehandlers.php?id=5&getdata=ok&maincode=" + maincode;
+  Serial.print("Requesting URL: ");
+  Serial.println(url);
 
-    http.begin(togetherforever);
+  // This will send the request to the server
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + tuhost + "\r\n" +
+               "Connection: close\r\n\r\n");
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+    if (millis() - timeout > 5000) {
+      Serial.println(">>> Client Timeout !");
+      client.stop();
+      return;
+    }
+  }
 
-    int httpCode = http.GET();                                                                  //Send the request
+  // Read all the lines of the reply from server and print them to Serial
+  while(client.available()){
+    String line = client.readStringUntil('\r');
+    Serial.print(line);
 
-    if (httpCode > 0) { //Check the returning code
-
-      String payload = http.getString();   //Get the request response payload
-      Serial.println(payload);                     //Print the response payload
-
-      for(int i=0;i<9;i++){
-       datatest = getValue(payload,',',i);
+      for(int i=0;i<4;i++){
+       datatest = getValue(line,',',i);
        String outname = getValue(datatest,'=',0);
        String outval = getValue(datatest,'=',1);
         testermg+=outname;
@@ -72,11 +90,11 @@ void getdata(String soinit, String code){
          digitalWrite(lamppin1, lamp1stat);
        }else if(outname=="privcode"){
          privcode=outval;
+       }else if(outname=="dotyk1timetochange"){
+        dotyk1timetochange=outval.toInt();
        }
       }
-    }
-    http.end();   //Close connection
-}
+  }
 }
 
 void setup() {
@@ -157,6 +175,11 @@ void setup() {
     }
     });
 
+      server.on("/restart", []() {   //datatest
+    server.send(200, "text / plain", "Restart");
+    ESP.restart();
+  });
+
   server.on("/", handleRootPath);    //Associate the handler function to the path
   server.begin();                    //Start the server
   Serial.println("Server listening");
@@ -171,9 +194,12 @@ void loop() {
   server.handleClient();         //Handling of incoming requests
 
   if(digitalRead(dotyk1)==LOW){
-    lamp1stat=!lamp1stat;
-    digitalWrite(lamppin1, lamp1stat);
-    delay(dotyk1delay);
+      delay(dotyk1timetochange);
+      if(digitalRead(dotyk1)==LOW){
+      lamp1stat=!lamp1stat;
+      digitalWrite(lamppin1, lamp1stat);
+      delay(dotyk1delay);
+    }
   }
 
 }
