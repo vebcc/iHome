@@ -35,5 +35,35 @@ if(isset($_GET["id"]) && isset($_GET["gethumi"])){ // formget
     }
 }
 
+if(isset($_GET["from"]) && $_GET["error"]) && isset($_GET["geterrorlog"])){ // formget
+    $geterrorlog = $_GET["geterrorlog"];
+    $from = $_GET["from"];
+    $error = $_GET["error"];
+    if($geterrorlog==1){
+        if($from!="*"){
+            if($error!="*"){
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog");
+            }else{
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.error=$error");
+            }
+        }else{
+            if($error!="*"){
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from");
+            }else{
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from AND errorlog.error=$error");
+            }
+        }
+        while($db_row = mysqli_fetch_assoc($db_query)){
+            $dbid = $db_row["id"];
+            $dbfrom = $db_row["from"];
+            $dberror = $db_row["error"];
+            $dbdate = $db_row["date"];
+            $dbvalue = $db_row["value"];
+            echo "$dbid, $dbfrom, $dberror, $dbdate, $dbvalue";
+        }
+        $db_query->free();
+    }
+}
+
 $con->close(); // konczenie polaczenia z baza danych
 ?>
