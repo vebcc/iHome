@@ -48,15 +48,26 @@ if(isset($_GET["id"]) && isset($_GET["privcode"])  && isset($_GET["commandid"]) 
     if($privcode==$dbprivcode){
         switch($commandid){
             case 1:
-                $db_query = mysqli_query($con,"INSERT INTO `ihome`.`temperature` (`id`, `temp`, `date`, `temp_id`) VALUES (NULL, '$value', CURRENT_TIMESTAMP, '$id');");
+                if($value<100){
+                    $db_query = mysqli_query($con,"INSERT INTO `ihome`.`temperature` (`id`, `temp`, `date`, `temp_id`) VALUES (NULL, '$value', CURRENT_TIMESTAMP, '$id');");
+                }else{
+                    $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value`) VALUES (NULL, 'devicehandlers', 'temperature', CURRENT_TIMESTAMP, 'Błąd odczytu z czujnika - $id')");
+                }
                 break;
             case 2:
-                $db_query = mysqli_query($con,"INSERT INTO `ihome`.`humidity` (`id`, `humi`, `date`, `humi_id`) VALUES (NULL, '$value', CURRENT_TIMESTAMP, '$id');");
+                if($value<100){
+                    $db_query = mysqli_query($con,"INSERT INTO `ihome`.`humidity` (`id`, `humi`, `date`, `humi_id`) VALUES (NULL, '$value', CURRENT_TIMESTAMP, '$id');");
+                }else{
+                    $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value`) VALUES (NULL, 'devicehandlers', 'humidity', CURRENT_TIMESTAMP, 'Błąd odczytu z czujnika - $id')");
+                }
                 break;
             case 3:
                 $db_query = mysqli_query($con,"SELECT MINUTE(NOW()) AS czas;");
                 $db_row = mysqli_fetch_assoc($db_query);
                 echo $db_row["czas"];
+                break;
+            case 4:
+
                 break;
 
         }
