@@ -25,7 +25,7 @@ if(isset($_GET["id"]) && isset($_GET["getdata"]) && isset($_GET["maincode"])){ /
             echo "brak ok";
         }
     }else{
-        echo "maincode error: ". $maincode . "db: " . $dbmaincode;
+        $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value`) VALUES (NULL, 'devicehandlers', 'getdata', CURRENT_TIMESTAMP, 'Błąd pobierania danych do kontrolera - Błędny MainCode - $id')");
     }
     $db_query->free();
 }
@@ -73,7 +73,7 @@ if(isset($_GET["id"]) && isset($_GET["privcode"])  && isset($_GET["commandid"]) 
         }
         //echo "dodaje";
     }else{
-        echo "privcode error";
+        $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value`) VALUES (NULL, 'devicehandlers', 'getdata', CURRENT_TIMESTAMP, 'Błąd komunikacji serwer-kontroler - Błędny PrivCode - $id')");
     }
 
 }
