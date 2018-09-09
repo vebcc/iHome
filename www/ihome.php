@@ -55,13 +55,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                            </table>
                        </div>
                        <div class="col-md-4">
-                           <table class="table table-striped">
-                               <tr><th>ID</th><th>Błąd</th><th>Data</th></tr>
-                               <tr><td>32</td><td>Błąd odczytu z czujnika</td><td>22-15-2018</td></tr>
-                               <tr><td>353</td><td>Błąd odczytu z czujnika</td><td>22-15-2018</td></tr>
-                               <tr><td>432</td><td>Bład pobierania danych</td><td>22-15-2018</td></tr>
-                               <tr><td>4233</td><td>Proba wlamania</td><td>22-15-2018</td></tr>
-                               <tr><td>4232</td><td>Przepelniona baza</td><td>22-15-2018</td></tr>
+                           <table id="errorlog" class="table table-striped">
                             </table>
                        </div>
                    </div>
@@ -118,6 +112,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     <script src="js/handler.js"></script>
     <script src="js/temphumistat.js"></script>
     <script src="js/whereissun.js"></script>
+    <script src="js/logs.js"></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
