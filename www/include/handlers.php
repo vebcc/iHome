@@ -45,7 +45,14 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
             return $newmessage;
         }
     }else{
-        $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value`) VALUES (NULL, 'handlers', 'data', CURRENT_TIMESTAMP, 'Błąd komunikacji z kontrolerem - $id')");
+        $db_query = mysqli_query($con,"SELECT errorlog.from, errorlog.error, errorlog.dev_id FROM errorlog ORDER BY date DESC LIMIT 1");
+        $db_row = mysqli_fetch_assoc($db_query);
+        $from = $db_row["from"];
+        $error = $db_row["error"];
+        $devid = $db_row["dev_id"];
+        if($from!="handlers" && $error!="data" && $devid!=$id){
+            $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value` , `dev_id` ) VALUES (NULL, 'handlers', 'data', CURRENT_TIMESTAMP, 'Błąd komunikacji z kontrolerem' , $id)");
+        }
         if($dev==0){
             echo 0;
         }else{

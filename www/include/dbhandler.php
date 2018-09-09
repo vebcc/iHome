@@ -43,15 +43,15 @@ if(isset($_GET["from"]) && isset($_GET["error"])  && isset($_GET["geterrorlog"])
     if($geterrorlog==1){
         if($from=="*"){
             if($error=="*"){
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog ORDER BY date DESC LIMIT 5");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.dev_id, errorlog.error, errorlog.date, errorlog.value FROM errorlog ORDER BY date DESC LIMIT 5");
             }else{
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.error=$error ORDER BY date DESC LIMIT 5");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.dev_id, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.error=$error ORDER BY date DESC LIMIT 5");
             }
         }else{
             if($error!="*"){
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from ORDER BY date DESC LIMIT 5");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.dev_id, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from ORDER BY date DESC LIMIT 5");
             }else{
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from AND errorlog.error=$error ORDER BY date DESC LIMIT 5");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.dev_id, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from AND errorlog.error=$error ORDER BY date DESC LIMIT 5");
             }
         }
         echo "<div><tr><th>ID</th><th>Plik</th><th>Urządzenie</th><th>Wartość</th><th>Data</th></tr></div>";
@@ -61,7 +61,8 @@ if(isset($_GET["from"]) && isset($_GET["error"])  && isset($_GET["geterrorlog"])
             $dberror = $db_row["error"];
             $dbdate = $db_row["date"];
             $dbvalue = $db_row["value"];
-            echo "<tr><td>$dbid</td><td>$dbfrom</td><td>$dberror</td><td>$dbvalue</td><td>$dbdate</td></tr>";
+            $devid = $db_row["dev_id"];
+            echo "<tr><td>$dbid</td><td>$dbfrom</td><td>$dberror - $devid</td><td>$dbvalue</td><td>$dbdate</td></tr>";
 
             //<td>$dbfrom</td><td>$dberror</td>
 
