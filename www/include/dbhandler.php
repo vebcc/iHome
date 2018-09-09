@@ -43,15 +43,15 @@ if(isset($_GET["from"]) && isset($_GET["error"])  && isset($_GET["geterrorlog"])
     if($geterrorlog==1){
         if($from=="*"){
             if($error=="*"){
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog ORDER BY date DESC LIMIT 5");
             }else{
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.error=$error");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.error=$error ORDER BY date DESC LIMIT 5");
             }
         }else{
             if($error!="*"){
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from ORDER BY date DESC LIMIT 5");
             }else{
-                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from AND errorlog.error=$error");
+                $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from AND errorlog.error=$error ORDER BY date DESC LIMIT 5");
             }
         }
         echo "<div><tr><th>ID</th><th>Plik</th><th>Urządzenie</th><th>Wartość</th><th>Data</th></tr></div>";
