@@ -1,4 +1,9 @@
 <?php
+
+$db = 1; // zmiena pozwalajaca na rozruch pliku connection.php
+require("config.php"); // dane logowania mysql
+require("connection.php"); // polaczenie z baza danych
+
 ////////////////////////////////////////////////////
 // Odbieranie komend i komunikacja z kontrolerami //
 ////////////////////////////////////////////////////
@@ -29,14 +34,25 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
             break;
     }
     $newmessage =  $name.$value;
-    $fp = fopen("http://$reqip/$newmessage", "r"); //good
-    $newmessage = fread($fp,"10");
-    fclose($fp);
-    //getset($id ,$name."status");
-    if($dev==0){
-        echo $newmessage;
+    $fp = @fopen("http://$reqip/$newmessage", "r"); //good
+    if($fp){
+        $newmessage = fread($fp,"10");
+        fclose($fp);
+        //getset($id ,$name."status");
+        if($dev==0){
+            echo $newmessage;
+        }else{
+            return $newmessage;
+        }
     }else{
-        return $newmessage;
+        $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value`) VALUES (NULL, 'handlers', 'data', CURRENT_TIMESTAMP, 'Błąd komunikacji z kontrolerem - $id')");
+        if($dev==0){
+            echo 0;
+        }else{
+            return 0;
+        }
     }
 }
+
+$con->close(); // konczenie polaczenia z baza danych
 ?>
