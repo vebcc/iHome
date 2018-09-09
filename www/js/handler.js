@@ -12,26 +12,30 @@ function changeactive(id, who, forwhat, revers=0){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Status all //
 ////////////////
-$.get('include/handlers.php?id=1&name=status&value=all', function(result) {
-    console.log("status1: "+result);
-    var resspl = result.split(",");
-    changeactive("1", "out1", resspl[0], 1);
-    changeactive("1", "out2", resspl[1], 1);
-    changeactive("1", "out3", resspl[2]);
-    changeactive("1", "out4", resspl[3]);
-});
-$.get('include/handlers.php?id=2&name=status&value=all', function(result) {
-    console.log("status2: "+result);
-    var resspl = result.split(",");
-    changeactive("2", "out1", resspl[0]);
-    changeactive("2", "out2", resspl[1]);
-    changeactive("2", "out3", resspl[2]);
-});
-$.get('include/handlers.php?id=4&name=status&value=all', function(result) {
-    console.log("status4: "+result);
-    var resspl = result.split(",");
-    changeactive("4", "out1", resspl[0]);
-});
+
+function statusall(){
+    $.get('include/handlers.php?id=1&name=status&value=all', function(result) {
+        //console.log("status1: "+result);
+        var resspl = result.split(",");
+        changeactive("1", "out1", resspl[0], 1);
+        changeactive("1", "out2", resspl[1], 1);
+        changeactive("1", "out3", resspl[2]);
+        changeactive("1", "out4", resspl[3]);
+    });
+    $.get('include/handlers.php?id=2&name=status&value=all', function(result) {
+        //console.log("status2: "+result);
+        var resspl = result.split(",");
+        changeactive("2", "out1", resspl[0]);
+        changeactive("2", "out2", resspl[1]);
+        changeactive("2", "out3", resspl[2]);
+    });
+    $.get('include/handlers.php?id=4&name=status&value=all', function(result) {
+        //console.log("status4: "+result);
+        var resspl = result.split(",");
+        changeactive("4", "out1", resspl[0]);
+    });
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 1
 // Maslo //
@@ -120,3 +124,6 @@ $('#4-out1-button-change').click(function() {
         console.log("szymon-lampa glowna: "+result);
     });
 });
+
+statusall();
+setInterval(function(){ statusall(); }, 2000);
