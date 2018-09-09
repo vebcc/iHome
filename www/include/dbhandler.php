@@ -35,13 +35,14 @@ if(isset($_GET["id"]) && isset($_GET["gethumi"])){ // formget
     }
 }
 
-if(isset($_GET["from"]) && $_GET["error"]) && isset($_GET["geterrorlog"])){ // formget
+if(isset($_GET["from"]) && isset($_GET["error"])  && isset($_GET["geterrorlog"])){ // formget
     $geterrorlog = $_GET["geterrorlog"];
     $from = $_GET["from"];
     $error = $_GET["error"];
+    $db_query;
     if($geterrorlog==1){
-        if($from!="*"){
-            if($error!="*"){
+        if($from=="*"){
+            if($error=="*"){
                 $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog");
             }else{
                 $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.error=$error");
@@ -53,13 +54,17 @@ if(isset($_GET["from"]) && $_GET["error"]) && isset($_GET["geterrorlog"])){ // f
                 $db_query = mysqli_query($con,"SELECT errorlog.id, errorlog.from, errorlog.error, errorlog.date, errorlog.value FROM errorlog WHERE errorlog.from=$from AND errorlog.error=$error");
             }
         }
+        echo "<div><tr><th>ID</th><th>Plik</th><th>Urządzenie</th><th>Wartość</th><th>Data</th></tr></div>";
         while($db_row = mysqli_fetch_assoc($db_query)){
             $dbid = $db_row["id"];
             $dbfrom = $db_row["from"];
             $dberror = $db_row["error"];
             $dbdate = $db_row["date"];
             $dbvalue = $db_row["value"];
-            echo "$dbid, $dbfrom, $dberror, $dbdate, $dbvalue";
+            echo "<tr><td>$dbid</td><td>$dbfrom</td><td>$dberror</td><td>$dbvalue</td><td>$dbdate</td></tr>";
+
+            //<td>$dbfrom</td><td>$dberror</td>
+
         }
         $db_query->free();
     }
