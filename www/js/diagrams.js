@@ -52,7 +52,7 @@ function drawtemp(){
         data.addColumn('number', 'Na Zewnątrz');
 
         //data.addColumn('number', 'Temperatura Zewnątrz');
-        console.log("dlugość" + ttime2.length);
+        //console.log("dlugość" + ttime2.length);
         var printtime = parseInt(hour);
         for(var i=0;i<24;i++){
             printtime++;
@@ -159,7 +159,7 @@ function drawhumi(){
                     if(printtime==parseInt(htime[te1])){
 
                         humi1inner=parseInt(hin[te1]);
-                        console.log("humi1inner: " + humi1inner + "hin: " + hin[te1]);
+                        //console.log("humi1inner: " + humi1inner + "hin: " + hin[te1]);
                         break;
                     }
                 }

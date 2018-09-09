@@ -1,7 +1,7 @@
 $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=today", function(result){
     $.each(result, function(i, field){
         if(field.sunrise){
-            console.log("fieldsunrise: " + field.sunrise);
+            //console.log("fieldsunrise: " + field.sunrise);
             var sunrise = field.sunrise;
             var sunrisew = sunrise.split(":");
             var sunrisep = sunrisew[2].split(" ");
@@ -9,12 +9,12 @@ $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=
             if(sunrisep[1]=="PM"){
                 sunrisetime[0]+=12;
             }
-            console.log("sunrise: " +sunrisetime);
+            //console.log("sunrise: " +sunrisetime);
             var sunriseout = sunrisetime[0]+ ":" + sunrisetime[1];
             $('#sunrise').html(sunriseout);
         }
         if(field.sunset){
-            console.log("fieldsunset: " + field.sunset);
+            //console.log("fieldsunset: " + field.sunset);
             var sunset = field.sunset;
             var sunsetw = sunset.split(":");
             var sunsetp = sunsetw[2].split(" ");
@@ -22,7 +22,7 @@ $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=
             if(sunsetp[1]=="PM"){
                 sunsettime[0]+=12;
             }
-            console.log("sunset: " +sunsettime);
+            //console.log("sunset: " +sunsettime);
             var sunsetout = sunsettime[0]+ ":" + sunsettime[1];
             $('#sunset').html(sunsetout);
         }

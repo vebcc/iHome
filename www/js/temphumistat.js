@@ -1,8 +1,8 @@
 function drawtempin(){
     $.get('include/handlers.php?id=1&name=get&value=temp', function(result) {
         var wyntemp = parseInt(result);
-        console.log("resulttemp: " + result);
-        console.log("temp: " + wyntemp);
+        //console.log("resulttemp: " + result);
+        //console.log("temp: " + wyntemp);
         if(isNaN(wyntemp)){
             //setTimeout(function() { drawtempin(); }, 1000);
         }else{
@@ -17,8 +17,8 @@ function drawtempin(){
 function drawwilin(){
     $.get('include/handlers.php?id=1&name=get&value=wil', function(result) {
         var wynhumi = parseInt(result);
-        console.log("resulthumi: " + result);
-        console.log("humi: " + wynhumi);
+        //console.log("resulthumi: " + result);
+        //console.log("humi: " + wynhumi);
         if(isNaN(wynhumi)){
             //setTimeout(function() { drawtempin(); }, 1000);
         }else{
@@ -34,8 +34,8 @@ function drawwilin(){
 function drawtempout(){
     $.get('include/handlers.php?id=5&name=get&value=temp', function(result) {
         var wyntemp = parseInt(result);
-        console.log("resulttemp: " + result);
-        console.log("temp: " + wyntemp);
+        //console.log("resulttemp: " + result);
+        //console.log("temp: " + wyntemp);
         if(isNaN(wyntemp)){
             //setTimeout(function() { drawtempin(); }, 1000);
         }else{
@@ -50,8 +50,8 @@ function drawtempout(){
 function drawwilout(){
     $.get('include/handlers.php?id=5&name=get&value=wil', function(result) {
         var wynhumi = parseInt(result);
-        console.log("resulthumi: " + result);
-        console.log("humi: " + wynhumi);
+        //console.log("resulthumi: " + result);
+        //console.log("humi: " + wynhumi);
         if(isNaN(wynhumi)){
             //setTimeout(function() { drawtempin(); }, 1000);
         }else{
