@@ -496,6 +496,30 @@ void setup() {
     ESP.restart();
   });
 
+    server.on("/offall", []() {   //datatest
+    out1stat=true;
+    digitalWrite(out1, out1stat);
+    out2stat=true;
+    digitalWrite(out2, out2stat);
+    out3stat=false;
+    digitalWrite(out3, out3stat);
+    out4stat=false;
+    digitalWrite(out4, out4stat);
+    server.send(200, "text / plain", "1");
+  });
+
+  server.on("/onall", []() {   //datatest
+    out1stat=false;
+    digitalWrite(out1, out1stat);
+    out2stat=false;
+    digitalWrite(out2, out2stat);
+    out3stat=true;
+    digitalWrite(out3, out3stat);
+    out4stat=true;
+    digitalWrite(out4, out4stat);
+    server.send(200, "text / plain", "0");
+  });
+
 
   server.on("/", handleRootPath);    //Associate the handler function to the path
   server.begin();                    //Start the server
