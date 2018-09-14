@@ -5,7 +5,7 @@ if(isset($_GET["value"])){ // formget
 
    <html>
     <head>
-
+        1
     </head>
     <body>
         <script src="../jquery/jquery.min.js"></script>
