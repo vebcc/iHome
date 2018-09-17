@@ -16,3 +16,29 @@ hr {
 .hide{
     display: none;
 }
+
+body > div > div > div > div:nth-child(3),
+body > div > div > div > div:nth-child(10) > div.col-md-12.row{
+    padding-bottom: 20px;
+}
+
+#contentTable > tbody > tr > th.colName,
+#contentTable > tbody > tr > td.colName,
+#contentTable > tbody > tr > th.colAlarmFrames,
+#contentTable > tbody > tr > td.colAlarmFrames,
+#contentTable > tbody > tr > th.colFrames,
+#contentTable > tbody > tr > td.colFrames,
+#contentTable > tbody > tr > th.colTotScore,
+#contentTable > tbody > tr > td.colTotScore,
+#contentTable > tbody > tr > th.colAvgScore,
+#contentTable > tbody > tr > td.colAvgScore,
+#contentTable > tbody > tr > th.colMaxScore,
+#contentTable > tbody > tr > td.colMaxScore,
+#contentTable > tbody > tr > th.colMark,
+#contentTable > tbody > tr > td.colMark{
+    display: none;
+}
+.cam_1_img{
+    width: 100%;
+    height: auto;
+}

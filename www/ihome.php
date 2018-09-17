@@ -2,7 +2,7 @@
 if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['token2'])){ // sprawdza czy zmienne sesji sa ustawione
     if($_SESSION['token']==md5($_SERVER['HTTP_USER_AGENT']) && $_SESSION['token2']==md5($_SERVER['REMOTE_ADDR'])){ // sprawdza czy zmienne sesji sa zgodne z danymi klienta
         $login = $_SESSION['login'];
-        echo "Siemka zalogowany $login!";
+        echo "Zalogowano jako $login";
 
         require("include/functions.php"); // include functions.php
 ?>
@@ -25,6 +25,10 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        <div id="title" class="col-md-6">
                            <h2>Panel Sterowania <b>IHome</b></h2>
                        </div>
+                   </div>
+                   <hr>
+                    <div class="col-md-12" id="cam_1_mini">
+
                    </div>
                    <hr>
                    <div class="col-md-12">
@@ -89,6 +93,21 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                    <hr>
                    <div class="col-md-12 row">
                        <div class="col-md-12">
+                           <h2><span class="glyphicon glyphicon-signal"></span> Monitoring</h2>
+                       </div>
+                       <div class="col-md-12 row">
+                           <div id="cam_1" class="col-md-6">
+
+                           </div>
+                           <div id="events_1" class="col-md-6">
+
+                           </div>
+                       </div>
+                   </div>
+                   <br>
+                   <hr>
+                   <div class="col-md-12 row">
+                       <div class="col-md-12">
                            <h2><span class="glyphicon glyphicon-signal"></span> Wykresy</h2>
                        </div>
                        <div class="col-md-12 row">
@@ -113,6 +132,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     <script src="js/temphumistat.js"></script>
     <script src="js/whereissun.js"></script>
     <script src="js/logs.js"></script>
+    <script src="js/zoneminder.js"></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
