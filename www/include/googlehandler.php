@@ -1,6 +1,7 @@
 <?php
 if(isset($_GET["value"])){ // formget
     $value = $_GET["value"];
+    //TODO: linki na then do that nie dzialaja z jq wiec only php
 ?>
 
    <html>
@@ -13,6 +14,8 @@ if(isset($_GET["value"])){ // formget
         <script src="../js/googlehandler.js"></script>
     </body>
 </html>
+
+
 
 <?php
 }
