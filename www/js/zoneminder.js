@@ -4,11 +4,23 @@ function getevent(id){ //zwraca link camery po podaniu id kamery
 }
 
 function zmloadcam(camlogin, campass){ // funkcja wyswietlajaca kamery
-	$('#cam_1').html('<img class="cam_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
-	$('#cam_1_mini').html('<img src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=50&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
 
-	$('#cam_2').html('<img class="cam_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
-	$('#cam_2_mini').html('<img src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=50&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
+	$('#cam_1').html('<img class="cam_img" id="cam_1_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
+	$('#cam_1_mini').html('<img class="cam_mini_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=50&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
+
+	$('#cam_2').html('<img class="cam_img" id="cam_2_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
+	$('#cam_2_mini').html('<img class="cam_mini_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=50&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
+
+	$.get( 'http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass, function(result) {
+		$('#cam_1').html('<img class="cam_img" src="images/offline.jpg">');
+		$('#cam_1_mini').html('<img class="cam_mini_img" src="images/offline.jpg">');
+	});
+	$.get( 'http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass, function(result) {
+		$('#cam_2').html('<img class="cam_img" src="images/offline.jpg">');
+		$('#cam_2_mini').html('<img class="cam_mini_img" src="images/offline.jpg">');
+	});
+
+
 }
 
 function zmloadevent(eventlogin, eventpass, eventlimit){ // funkcja wyswietlajaca zdarzenia (eventy) kamer
@@ -31,24 +43,40 @@ function zmloadevent(eventlogin, eventpass, eventlimit){ // funkcja wyswietlajac
 			$('#events_2 > #contentTable > tbody > tr:nth-child('+zmdivid+') > td.colId').html("<a href='"+getevent(zmresid)+"'>"+zmresid+"</a>");
 		}
 	});
-
 }
 
-function zmload(){ // funkcja ladujaca ustawienia i funkcje ladujace kamery i eventy
+function zmload(what){ // funkcja ladujaca ustawienia i funkcje ladujace kamery i eventy
 	$.get('include/settings.php?name=zmlogin', function(result) {
 		var login = result;
 		$.get('include/settings.php?name=zmpass', function(result) {
 			var mainpass = result;
 			$.get('include/settings.php?name=zmlimit', function(result) {
 				var zmlimit = result;
-				zmloadcam(login, mainpass);
-				zmloadevent(login, mainpass, zmlimit);
-
+				if(what=="cam"){
+					zmloadcam(login, mainpass);
+				}else if(what=="event"){
+					zmloadevent(login, mainpass, zmlimit);
+				}
 			});
 		});
 	});
-
 }
 
-setTimeout(function(){ zmload(); }, 100);
-setInterval(function(){ zmload(); }, 30000);
+function zmcamreloader(){ //TODO: wykminic jak sprawdzacz czy kamera dziala bez podmieniania
+
+	$.get( 'http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass, function(result) {
+		$('#cam_1').html('<img class="cam_img" src="images/offline.jpg">');
+		$('#cam_1_mini').html('<img class="cam_mini_img" src="images/offline.jpg">');
+	});
+	$.get( 'http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass, function(result) {
+		$('#cam_2').html('<img class="cam_img" src="images/offline.jpg">');
+		$('#cam_2_mini').html('<img class="cam_mini_img" src="images/offline.jpg">');
+	});
+}
+
+setTimeout(function(){ zmload("cam"); }, 100);
+setTimeout(function(){ zmload("event"); }, 100);
+setInterval(function(){ zmload("cam"); }, 60000);
+setInterval(function(){ zmload("event"); }, 10000);
+
+

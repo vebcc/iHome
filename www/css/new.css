@@ -42,3 +42,7 @@ body > div > div > div > div:nth-child(10) > div.col-md-12.row{
     width: 100%;
     height: auto;
 }
+.cam_mini_img{
+	height: 240px;
+	width: auto;
+}
