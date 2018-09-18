@@ -38,7 +38,7 @@ body > div > div > div > div:nth-child(10) > div.col-md-12.row{
 #contentTable > tbody > tr > td.colMark{
     display: none;
 }
-.cam_1_img{
+.cam_img{
     width: 100%;
     height: auto;
 }

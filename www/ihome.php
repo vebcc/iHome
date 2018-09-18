@@ -27,8 +27,11 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        </div>
                    </div>
                    <hr>
-                    <div class="col-md-12" id="cam_1_mini">
-
+                    <div class="col-md-12 row">
+						<div id="cam_1_mini" class="col-md-3">
+						</div>
+						<div id="cam_2_mini" class="col-md-3">
+						</div>
                    </div>
                    <hr>
                    <div class="col-md-12">
@@ -97,10 +100,12 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        </div>
                        <div class="col-md-12 row">
                            <div id="cam_1" class="col-md-6">
-
                            </div>
                            <div id="events_1" class="col-md-6">
-
+                           </div>
+                           <div id="cam_2" class="col-md-6">
+                           </div>
+                           <div id="events_2" class="col-md-6">
                            </div>
                        </div>
                    </div>
