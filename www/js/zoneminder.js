@@ -9,7 +9,6 @@ function zmloadcam(camlogin, campass){ // funkcja wyswietlajaca kamery
 
 	$('#cam_2').html('<img class="cam_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
 	$('#cam_2_mini').html('<img src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=50&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
-
 }
 
 function zmloadevent(eventlogin, eventpass, eventlimit){ // funkcja wyswietlajaca zdarzenia (eventy) kamer
@@ -42,8 +41,8 @@ function zmload(){ // funkcja ladujaca ustawienia i funkcje ladujace kamery i ev
 			var mainpass = result;
 			$.get('include/settings.php?name=zmlimit', function(result) {
 				var zmlimit = result;
-				loadcam(login, mainpass);
-				loadevent(login, mainpass, zmlimit);
+				zmloadcam(login, mainpass);
+				zmloadevent(login, mainpass, zmlimit);
 
 			});
 		});
@@ -51,5 +50,5 @@ function zmload(){ // funkcja ladujaca ustawienia i funkcje ladujace kamery i ev
 
 }
 
-zmload();
-setInterval(function(){ zmload(); }, 20000);
+setTimeout(function(){ zmload(); }, 100);
+setInterval(function(){ zmload(); }, 30000);

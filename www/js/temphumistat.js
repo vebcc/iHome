@@ -64,10 +64,11 @@ function drawwilout(){
     });
 }
 
-drawtempin();
-drawwilin();
-drawtempout();
-drawwilout();
+setTimeout(function(){ drawtempin(); }, 100);
+setTimeout(function(){ drawwilin(); }, 100);
+setTimeout(function(){ drawtempout(); }, 100);
+setTimeout(function(){ drawwilout(); }, 100);
+
 setInterval(function(){ drawtempin(); }, 10000);
 setInterval(function(){ drawwilin(); }, 10000);
 setInterval(function(){ drawtempout(); }, 10000);
