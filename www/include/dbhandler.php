@@ -71,5 +71,14 @@ if(isset($_GET["from"]) && isset($_GET["error"])  && isset($_GET["geterrorlog"])
     }
 }
 
+if(isset($_GET["settings"]) && isset($_GET["value"])){ // formget
+	$settings = $_GET["settings"];
+	$value = $_GET["value"];
+	// zapytanie sprawdzajace czy maincode sie zgadza
+		$db_query = mysqli_query($con,"UPDATE ihome.settings SET value = '$value' WHERE settings.name = '$settings';");
+		//$db_row = mysqli_fetch_assoc($db_query);
+		//$db_query->free();
+}
+
 $con->close(); // konczenie polaczenia z baza danych
 ?>

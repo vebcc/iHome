@@ -12,6 +12,13 @@ $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=
             //console.log("sunrise: " +sunrisetime);
             var sunriseout = sunrisetime[0]+ ":" + sunrisetime[1];
             $('#sunrise').html(sunriseout);
+
+			var sunrisemilis = ((sunrisetime[0] * 60 ) + sunrisetime[1]) * 60 * 1000;
+
+			$.get('include/dbhandler.php?settings=sunrise&value='+sunrisemilis, function(result) {
+				var awyn = result;
+				console.log("sunrisemilis: "+sunrisemilis);
+			});
         }
         if(field.sunset){
             //console.log("fieldsunset: " + field.sunset);
@@ -24,7 +31,15 @@ $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=
             }
             //console.log("sunset: " +sunsettime);
             var sunsetout = sunsettime[0]+ ":" + sunsettime[1];
+
             $('#sunset').html(sunsetout);
+
+			var sunsetmilis = ((sunsettime[0] * 60) + sunsettime[1]) * 60 * 1000;
+
+			$.get('include/dbhandler.php?settings=sunset&value='+sunsetmilis, function(result) {
+				var awyn = result;
+				console.log("sunsetmilis: "+sunsetmilis);
+			});
         }
     });
 });

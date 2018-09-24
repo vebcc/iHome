@@ -3,7 +3,7 @@ google.charts.setOnLoadCallback(drawtemp);
 google.charts.setOnLoadCallback(drawhumi);
 
 function drawtemp(){
-    $.get('include/dbhandler.php?id=6&gettemp=1', function(result) {
+    $.get('include/dbhandler.php?id=7&gettemp=1', function(result) {
 
         var nowdate = new Date();
         var hour = nowdate.getHours()
@@ -30,7 +30,7 @@ function drawtemp(){
         var tmin2 = new Array;
         var tin2 = new Array;
 
-        $.get('include/dbhandler.php?id=7&gettemp=1', function(result2) {
+        $.get('include/dbhandler.php?id=8&gettemp=1', function(result2) {
             var adata2 = result2.split(",");
             var dlug2 = (adata2.length-1)/3;
             //console.log(adata2);
@@ -100,7 +100,7 @@ function drawtemp(){
 
 
 function drawhumi(){
-    $.get('include/dbhandler.php?id=6&gethumi=1', function(result) {
+    $.get('include/dbhandler.php?id=7&gethumi=1', function(result) {
         var nowdate = new Date();
         var hour = nowdate.getHours()
 
@@ -124,7 +124,7 @@ function drawhumi(){
         var hmin2 = new Array;
         var hin2 = new Array;
 
-        $.get('include/dbhandler.php?id=7&gethumi=1', function(result2) {
+        $.get('include/dbhandler.php?id=8&gethumi=1', function(result2) {
             var adata2 = result2.split(",");
             var dlug2 = (adata2.length-1)/3;
             //console.log(adata2);

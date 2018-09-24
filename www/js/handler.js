@@ -1,13 +1,47 @@
 var ress=2;
 //console.log("siema");
 function changeactive(id, who, forwhat, revers=0){
-    if(forwhat==revers){
-        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').removeClass('hide');
-        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
-    }else{
-        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').removeClass('hide');
-        $('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
-    }
+	if(revers==0){
+		if(forwhat==0){
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').addClass('hide');
+		}else if(forwhat==1){
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').addClass('hide');
+		}else if(forwhat==-1){
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').html("Error: -1");
+		}else{
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').html("Error: fu");
+		}
+	}else{
+		if(forwhat==1){
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').addClass('hide');
+		}else if(forwhat==0){
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').addClass('hide');
+		}else if(forwhat==-1){
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').html("Error: -1");
+		}else{
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.off').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.on').addClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').removeClass('hide');
+			$('#'+id+'-'+who+'-stat > td:nth-child(3) > span.error').html("Error: fu");
+		}
+	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Status all //
@@ -29,11 +63,22 @@ function statusall(){
         changeactive("2", "out2", resspl[1]);
         changeactive("2", "out3", resspl[2]);
     });
+	$.get('include/handlers.php?id=3&name=status&value=all', function(result) {
+		//console.log("status4: "+result);
+		var resspl = result.split(",");
+		changeactive("3", "out1", resspl[0]);
+	});
     $.get('include/handlers.php?id=4&name=status&value=all', function(result) {
         //console.log("status4: "+result);
         var resspl = result.split(",");
         changeactive("4", "out1", resspl[0]);
     });
+	//TODO: Dodać do sterownika na zewnatrz w statusall dane lamp type i sensor dec
+	$.get('include/handlers.php?id=6&name=status&value=all', function(result) {
+		//console.log("status4: "+result);
+		var resspl = result.split(",");
+		changeactive("6", "out1", resspl[0]);
+	});
 }
 
 
@@ -125,5 +170,5 @@ $('#4-out1-button-change').click(function() {
     });
 });
 
-statusall();
+setTimeout(function(){ statusall(); }, 100);
 setInterval(function(){ statusall(); }, 2000);

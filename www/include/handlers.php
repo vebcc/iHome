@@ -32,6 +32,9 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
         case 5:
             $reqip ="10.0.2.7";
             break;
+		case 6:
+			$reqip ="10.0.2.8";
+			break;
     }
     $newmessage =  $name.$value;
     $fp = @fopen("http://$reqip/$newmessage", "r"); //good
@@ -54,9 +57,9 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
             $db_query = mysqli_query($con,"INSERT INTO `ihome`.`errorlog` (`id`, `from`, `error`, `date`, `value` , `dev_id` ) VALUES (NULL, 'handlers', 'data', CURRENT_TIMESTAMP, 'Błąd komunikacji z kontrolerem' , $id)");
         }
         if($dev==0){
-            echo 0;
+            echo -1;
         }else{
-            return 0;
+            return -1;
         }
     }
 }

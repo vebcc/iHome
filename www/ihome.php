@@ -43,15 +43,16 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        <div class="col-md-4">
                            <table class="table table-striped">
                                <tr><th>Włączniki</th><th> </th><th></th></tr>
-                               <tr id="1-out2-stat"><td>Masło</td><td>Biurko przód ciepły</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="1-out3-stat"><td>Masło</td><td>Biurko przód zimny</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="1-out1-stat"><td>Masło</td><td>Biurko Bok</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="1-out4-stat"><td>Masło</td><td>Podświetlenie głośników</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="2-out2-stat"><td>Masło</td><td>Zimna lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="2-out3-stat"><td>Masło</td><td>Ciepła lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="3-out1-stat"><td>Masło</td><td>Laser dyskotekowy</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="2-out1-stat"><td>Masło</td><td>Ciepła słaba lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
-                               <tr id="4-out1-stat"><td>Szymon</td><td>Lampa główna</td><td><span class="on hide">ON</span><span class="off">OFF</span></td></tr>
+							   <tr id="1-out2-stat"><td>Masło</td><td>Biurko przód ciepły</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="1-out3-stat"><td>Masło</td><td>Biurko przód zimny</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="1-out1-stat"><td>Masło</td><td>Biurko Bok</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="1-out4-stat"><td>Masło</td><td>Podświetlenie głośników</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="2-out2-stat"><td>Masło</td><td>Zimna lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="2-out3-stat"><td>Masło</td><td>Ciepła lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="3-out1-stat"><td>Masło</td><td>Laser dyskotekowy</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="2-out1-stat"><td>Masło</td><td>Ciepła słaba lampa</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="4-out1-stat"><td>Szymon</td><td>Lampa główna</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
+							   <tr id="6-out1-stat"><td>Zewnątrz</td><td>Lampa tył</td><td><span class="on hide">ON</span><span class="off">OFF</span><span class="error hide">Error</span></td></tr>
                            </table>
                        </div>
                        <div class="col-md-4">
@@ -61,7 +62,12 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                                <tr><td>Masło</td><td>Wilgotność</td><td><span id="wilin1"></span>%</td></tr>
                                <tr><td>Zewnątrz</td><td>Temperatura</td><td><span id="tempout1"></span>*C</td></tr>
                                <tr><td>Zewnątrz</td><td>Wilgotność</td><td><span id="wilout1"></span>%</td></tr>
+							   <tr><td>Zewnątrz Tył</td><td>Czujnik ruchu</td><td><span id="motionsensor1"></span></td></tr>
                            </table>
+						   <table class="table table-striped">
+							   <tr><th>Ustawienia sensora</th><th>Sensor</th><th>Tylko noc</th></tr>
+							   <tr id="6-out1-stat-sensor"><td>Zewnątrz tył - lampa</td><td><span class="off">OFF</span></td><td><span class="off">OFF</span></td></tr>
+						   </table>
                        </div>
                        <div class="col-md-4">
                            <table id="errorlog" class="table table-striped">
@@ -93,6 +99,12 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                                    <tr><td>Lampa główna</td><td><button id="4-out1-button-change">Zmień</button></td></tr>
                                </table>
                            </div>
+						   <div class="col-md-3">
+							   <h2>Na zewnątrz</h2>
+							   <table class="table table-striped">
+								   <tr><td>Lampa tył</td><td><button id="6-out1-button-change">Zmień</button></td><td><button id="6-out1-button-change">Zmień</button></td><td><button id="6-out1-button-change">Zmień</button></td></tr>
+							   </table>
+						   </div>
                        </div>
                    </div>
                    <hr>
@@ -145,6 +157,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     <script src="js/handler.js"></script>
     <script src="js/temphumistat.js"></script>
     <script src="js/whereissun.js"></script>
+	<script src="js/motionsensor.js"></script>
     <script src="js/logs.js"></script>
     <script src="js/zoneminder.js"></script>
 
