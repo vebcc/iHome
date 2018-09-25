@@ -17,7 +17,7 @@ $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=
 
 			$.get('include/dbhandler.php?settings=sunrise&value='+sunrisemilis, function(result) {
 				var awyn = result;
-				console.log("sunrisemilis: "+sunrisemilis);
+				//console.log("sunrisemilis: "+sunrisemilis);
 			});
         }
         if(field.sunset){
@@ -38,7 +38,7 @@ $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=
 
 			$.get('include/dbhandler.php?settings=sunset&value='+sunsetmilis, function(result) {
 				var awyn = result;
-				console.log("sunsetmilis: "+sunsetmilis);
+				//console.log("sunsetmilis: "+sunsetmilis);
 			});
         }
     });

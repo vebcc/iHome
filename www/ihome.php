@@ -66,7 +66,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                            </table>
 						   <table class="table table-striped">
 							   <tr><th>Ustawienia sensora</th><th>Sensor</th><th>Tylko noc</th></tr>
-							   <tr id="6-out1-stat-sensor"><td>Zewnątrz tył - lampa</td><td><span class="off">OFF</span></td><td><span class="off">OFF</span></td></tr>
+							   <tr id="6-out1-stat-sensor"><td>Zewnątrz tył - lampa</td><td><span id="6-lamptype" class="off">OFF</span></td><td><span id="6-sensordaydec" class="off">OFF</span></td></tr>
 						   </table>
                        </div>
                        <div class="col-md-4">
@@ -102,7 +102,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
 						   <div class="col-md-3">
 							   <h2>Na zewnątrz</h2>
 							   <table class="table table-striped">
-								   <tr><td>Lampa tył</td><td><button id="6-out1-button-change">Zmień</button></td><td><button id="6-out1-button-change">Zmień</button></td><td><button id="6-out1-button-change">Zmień</button></td></tr>
+								   <tr><td>Lampa tył</td><td><button id="6-out1-button-change">Zmień</button></td><td><button id="6-out1-lamptype-change">Zmień</button></td><td><button id="6-out1-sensordaydec-change">Zmień</button></td></tr>
 							   </table>
 						   </div>
                        </div>
@@ -156,10 +156,10 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
     <script src="js/diagrams.js"></script>
     <script src="js/handler.js"></script>
     <script src="js/temphumistat.js"></script>
-    <script src="js/whereissun.js"></script>
 	<script src="js/motionsensor.js"></script>
     <script src="js/logs.js"></script>
     <script src="js/zoneminder.js"></script>
+	<script src="js/whereissun.js"></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>

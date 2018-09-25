@@ -43,6 +43,30 @@ function changeactive(id, who, forwhat, revers=0){
 		}
 	}
 }
+
+function changesensoractive(id, who, forwhat, opt, revers=0){
+	if(revers==0){
+		if(forwhat==1){
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("ON");
+		}else if(forwhat==-1){
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("Error: -1");
+		}else if(forwhat==0){
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("OFF");
+		}else{
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("Error: "+forwhat);
+		}
+	}else{
+		if(forwhat==0){
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("ON");
+		}else if(forwhat==-1){
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("Error: -1");
+		}else if(forwhat==1){
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("OFF");
+		}else{
+			$('#'+id+'-'+who+'-stat-sensor > td:nth-child('+opt+') > span').html("Error: "+forwhat);
+		}
+	}
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Status all //
 ////////////////
@@ -168,6 +192,35 @@ $('#4-out1-button-change').click(function() {
         changeactive("4", "out1", result);
         console.log("szymon-lampa glowna: "+result);
     });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 3
+// Maslo //
+///////////
+
+//laser dyskotekowy
+$('#6-out1-button-change').click(function() {
+	$.get('include/handlers.php?id=6&name=out1&value=change', function(result) {
+		changeactive("6", "out1", result);
+		$.get('include/handlers.php?id=6&name=lamptype&value=status', function(result) {
+			//changesensoractive("6", "lamptype", result); TODO:// funkcja nie mogla by dziala stworzyc nowa lub recznie
+			changesensoractive(6, "out1", result, 2);
+			$.get('include/handlers.php?id=6&name=sensordaydec&value=status', function(result) {
+				changesensoractive(6, "out1", result, 3);
+			});
+		});
+	});
+});
+$('#6-out1-lamptype-change').click(function() {
+	$.get('include/handlers.php?id=6&name=lamptype&value=change', function(result) {
+		changesensoractive(6, "out1", result, 2);
+	});
+});
+$('#6-out1-sensordaydec-change').click(function() {
+	$.get('include/handlers.php?id=6&name=sensordaydec&value=change', function(result) {
+		changesensoractive(6, "out1", result, 3);
+		console.log("sensordaydec=change: " + result);
+	});
 });
 
 setTimeout(function(){ statusall(); }, 100);
