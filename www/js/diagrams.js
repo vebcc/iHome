@@ -2,6 +2,14 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawtemp);
 google.charts.setOnLoadCallback(drawhumi);
 
+function drawreftemp(){
+	data.setValue(0, 1, dane[0]);
+	data.setValue(0, 1, dane[1]);
+
+	chart.draw(data2, options2);
+	chart.draw(data3, options3);
+}
+
 function drawtemp(){
     $.get('include/dbhandler.php?id=7&gettemp=1', function(result) {
 
@@ -174,10 +182,6 @@ function drawhumi(){
                 var timeout = printtime+" ";
                 data.addRow([timeout, humi1inner, humi2inner]);
             }
-
-
-
-
 
         var options = {
             title: 'Wilgotność (%)',

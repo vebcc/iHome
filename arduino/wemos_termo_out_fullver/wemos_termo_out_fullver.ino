@@ -232,7 +232,7 @@ void getdata(String soinit, String code){
        }else if(outname=="sensorsunset"){
           sunset=outval.toInt();
        }else if(outname=="sensordaydec"){
-          sunset=outval.toInt();
+          sensordaydec=outval.toInt();
        }
       }
   }

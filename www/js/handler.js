@@ -103,8 +103,8 @@ function statusall(){
 		var resspl = result.split(",");
 		//console.log("status6re: "+resspl);
 		changeactive("6", "out1", resspl[0]);
-		changesensoractive(6, "out1", resspl[4], 2);
-		changesensoractive(6, "out1", resspl[3], 3);
+		changesensoractive(6, "out1", resspl[4], 2, 1);
+		changesensoractive(6, "out1", resspl[3], 3, 1);
 	});
 }
 
@@ -216,13 +216,13 @@ $('#6-out1-button-change').click(function() {
 });
 $('#6-out1-lamptype-change').click(function() {
 	$.get('include/handlers.php?id=6&name=lamptype&value=change', function(result) {
-		changesensoractive(6, "out1", result, 2);
+		//changesensoractive(6, "out1", result, 2, 1);
 	});
 });
 $('#6-out1-sensordaydec-change').click(function() {
 	$.get('include/handlers.php?id=6&name=sensordaydec&value=change', function(result) {
 		//console.log("change");
-		changesensoractive(6, "out1", result, 3);
+		//changesensoractive(6, "out1", result, 3, 1);
 		//console.log("sensordaydec=change: " + result);
 	});
 });
