@@ -1,28 +1,173 @@
 google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawtemp);
-google.charts.setOnLoadCallback(drawhumi);
+google.charts.setOnLoadCallback(loaddata);
 
-function drawreftemp(){
-	data.setValue(0, 1, dane[0]);
-	data.setValue(0, 1, dane[1]);
+function loaddata(){
+	var datatemp = new google.visualization.DataTable();
+	datatemp.addColumn('string', 'czas');
+	datatemp.addColumn('number', 'Pokój');
+	datatemp.addColumn('number', 'Na Zewnątrz');
 
-	chart.draw(data2, options2);
-	chart.draw(data3, options3);
+	var datahumi = new google.visualization.DataTable();
+	datahumi.addColumn('string', 'czas');
+	datahumi.addColumn('number', 'Pokój');
+	datahumi.addColumn('number', 'Zewnątrz');
+
+	var optionstemp = {
+		title: 'Temperatura (°C)',
+		hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
+		vAxis: {minValue: 0}
+	};
+
+	var optionshumi = {
+		title: 'Wilgotność (%)',
+		hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
+		vAxis: {minValue: 0}
+	};
+
+
+	var charttemp = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	var charthumi = new google.visualization.AreaChart(document.getElementById('chart_div2'));
+
+	drawtemp(datatemp, optionstemp, charttemp);
+	drawhumi(datahumi, optionshumi, charthumi);
 }
 
-function drawtemp(){
-    $.get('include/dbhandler.php?id=7&gettemp=1', function(result) {
+function drawreftemp(datatemp, optionstemp, charttemp){
+	$.get('include/dbhandler.php?id=7&gettemp=1', function(result) {
+		var nowdate = new Date();
+		var hour = nowdate.getHours()
 
+		var adata = result.split(",");
+		var dlug = (adata.length-1)/3;
+
+		var ttime = new Array;
+		var tmin = new Array;
+		var tin = new Array;
+		var ttime2 = new Array;
+		var tmin2 = new Array;
+		var tin2 = new Array;
+
+		for(var i=0;i<dlug;i++){
+			ttime[i]=adata[(i*3)+0];
+			tmin[i]=adata[(i*3)+1];
+			tin[i]=adata[(i*3)+2];
+		}
+
+		$.get('include/dbhandler.php?id=8&gettemp=1', function(result2) {
+			var adata2 = result2.split(",");
+			var dlug2 = (adata2.length-1)/3;
+
+			for(var i=0;i<dlug2;i++){
+				ttime2[i]=adata2[(i*3)+0];
+				tmin2[i]=adata2[(i*3)+1];
+				tin2[i]=adata2[(i*3)+2];
+			}
+
+			var printtime = parseInt(hour);
+			for(var i=0;i<24;i++){
+				printtime++;
+				if(printtime>=24){
+					printtime=0;
+				}
+				var temp1inner = 0;
+				var temp2inner = 0;
+
+				for(var te1=0;te1<ttime.length;te1++){
+					if(printtime==parseInt(ttime[te1])){
+						temp1inner=parseInt(tin[te1]);
+						break;
+					}
+				}
+
+				for(var te2=0;te2<ttime2.length;te2++){
+					if(printtime==parseInt(ttime2[te2])){
+						temp2inner=parseInt(tin2[te2]);
+						break;
+					}
+				}
+				var timeout = printtime+" ";
+				datatemp.addRow([timeout, temp1inner, temp2inner]);
+				datatemp.setValue(i, 0, timeout);
+				datatemp.setValue(i, 1, temp1inner);
+				datatemp.setValue(i, 2, temp2inner);
+			}
+			charttemp.draw(datatemp, optionstemp);
+		});
+	});
+}
+
+function drawrefhumi(datahumi, optionshumi, charthumi){
+	$.get('include/dbhandler.php?id=7&gethumi=1', function(result) {
+		var nowdate = new Date();
+		var hour = nowdate.getHours()
+
+		var adata = result.split(",");
+		var dlug = (adata.length-1)/3;
+
+		var ttime = new Array;
+		var tmin = new Array;
+		var tin = new Array;
+		var ttime2 = new Array;
+		var tmin2 = new Array;
+		var tin2 = new Array;
+
+		for(var i=0;i<dlug;i++){
+			ttime[i]=adata[(i*3)+0];
+			tmin[i]=adata[(i*3)+1];
+			tin[i]=adata[(i*3)+2];
+		}
+
+		$.get('include/dbhandler.php?id=8&gethumi=1', function(result2) {
+			var adata2 = result2.split(",");
+			var dlug2 = (adata2.length-1)/3;
+
+			for(var i=0;i<dlug2;i++){
+				ttime2[i]=adata2[(i*3)+0];
+				tmin2[i]=adata2[(i*3)+1];
+				tin2[i]=adata2[(i*3)+2];
+			}
+
+			var printtime = parseInt(hour);
+			for(var i=0;i<24;i++){
+				printtime++;
+				if(printtime>=24){
+					printtime=0;
+				}
+				var temp1inner = 0;
+				var temp2inner = 0;
+
+				for(var te1=0;te1<ttime.length;te1++){
+					if(printtime==parseInt(ttime[te1])){
+
+						temp1inner=parseInt(tin[te1]);
+						break;
+					}
+				}
+
+				for(var te2=0;te2<ttime2.length;te2++){
+					if(printtime==parseInt(ttime2[te2])){
+						temp2inner=parseInt(tin2[te2]);
+						break;
+					}
+				}
+				var timeout = printtime+" ";
+				datahumi.addRow([timeout, temp1inner, temp2inner]);
+				datahumi.setValue(i, 0, timeout);
+				datahumi.setValue(i, 1, temp1inner);
+				datahumi.setValue(i, 2, temp2inner);
+			}
+			charthumi.draw(datahumi, optionshumi);
+		});
+	});
+}
+
+function drawtemp(datatemp, optionstemp, charttemp){
+    $.get('include/dbhandler.php?id=7&gettemp=1', function(result) {
         var nowdate = new Date();
         var hour = nowdate.getHours()
-        //console.log("Date: " + nowdate);
-        //console.log("Hours: " + hour);
 
         var adata = result.split(",");
         var dlug = (adata.length-1)/3;
-
-        //console.log(adata);
-        //console.log(dlug);
 
         var ttime = new Array;
         var tmin = new Array;
@@ -39,84 +184,53 @@ function drawtemp(){
         var tin2 = new Array;
 
         $.get('include/dbhandler.php?id=8&gettemp=1', function(result2) {
-            var adata2 = result2.split(",");
-            var dlug2 = (adata2.length-1)/3;
-            //console.log(adata2);
-            //console.log(dlug2);
+			var adata2 = result2.split(",");
+			var dlug2 = (adata2.length-1)/3;
 
+			for(var i=0;i<dlug2;i++){
+				ttime2[i]=adata2[(i*3)+0];
+				tmin2[i]=adata2[(i*3)+1];
+				tin2[i]=adata2[(i*3)+2];
+			}
 
-            for(var i=0;i<dlug2;i++){
-                ttime2[i]=adata2[(i*3)+0];
-                tmin2[i]=adata2[(i*3)+1];
-                tin2[i]=adata2[(i*3)+2];
-            }
+			var printtime = parseInt(hour);
+			for(var i=0;i<24;i++){
+				printtime++;
+				if(printtime>=24){
+					printtime=0;
+				}
+				var temp1inner = 0;
+				var temp2inner = 0;
 
-        //console.log(ttime);
-        //console.log(tin);
+				for(var te1=0;te1<ttime.length;te1++){
+					if(printtime==parseInt(ttime[te1])){
+						temp1inner=parseInt(tin[te1]);
+						break;
+					}
+				}
 
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'czas');
-        data.addColumn('number', 'Pokój');
-        data.addColumn('number', 'Na Zewnątrz');
-
-        //data.addColumn('number', 'Temperatura Zewnątrz');
-        //console.log("dlugość" + ttime2.length);
-        var printtime = parseInt(hour);
-        for(var i=0;i<24;i++){
-            printtime++;
-            //console.log("printtime: " + printtime);
-            if(printtime>=24){
-                printtime=0;
-            }
-            var temp1inner = 0;
-            var temp2inner = 0;
-
-            for(var te1=0;te1<ttime.length;te1++){
-                if(printtime==parseInt(ttime[te1])){
-
-                    temp1inner=parseInt(tin[te1]);
-                    //console.log("te1 :" + te1 + " printtime : " + printtime + " ttime : " + ttime[te1] + " temp: " + temp1inner);
-                    break;
-                }
-            }
-
-            for(var te2=0;te2<ttime2.length;te2++){
-                if(printtime==parseInt(ttime2[te2])){
-                    temp2inner=parseInt(tin2[te2]);
-                    break;
-                }
-            }
-            var timeout = printtime+" ";
-            data.addRow([timeout, temp1inner, temp2inner]);
-        }
-
-
-
-
-        var options = {
-            title: 'Temperatura (°C)',
-            hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
-            vAxis: {minValue: 0}
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        });
-    });
+				for(var te2=0;te2<ttime2.length;te2++){
+					if(printtime==parseInt(ttime2[te2])){
+						temp2inner=parseInt(tin2[te2]);
+						break;
+					}
+				}
+				var timeout = printtime+" ";
+				datatemp.addRow([timeout, temp1inner, temp2inner]);
+			}
+			charttemp.draw(datatemp, optionstemp);
+			setTimeout(function(){ drawtemp(datatemp, optionstemp, charttemp); }, 600000);
+		});
+	});
 }
 
-
-
-function drawhumi(){
+function drawhumi(datahumi, optionshumi, charthumi){
     $.get('include/dbhandler.php?id=7&gethumi=1', function(result) {
         var nowdate = new Date();
         var hour = nowdate.getHours()
 
         var adata = result.split(",");
         var dlug = (adata.length-1)/3;
-
-        //console.log(adata);
-        //console.log(dlug);
 
         var htime = new Array;
         var hmin = new Array;
@@ -135,9 +249,6 @@ function drawhumi(){
         $.get('include/dbhandler.php?id=8&gethumi=1', function(result2) {
             var adata2 = result2.split(",");
             var dlug2 = (adata2.length-1)/3;
-            //console.log(adata2);
-            //console.log(dlug2);
-
 
             for(var i=0;i<dlug2;i++){
                 htime2[i]=adata2[(i*3)+0];
@@ -145,18 +256,9 @@ function drawhumi(){
                 hin2[i]=adata2[(i*3)+2];
             }
 
-            //console.log(htime);
-            //console.log(hin);
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'czas');
-            data.addColumn('number', 'Pokój');
-            data.addColumn('number', 'Zewnątrz');
-
             var printtime = parseInt(hour);
             for(var i=0;i<24;i++){
                 printtime++;
-                //console.log("printtime: " + printtime);
                 if(printtime>=24){
                     printtime=0;
                 }
@@ -165,9 +267,7 @@ function drawhumi(){
 
                 for(var te1=0;te1<htime.length;te1++){
                     if(printtime==parseInt(htime[te1])){
-
                         humi1inner=parseInt(hin[te1]);
-                        //console.log("humi1inner: " + humi1inner + "hin: " + hin[te1]);
                         break;
                     }
                 }
@@ -178,20 +278,12 @@ function drawhumi(){
                         break;
                     }
                 }
-
                 var timeout = printtime+" ";
-                data.addRow([timeout, humi1inner, humi2inner]);
+                datahumi.addRow([timeout, humi1inner, humi2inner]);
             }
-
-        var options = {
-            title: 'Wilgotność (%)',
-            hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
-            vAxis: {minValue: 0}
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div2'));
-        chart.draw(data, options);
-    });
+			charthumi.draw(datahumi, optionshumi);
+			setTimeout(function(){ drawhumi(datahumi, optionshumi, charthumi); }, 600000);
+    	});
     });
 }
 
