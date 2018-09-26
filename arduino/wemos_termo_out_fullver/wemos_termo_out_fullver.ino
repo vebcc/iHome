@@ -31,7 +31,7 @@ boolean start = 1;
 
 boolean lamptype = 0;
 
-int sensortime = 30000;
+int sensortime = 240000;
 
 unsigned long prevupdate = 0;
 
@@ -207,7 +207,7 @@ void getdata(String soinit, String code){
        datatest = getValue(line,',',i);
       String outname = getValue(datatest,'=',0);
       String outval = getValue(datatest,'=',1);
-      testermg+=outname;
+      testermg+=outname+": "+outval+" | ";
        if(outname=="out1stat"){
          //out1stat=outval.toInt();
          //out1stat!=out1stat;
@@ -248,7 +248,7 @@ void setup() {
   Serial.println(ip);
   IPAddress subnet(255, 255, 252, 0); // set subnet mask to match your
   WiFi.config(ip, gateway, subnet);
-  WiFi.begin("Internety_Masla", "maslohaslo132");  //Connect to the WiFi network
+  WiFi.begin("Internety_Masla_Garaz", "maslohaslo132");  //Connect to the WiFi network
 
   pinMode(out1, OUTPUT);
 
@@ -318,6 +318,18 @@ void setup() {
     lamptype=1;
     server.send(200, "text / plain", "1");
   });
+  server.on("/lamptypechange", []() {   //out 1 off
+    if(lamptype==true){
+      lamptype=false;
+    }else{
+      lamptype=true;
+    }
+    if(lamptype){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
+  });
   server.on("/sensordaydec0", []() {   //out 1 off
     sensordaydec=0;
     server.send(200, "text / plain", "0");
@@ -326,6 +338,19 @@ void setup() {
   server.on("/sensordaydec1", []() {   //out 1 off
     sensordaydec=1;
     server.send(200, "text / plain", "1");
+  });
+
+  server.on("/sensordaydecchange", []() {   //out 1 off
+    if(sensordaydec==true){
+      sensordaydec=false;
+    }else{
+      sensordaydec=true;
+    }
+    if(sensordaydec){
+      server.send(200, "text / plain", "1");
+    }else{
+      server.send(200, "text / plain", "0");
+    }
   });
 
   server.on("/out1change", []() {   //out 1 change
@@ -354,7 +379,7 @@ void setup() {
   server.on("/statusall", []() {   //status all
     temp = String(temperatura);
     wilg = String(wilgotnosc);
-	  String allwynik = String(out1stat) + "," + temp + "," +wilg + "," +String(sensordaydec) + "," +String(lamptype);
+	  String allwynik = String(out1stat) + "," + temp + "," +wilg + "," +String(sensordaydec) + "," +String(lamptype) + "," +String(sensortime);
     server.send(200, "text / plain", allwynik);
   });
 
@@ -394,14 +419,18 @@ void setup() {
     server.send(200, "text / plain", testermg);
   });
 
-  server.on("/privcode", []() {   //datatest
-    server.send(200, "text / plain", privcode);
-  });
-
-
   server.on("/restart", []() {   //datatest
     server.send(200, "text / plain", "Restart");
     ESP.restart();
+  });
+
+  server.on("/refdata", []() {   //datatest
+    server.send(200, "text / plain", "newdata");
+    getdata("ok", maincode);
+    uploadtempwil(3, "ok");
+    uploadtempwil(6, "sunrise");
+    uploadtempwil(6, "sunset");
+    uploadtempwil(5, "1");
   });
 
   server.on("/", handleRootPath);    //Associate the handler function to the path
@@ -438,11 +467,11 @@ void loop() {
       if(lamptype==0){
           if(sensordaydec==0){
             if(sunriseinttime>=actualsensortime || actualsensortime >= sunsetinttime){
-
-            }else{
               out1stat=true;
               digitalWrite(out1, out1stat);
               prevdig=currentMillis;
+            }else{
+
             }
           }else{
             out1stat=true;

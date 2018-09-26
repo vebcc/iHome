@@ -28,10 +28,10 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                    </div>
                    <hr>
                     <div class="col-md-12 row">
-						<div id="cam_1_mini" class="col-md-3">
+						<div id="cam_1_mini" class="col-md-4">
 							<img class="cam_mini_img" src="images/offline.jpg">
 						</div>
-						<div id="cam_2_mini" class="col-md-3">
+						<div id="cam_2_mini" class="col-md-4">
 							<img class="cam_mini_img" src="images/offline.jpg">
 						</div>
                    </div>

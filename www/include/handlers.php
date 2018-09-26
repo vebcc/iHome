@@ -39,7 +39,7 @@ if(isset($_GET["id"]) && isset($_GET["name"]) && isset($_GET["value"])){ // form
     $newmessage =  $name.$value;
     $fp = @fopen("http://$reqip/$newmessage", "r"); //good
     if($fp){
-        $newmessage = fread($fp,"10");
+        $newmessage = fread($fp,"30");
         fclose($fp);
         //getset($id ,$name."status");
         if($dev==0){

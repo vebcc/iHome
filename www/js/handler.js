@@ -88,7 +88,7 @@ function statusall(){
         changeactive("2", "out3", resspl[2]);
     });
 	$.get('include/handlers.php?id=3&name=status&value=all', function(result) {
-		//console.log("status4: "+result);
+		//console.log("status3: "+result);
 		var resspl = result.split(",");
 		changeactive("3", "out1", resspl[0]);
 	});
@@ -99,9 +99,12 @@ function statusall(){
     });
 	//TODO: Dodać do sterownika na zewnatrz w statusall dane lamp type i sensor dec
 	$.get('include/handlers.php?id=6&name=status&value=all', function(result) {
-		//console.log("status4: "+result);
+		//console.log("status6: "+result);
 		var resspl = result.split(",");
+		//console.log("status6re: "+resspl);
 		changeactive("6", "out1", resspl[0]);
+		changesensoractive(6, "out1", resspl[4], 2);
+		changesensoractive(6, "out1", resspl[3], 3);
 	});
 }
 
@@ -202,13 +205,13 @@ $('#4-out1-button-change').click(function() {
 $('#6-out1-button-change').click(function() {
 	$.get('include/handlers.php?id=6&name=out1&value=change', function(result) {
 		changeactive("6", "out1", result);
-		$.get('include/handlers.php?id=6&name=lamptype&value=status', function(result) {
-			//changesensoractive("6", "lamptype", result); TODO:// funkcja nie mogla by dziala stworzyc nowa lub recznie
-			changesensoractive(6, "out1", result, 2);
-			$.get('include/handlers.php?id=6&name=sensordaydec&value=status', function(result) {
-				changesensoractive(6, "out1", result, 3);
-			});
-		});
+		//$.get('include/handlers.php?id=6&name=lamptype&value=status', function(result) {
+		//	//changesensoractive("6", "lamptype", result); TODO:// funkcja nie mogla by dziala stworzyc nowa lub recznie
+		//	changesensoractive(6, "out1", result, 2);
+		//	$.get('include/handlers.php?id=6&name=sensordaydec&value=status', function(result) {
+		//		changesensoractive(6, "out1", result, 3);
+		//	});
+		//});
 	});
 });
 $('#6-out1-lamptype-change').click(function() {
@@ -218,8 +221,9 @@ $('#6-out1-lamptype-change').click(function() {
 });
 $('#6-out1-sensordaydec-change').click(function() {
 	$.get('include/handlers.php?id=6&name=sensordaydec&value=change', function(result) {
+		//console.log("change");
 		changesensoractive(6, "out1", result, 3);
-		console.log("sensordaydec=change: " + result);
+		//console.log("sensordaydec=change: " + result);
 	});
 });
 
