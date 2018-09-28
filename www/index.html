@@ -1,0 +1,133 @@
+<html>
+    <head>
+        <title>Panel Sterowania - iHome</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/new.css">
+    </head>
+    <body>
+        <div class="container-fluid center">
+            <div class="jumbotron">
+               <div class="row">
+                   <div class="col-md-12 row">
+                       <div id="sun" class="col-md-6">
+                           <h3><span class="glyphicon glyphicon-certificate"></span>  <span class="glyphicon glyphicon-triangle-top"></span> <span id="sunrise"></span> <span class="glyphicon glyphicon-triangle-bottom"></span> <span id="sunset"></span></h3>
+                       </div>
+                       <div id="title" class="col-md-6">
+                           <h2>Panel Sterowania <b>IHome</b></h2>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="col-md-12">
+                       <h2><span class="glyphicon glyphicon-signal"></span> Status</h2>
+                   </div>
+                   <div class="col-md-12 row">
+                       <div class="col-md-4">
+                           <table class="table table-striped">
+                               <tr><th>Czujniki</th><th> </th><th> </th></tr>
+                               <tr><td>Masło</td><td>Temperatura</td><td><span id="tempin1"></span>*C</td></tr>
+                               <tr><td>Masło</td><td>Wilgotność</td><td><span id="wilin1"></span>%</td></tr>
+                               <tr><td>Zewnątrz</td><td>Temperatura</td><td><span id="tempout1"></span>*C</td></tr>
+                               <tr><td>Zewnątrz</td><td>Wilgotność</td><td><span id="wilout1"></span>%</td></tr>
+                           </table>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="col-md-12 row">
+                       <div class="col-md-12">
+                           <h2><span class="glyphicon glyphicon-off"></span> Sterowanie przełącznikami</h2>
+                       </div>
+                       <div class="col-md-12 row buttontime">
+                           <div class="col-md-3">
+                               <h2><b>Masło</b></h2>
+                               <h3>Biurko przód ciepły</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="1-out2-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="1-out2-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="1-out2-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                               <h3>Biurko przód zimny</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="1-out3-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="1-out3-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="1-out3-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                               <h3>Biurko Bok</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="1-out1-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="1-out1-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="1-out1-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                               <h3>Podświetlenie głośników</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="1-out4-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="1-out4-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="1-out4-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                               <h3>Zimna lampa</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="2-out2-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="2-out2-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="2-out2-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                               <h3>Ciepła lampa</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="2-out3-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="2-out3-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="2-out3-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                               <h3>Laser dyskotekowy</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="3-out1-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="3-out1-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="3-out1-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                               <h3>Ciepła słaba lampa</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="2-out1-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="2-out1-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="2-out1-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                           </div>
+                           <div class="col-md-3">
+                               <h2><b>Szymon</b></h2>
+                               <h3>Lampa główna</h3>
+                               <div class="btn-group">
+                                   <button type="button" id="4-out1-button-change" class="btn btn-lg">Change</button>
+                                   <button type="button" id="4-out1-button-on" class="btn btn-lg">On</button>
+                                   <button type="button" id="4-out1-button-off" class="btn btn-lg">Off</button>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="col-md-12 row">
+                       <div class="col-md-12">
+                           <h2><span class="glyphicon glyphicon-signal"></span> Wykresy</h2>
+                       </div>
+                       <div class="col-md-12 row">
+                           <div id="chart_div" style="width: 100%; height: 500px;"></div>
+                       </div>
+                       <div class="col-md-12 row">
+                           <div id="chart_div2" style="width: 100%; height: 500px;"></div>
+                       </div>
+                   </div>
+               </div>
+
+            </div>
+        </div>
+
+    </body>
+    <script src="jquery/jquery.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script src="js/diagrams.js"></script>
+    <script src="js/handler.js"></script>
+    <script src="js/temphumistat.js"></script>
+    <script src="js/whereissun.js"></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+</html>
