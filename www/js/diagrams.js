@@ -38,7 +38,7 @@ function loaddata(){
 
 	var charttemp = new google.visualization.AreaChart(document.getElementById('chart_div'));
 	var charthumi = new google.visualization.AreaChart(document.getElementById('chart_div2'));
-	var chartsensor = new google.visualization.AreaChart(document.getElementById('chart_div3'));
+	var chartsensor = new google.visualization.SteppedAreaChart(document.getElementById('chart_div3'));
 
 	drawtemp(datatemp, optionstemp, charttemp);
 	drawhumi(datahumi, optionshumi, charthumi);
