@@ -71,6 +71,23 @@ if(isset($_GET["from"]) && isset($_GET["error"])  && isset($_GET["geterrorlog"])
     }
 }
 
+if(isset($_GET["id"]) && isset($_GET["getsensordata"])){ // formget
+	$id = $_GET["id"];
+	$getdata = $_GET["getsensordata"];
+	// zapytanie sprawdzajace czy maincode sie zgadza
+	if($getdata==1){
+		$db_query = mysqli_query($con,"SELECT count(motionsensor.mode) as ilosc, motionsensor.mode, HOUR(date) AS hour FROM motionsensor WHERE dev_id=$id AND date >= now() - INTERVAL 23 HOUR AND motionsensor.mode=1 GROUP BY hour ORDER BY date");
+		while($db_row = mysqli_fetch_assoc($db_query)){
+			$date = $db_row["hour"];
+			$ilosc = $db_row["ilosc"];
+			$mode = $db_row["mode"];
+			echo "$date, $mode, $ilosc,";
+		}
+		$db_query->free();
+	}
+}
+
+
 if(isset($_GET["settings"]) && isset($_GET["value"])){ // formget
 	$settings = $_GET["settings"];
 	$value = $_GET["value"];

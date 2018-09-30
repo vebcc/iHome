@@ -8,6 +8,7 @@ function zmloadcam(camlogin, campass){ // funkcja wyswietlajaca kamery
 	$('#cam_1').html('<img class="cam_img" id="cam_1_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
 	$('#cam_1_mini').html('<img class="cam_mini_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=1&scale=50&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
 
+
 	$('#cam_2').html('<img class="cam_img" id="cam_2_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=100&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
 	$('#cam_2_mini').html('<img class="cam_mini_img" src="http://cloud.maslowski.it/zm/cgi-bin/nph-zms?mode=jpeg&monitor=3&scale=50&maxfps=5&buffer=1000&user='+camlogin+'&pass='+campass+'">');
 

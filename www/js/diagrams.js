@@ -12,6 +12,11 @@ function loaddata(){
 	datahumi.addColumn('number', 'Pokój');
 	datahumi.addColumn('number', 'Zewnątrz');
 
+	var datasensor = new google.visualization.DataTable();
+	datasensor.addColumn('string', 'czas');
+	datasensor.addColumn('number', 'Zewnątrz');
+	datasensor.addColumn('number', 'Nigdzie');
+
 	var optionstemp = {
 		title: 'Temperatura (°C)',
 		hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
@@ -24,12 +29,20 @@ function loaddata(){
 		vAxis: {minValue: 0}
 	};
 
+	var optionssensor = {
+		title: 'Ruch na godzine (*)',
+		hAxis: {title: 'Czas (h)',  titleTextStyle: {color: '#333'}},
+		vAxis: {minValue: 0}
+	};
+
 
 	var charttemp = new google.visualization.AreaChart(document.getElementById('chart_div'));
 	var charthumi = new google.visualization.AreaChart(document.getElementById('chart_div2'));
+	var chartsensor = new google.visualization.AreaChart(document.getElementById('chart_div3'));
 
 	drawtemp(datatemp, optionstemp, charttemp);
 	drawhumi(datahumi, optionshumi, charthumi);
+	drawsensor(datasensor, optionssensor, chartsensor);
 }
 
 function drawreftemp(datatemp, optionstemp, charttemp){
@@ -219,7 +232,7 @@ function drawtemp(datatemp, optionstemp, charttemp){
 				datatemp.addRow([timeout, temp1inner, temp2inner]);
 			}
 			charttemp.draw(datatemp, optionstemp);
-			setTimeout(function(){ drawtemp(datatemp, optionstemp, charttemp); }, 600000);
+			//setTimeout(function(){ drawtemp(datatemp, optionstemp, charttemp); }, 600000);
 		});
 	});
 }
@@ -282,8 +295,71 @@ function drawhumi(datahumi, optionshumi, charthumi){
                 datahumi.addRow([timeout, humi1inner, humi2inner]);
             }
 			charthumi.draw(datahumi, optionshumi);
-			setTimeout(function(){ drawhumi(datahumi, optionshumi, charthumi); }, 600000);
+			//setTimeout(function(){ drawhumi(datahumi, optionshumi, charthumi); }, 600000);
     	});
     });
+}
+
+function drawsensor(datasensor, optionssensor, chartsensor){
+	$.get('include/dbhandler.php?id=8&getsensordata=1', function(result) {
+		var nowdate = new Date();
+		var hour = nowdate.getHours()
+
+		var adata = result.split(",");
+		var dlug = (adata.length-1)/3;
+
+		var htime = new Array;
+		var hmin = new Array;
+		var hin = new Array;
+
+		for(var i=0;i<dlug;i++){
+			htime[i]=adata[(i*3)+0];
+			hmin[i]=adata[(i*3)+1];
+			hin[i]=adata[(i*3)+2];
+		}
+
+		var htime2 = new Array;
+		var hmin2 = new Array;
+		var hin2 = new Array;
+
+		$.get('include/dbhandler.php?id=7&getsensordata=1', function(result2) {
+			var adata2 = result2.split(",");
+			var dlug2 = (adata2.length-1)/3;
+
+			for(var i=0;i<dlug2;i++){
+				htime2[i]=adata2[(i*3)+0];
+				hmin2[i]=adata2[(i*3)+1];
+				hin2[i]=adata2[(i*3)+2];
+			}
+
+			var printtime = parseInt(hour);
+			for(var i=0;i<24;i++){
+				printtime++;
+				if(printtime>=24){
+					printtime=0;
+				}
+				var sensor1inner = 0;
+				var sensor2inner = 0;
+
+				for(var te1=0;te1<htime.length;te1++){
+					if(printtime==parseInt(htime[te1])){
+						sensor1inner=parseInt(hin[te1]);
+						break;
+					}
+				}
+
+				for(var te2=0;te2<htime2.length;te2++){
+					if(printtime==parseInt(htime2[te2])){
+						sensor2inner=parseInt(hin2[te2]);
+						break;
+					}
+				}
+				var timeout = printtime+" ";
+				datasensor.addRow([timeout, sensor1inner, sensor2inner]);
+			}
+			chartsensor.draw(datasensor, optionssensor);
+			//setTimeout(function(){ drawsensor(datasensor, optionssensor, chartsensor); }, 600000);
+		});
+	});
 }
 

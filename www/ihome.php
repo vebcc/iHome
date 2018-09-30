@@ -28,12 +28,11 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                    </div>
                    <hr>
                     <div class="col-md-12 row">
-						<div id="cam_1_mini" class="col-md-4">
-							<img class="cam_mini_img" src="images/offline.jpg">
-						</div>
-						<div id="cam_2_mini" class="col-md-4">
-							<img class="cam_mini_img" src="images/offline.jpg">
-						</div>
+
+						<div id="cam_2_mini" class="col-md-4"></div>
+						<div id="cam_3_mini" class="col-md-4"></div>
+						<div id="cam_1_mini" class="col-md-4"></div>
+
                    </div>
                    <hr>
                    <div class="col-md-12">
@@ -115,15 +114,19 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        <div class="col-md-12 row">
                           <div class="col-md-12 row">
 							  <div id="cam_2" class="col-md-6">
-								  <img class="cam_img" src="images/offline.jpg">
 							  </div>
 							  <div id="events_2" class="col-md-6">
 
 							  </div>
                           </div>
 						   <div class="col-md-12 row">
+							   <div id="cam_3" class="col-md-6">
+							   </div>
+							   <div id="events_3" class="col-md-6">
+							   </div>
+						   </div>
+						   <div class="col-md-12 row">
 							   <div id="cam_1" class="col-md-6">
-								   <img class="cam_img" src="images/offline.jpg">
 							   </div>
 							   <div id="events_1" class="col-md-6">
 							   </div>
@@ -142,6 +145,9 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        <div class="col-md-12 row">
                            <div id="chart_div2" style="width: 100%; height: 500px;"></div>
                        </div>
+					   <div class="col-md-12 row">
+						   <div id="chart_div3" style="width: 100%; height: 500px;"></div>
+					   </div>
                    </div>
                </div>
 
@@ -153,13 +159,13 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script src="js/diagrams.js"></script>
     <script src="js/handler.js"></script>
     <script src="js/temphumistat.js"></script>
 	<script src="js/motionsensor.js"></script>
     <script src="js/logs.js"></script>
-    <script src="js/zoneminder.js"></script>
+	<script src="js/diagrams.js"></script>
 	<script src="js/whereissun.js"></script>
+	<script src="js/camhandler.js"></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
