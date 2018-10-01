@@ -46,3 +46,6 @@ body > div > div > div > div:nth-child(10) > div.col-md-12.row{
 	height: 240px;
 	width: auto;
 }
+.lastevent{
+	background-color: aqua;
+}

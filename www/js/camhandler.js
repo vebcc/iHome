@@ -1,8 +1,8 @@
 function camload(){
-	//var offlinelink = "images/offline.jpg";
-	//var actuallink = $("#cam_1_mini > img").attr('src');
-	console.log("offline: " + offlinelink);
-	console.log("actual: " + actuallink);
+	var offlinelink = "images/offline.jpg";
+	var actuallink = $("#cam_1_mini > img").attr('src');
+	//console.log("offline: " + offlinelink);
+	//console.log("actual: " + actuallink);
 	if(offlinelink==actuallink){
 		$.get('include/camhandler.php?id=1&getcam=1&camtest=1', function(result) {
 			if(result==1){
@@ -15,10 +15,10 @@ function camload(){
 		});
 	}
 
-	//var offlinelink = "images/offline.jpg";
-	//var actuallink = $("#cam_2_mini > img").attr('src');
-	console.log("offline: " + offlinelink);
-	console.log("actual: " + actuallink);
+	var offlinelink = "images/offline.jpg";
+	var actuallink = $("#cam_2_mini > img").attr('src');
+	//console.log("offline: " + offlinelink);
+	//console.log("actual: " + actuallink);
 	if(offlinelink==actuallink){
 		$.get('include/camhandler.php?id=2&getcam=1&camtest=1', function(result) {
 			if(result==1){
@@ -31,10 +31,10 @@ function camload(){
 		});
 	}
 
-	//var offlinelink = "images/offline.jpg";
-	//var actuallink = $("#cam_3_mini > img").attr('src');
-	console.log("offline: " + offlinelink);
-	console.log("actual: " + actuallink);
+	var offlinelink = "images/offline.jpg";
+	var actuallink = $("#cam_3_mini > img").attr('src');
+	//console.log("offline: " + offlinelink);
+	//console.log("actual: " + actuallink);
 	if(offlinelink==actuallink){
 		$.get('include/camhandler.php?id=3&getcam=1&camtest=1', function(result) {
 			if(result==1){
