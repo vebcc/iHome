@@ -41,19 +41,22 @@ int out1 = D0;
 int out4 = D1; //need to add
 // D2 - DHT
 // D3 - must be high torun program
-int motionsensor = D4;
+int motionsensor1 = D4;
 int out2 = D5;
 int dotyk1 = D6; //GPIO6;
 int out3 = D7;
+int motionsensor2 = D8;
 
 boolean out1stat = true;
 boolean out2stat = true;
 boolean out3stat = false;
 boolean out4stat = false;
 
-boolean sensorpick = false;
+boolean sensorpick1 = false;
+boolean sensorpick2 = false;
 
-boolean motionsensorstat = false;
+boolean motionsensorstat1 = false;
+boolean motionsensorstat2 = false;
 
 int dhttimer = 0;
 int wilgotnosc=0;
@@ -123,68 +126,100 @@ void getclient(int what){
 }
 
 void uploadtempwil(int auid, String getval){
-  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
-    String togetherforever = "";
+  WiFiClient client;
+   const char* tuhost = "10.0.2.2";
+   const int httpPort = 80;
+   String url = " ";
 
-    HTTPClient http;  //Declare an object of class HTTPClient
-
+  if (!client.connect(tuhost, httpPort)) {
+    Serial.println("connection failed");
+    return;
+  }
     switch(auid){
       case 1:
-        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=1&commandvalue="+getval;
+        url = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=1&commandvalue="+getval;
       break;
       case 2:
-        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=2&commandvalue="+getval;
+        url = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=2&commandvalue="+getval;
       break;
       case 3:
-        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=3&commandvalue="+getval;
+        url = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=3&commandvalue="+getval;
       break;
       case 4:
-        togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=4&commandvalue="+getval;
+        url = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&privcode="+privcode+"&commandid=4&commandvalue="+getval;
+      break;
+      case 5:
+        url = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=100&privcode="+privcode+"&commandid=4&commandvalue="+getval;
       break;
     }
-    http.begin(togetherforever);
+    Serial.print("Requesting URL: ");
+  Serial.println(url);
 
-    int httpCode = http.GET();                                                                  //Send the request
+  // This will send the request to the server
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + tuhost + "\r\n" +
+               "Connection: close\r\n\r\n");
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+    if (millis() - timeout > 5000) {
+      Serial.println(">>> Client Timeout !");
+      client.stop();
+      return;
+    }
+  }
 
-
-    if (httpCode > 0) { //Check the returning code
-
-      String payload = http.getString();   //Get the request response payload
-      Serial.println(payload);                     //Print the response payload
-      //lampg = payload;
-      if(auid==3){
-        minutenow = payload;
+  // Read all the lines of the reply from server and print them to Serial
+  while(client.available()){
+    String line = client.readStringUntil('\r');
+    Serial.print(line);
+    if(auid==3){
+        minutenow = line;
         int czasowo = minutenow.toInt() * 60 * 1000;
         while(czasowo>=intervalupdate){
           czasowo = czasowo-intervalupdate;
+          Serial.print("czasowo: ");
           Serial.println(czasowo);
           //console.log(czasowo);
         }
         timetofirstinterval = intervalupdate-czasowo;
       }
-    }
-    http.end();   //Close connection
 }
 }
 
 void getdata(String soinit, String code){
-  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
+    WiFiClient client;
+   const char* tuhost = "10.0.2.2";
+   const int httpPort = 80;
 
-    HTTPClient http;  //Declare an object of class HTTPClient
+  if (!client.connect(tuhost, httpPort)) {
+    Serial.println("connection failed");
+    return;
+  }
 
-    String togetherforever = "http://cloud.maslowski.it/ihome/include/devicehandlers.php?id=6&getdata=" + soinit + "&maincode=" + code;
+  // We now create a URI for the request
+  String url = "/ihome/include/devicehandlers.php?id=6&getdata=" + soinit + "&maincode=" + code;
+  Serial.print("Requesting URL: ");
+  Serial.println(url);
 
-    http.begin(togetherforever);
+  // This will send the request to the server
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + tuhost + "\r\n" +
+               "Connection: close\r\n\r\n");
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+    if (millis() - timeout > 5000) {
+      Serial.println(">>> Client Timeout !");
+      client.stop();
+      return;
+    }
+  }
 
-    int httpCode = http.GET();                                                                  //Send the request
-
-    if (httpCode > 0) { //Check the returning code
-
-      String payload = http.getString();   //Get the request response payload
-      Serial.println(payload);                     //Print the response payload
-
+  // Read all the lines of the reply from server and print them to Serial
+  while(client.available()){
+    String line = client.readStringUntil('\r');
+    Serial.print(line);
       for(int i=0;i<14;i++){
-       datatest = getValue(payload,',',i);
+       datatest = getValue(line,',',i);
        String outname = getValue(datatest,'=',0);
        String outval = getValue(datatest,'=',1);
         testermg+=outname;
@@ -246,12 +281,10 @@ void getdata(String soinit, String code){
        }
       }
     }
-    http.end();   //Close connection
-}
 }
 
 void handleRootPath() {            //Handler for the rooth path
-   String allwynik = "Serwer iHome id: 6 ip: 10.0.2.6 lamp: 4 button: 1 status lamp: "+String(out1stat) + "," + String(out2stat)+ "," + String(out3stat)+ "," + String(out4stat) + "," + String(temperatura) + "," + String(wilgotnosc);
+   String allwynik = "Serwer iHome id: 6 ip: 10.0.2.6 lamp: 4 button: 1 status lamp: "+String(out1stat) + "," + String(out2stat)+ "," + String(out3stat)+ "," + String(out4stat) + "," + String(temperatura) + "," + String(wilgotnosc) + "," + String(motionsensorstat1) + "," + String(motionsensorstat2);
    server.send(200, "text / plain", allwynik);
 }
 
@@ -271,7 +304,8 @@ void setup() {
 
  //pinMode(lamppin1, OUTPUT);
  pinMode(dotyk1, INPUT);
- pinMode(motionsensor, INPUT);
+ pinMode(motionsensor1, INPUT);
+ pinMode(motionsensor2, INPUT);
 
  pinMode(out1, OUTPUT);
  pinMode(out2, OUTPUT);
@@ -446,7 +480,7 @@ void setup() {
   });
 
   server.on("/statusall", []() {   //status all
-    String allwynik = String(out1stat) + "," + String(out2stat)+ "," + String(out3stat)+ "," + String(out4stat);
+    String allwynik = String(out1stat) + "," + String(out2stat)+ "," + String(out3stat)+ "," + String(out4stat) + "," + String(motionsensorstat1) + "," + String(motionsensorstat2);
     server.send(200, "text / plain", allwynik);
   });
 
@@ -483,8 +517,11 @@ void setup() {
     server.send(200, "text / plain", String(minutenow));
   });
 
-  server.on("/motionsensor", []() {   //datatest
-    server.send(200, "text / plain", String(motionsensorstat));
+  server.on("/motionsensor1", []() {   //datatest
+    server.send(200, "text / plain", String(motionsensorstat1));
+  });
+    server.on("/motionsensor2", []() {   //datatest
+    server.send(200, "text / plain", String(motionsensorstat2));
   });
 
       server.on("/czasowo", []() {   //datatest
@@ -505,7 +542,7 @@ void setup() {
     digitalWrite(out3, out3stat);
     out4stat=false;
     digitalWrite(out4, out4stat);
-    server.send(200, "text / plain", "1");
+    server.send(200, "text / plain", "0");
   });
 
   server.on("/onall", []() {   //datatest
@@ -517,7 +554,12 @@ void setup() {
     digitalWrite(out3, out3stat);
     out4stat=true;
     digitalWrite(out4, out4stat);
-    server.send(200, "text / plain", "0");
+    server.send(200, "text / plain", "1");
+  });
+
+    server.on("/refdata", []() {   //datatest
+    server.send(200, "text / plain", "newdata");
+    getdata("ok", maincode);
   });
 
 
@@ -554,19 +596,34 @@ void loop() {
     }
   }
 
-  if(digitalRead(motionsensor)==HIGH){
-    if(sensorpick==false){
+  if(digitalRead(motionsensor1)==HIGH){
+    if(sensorpick1==false){
       Serial.println("Sensor HIGH");
-      motionsensorstat = true;
+      motionsensorstat1 = true;
       uploadtempwil(4, "1");
-      sensorpick=true;
+      sensorpick1=true;
     }
   }else{
-    if(sensorpick==true){
+    if(sensorpick1==true){
       Serial.println("Sensor LOW");
-      motionsensorstat = false;
-      uploadtempwil(4, "0");
-      sensorpick=false;
+      motionsensorstat1 = false;
+      //uploadtempwil(5, "0");
+      sensorpick1=false;
+    }
+  }
+  if(digitalRead(motionsensor2)==HIGH){
+    if(sensorpick2==false){
+      Serial.println("Sensor 2 HIGH");
+      motionsensorstat2 = true;
+      uploadtempwil(5, "1");
+      sensorpick2=true;
+    }
+  }else{
+    if(sensorpick2==true){
+      Serial.println("Sensor 2 LOW");
+      motionsensorstat2 = false;
+      //uploadtempwil(4, "0");
+      sensorpick2=false;
     }
   }
 }

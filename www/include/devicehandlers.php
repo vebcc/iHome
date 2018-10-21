@@ -68,7 +68,7 @@ if(isset($_GET["id"]) && isset($_GET["privcode"])  && isset($_GET["commandid"]) 
                 break;
             case 4:
 				$db_query = mysqli_query($con,"INSERT INTO `ihome`.`motionsensor` (`id`, `dev_id`, `date`, `mode`) VALUES (NULL, '$id', CURRENT_TIMESTAMP, '$value');");
-				$db_row = mysqli_fetch_assoc($db_query);
+				//$db_row = mysqli_fetch_assoc($db_query);
                 break;
 			case 5:
 				$db_query = mysqli_query($con,"SELECT ((HOUR(NOW())*60)+MINUTE(NOW()))*60*1000 AS czas;");

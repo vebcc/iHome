@@ -96,10 +96,6 @@ function zmlastevent(cam_id, cam_limit){
 			var kalwyn = timemax-mtimeevent+mtimenow;
 			if(kalwyn<=600){
 			   	$("#events_"+cam_id+" > #contentTable > tbody > tr:nth-child("+i+")").addClass('lastevent');
-				console.log("kalwyn: "+kalwyn);
-				console.log("timemax: "+timemax);
-				console.log("mtimenow: "+mtimenow);
-				console.log("mtimeevent: "+mtimeevent);
 			}
 		}
 	}
