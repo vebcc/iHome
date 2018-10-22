@@ -13,6 +13,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="css/main.css">
+
     </head>
     <body>
         <div class="container-fluid center">
@@ -135,17 +136,20 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
 
             </div>
         </div>
-
+        <script src="library/LAB.js"></script>
+        <script>
+            $LAB
+            .script("library/jquery.min.js").wait(function(){console.log("Załadowano - JQuery")})
+            .script("js/handler.js").wait(function(){console.log("Załadowano - handler")})
+            .script("js/whereissun.js").wait(function(){console.log("Załadowano - whereissun")})
+            .script("js/camhandler.js").wait(function(){console.log("Załadowano - camhandler")})
+            .script("bootstrap/js/bootstrap.min.js").wait(function(){
+                console.log("Załadowano - Bootstrap")
+                console.log("Załadowano skrypty")
+            });
+    </script>
     </body>
-    <script src="jquery/jquery.min.js"></script>
-
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <script src="js/handler.js"></script>
-	<script src="js/whereissun.js"></script>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
 </html>
 
 

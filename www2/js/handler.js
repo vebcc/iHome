@@ -1,5 +1,7 @@
-function statusall(){
+function statusall(info){
+	//console.log("yoyo");
 	$.get('data', function(result) {
+		//console.log("yoyo2");
 		var dataout_nyn = "<table class='table table-striped'><tr><th>Włączniki</th><th></th><th></th></tr>";
 		var dataout_cz = "<table class='table table-striped'><tr><th>Czujniki</th><th> </th><th> </th></tr>";
 		var dataout_set = "<table class='table table-striped'><tr><th>Ustawienia sensora</th><th></th><th></th></tr>";
@@ -9,30 +11,71 @@ function statusall(){
 		//console.log(resspl);
 		var count = resspl.length;
 		for(i=1;i<count-1;i++){
+			//console.log("tt: " + i);
 			var resus = resspl[i].split(":");
 			//data[i] = new Array(resus[0], resus[1], resus[2]);
-			console.log(parseInt(resus[3]));
+			//console.log(parseInt(resus[3]));
 			var wynval = parseInt(resus[2]);
+			
+			if(parseInt(resus[4])==1){
+				//console.log(wynval)
+				if(wynval==1){
+					wynval=0;
+				}else if(wynval==0){
+					wynval=1;
+				}else{
+					//console.log("other: " + wynval);
+				}
+				//console.log("rev");
+				//console.log(wynval);
+			}
+			
 			switch(parseInt(resus[3])){
 				case 1:
 					if(wynval==1){
-						wynval=="ON";
+						wynval="ON";
 					}else if(wynval==0){
 						wynval="OFF";	
+					}else{
+						console.log("other: "+ wynval);
 					}
-					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[4]+"</td><td><span>"+wynval+"</span></td></tr>";
+					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
 					break;
 				case 2:
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
+					break;
 				case 3:
-					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[4]+"</td><td><span>"+resus[2]+"</span>*C</td></tr>";
+					if(wynval==1){
+						wynval="Ruch";
+					}else if(wynval==0){
+						wynval="Brak ruchu";	
+					}else{
+						console.log("other: "+ wynval);
+					}
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
 					break;
 				case 4:
-					dataout_set +="<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[4]+"</td><td><span>"+resus[2]+"</span></td></tr>";
+					if(wynval==1){
+						wynval="ON";
+					}else if(wynval==0){
+						wynval="OFF";	
+					}else{
+						console.log("other: "+ wynval);
+					}
+					//console.log("wynik: "+ wynval);
+					dataout_set +="<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
 					break;
 				case 5:
+				dataout_set +="<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
+					break;
+				case 6:
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span>*C</td></tr>";
+					break;
+				case 7:
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span>%</td></tr>";
 					break;
 				default:
-					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[4]+"</td><td><span>"+resus[2]+"</span></td></tr>";
+					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
 					break;
 			}
 			
@@ -44,10 +87,12 @@ function statusall(){
 		$('#statusall').html(dataout_nyn);
 		$('#czuj').html(dataout_cz);
 		$('#sett').html(dataout_set);
+		console.log(info);
 	});
 }
 
-statusall();
+//console.log("problemikff");
+statusall("Loader - camhandler");
 //setTimeout(function(){ statusall(); }, 100);
-setInterval(function(){ statusall(); }, 3000);
+setInterval(function(){ statusall("Reloader - camhandler"); }, 10000);
 
