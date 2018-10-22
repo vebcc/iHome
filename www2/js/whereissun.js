@@ -40,6 +40,7 @@ $.getJSON("https://api.sunrise-sunset.org/json?lat=49.985448&lng=18.559273&date=
 //				var awyn = result;
 //				//console.log("sunsetmilis: "+sunsetmilis);
 //			});
+            console.log("Loader - whereissun");
         }
     });
 });

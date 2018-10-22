@@ -92,7 +92,7 @@ function statusall(info){
 }
 
 //console.log("problemikff");
-statusall("Loader - camhandler");
+statusall("Loader - devstatus");
 //setTimeout(function(){ statusall(); }, 100);
-setInterval(function(){ statusall("Reloader - camhandler"); }, 10000);
+setInterval(function(){ statusall("Reloader - devstatus"); }, 5000);
 

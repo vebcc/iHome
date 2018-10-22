@@ -140,12 +140,12 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
         <script>
             $LAB
             .script("library/jquery.min.js").wait(function(){console.log("Załadowano - JQuery")})
-            .script("js/handler.js").wait(function(){console.log("Załadowano - handler")})
+            .script("js/devstatus.js").wait(function(){console.log("Załadowano - devstatus")})
             .script("js/whereissun.js").wait(function(){console.log("Załadowano - whereissun")})
             .script("js/camhandler.js").wait(function(){console.log("Załadowano - camhandler")})
             .script("bootstrap/js/bootstrap.min.js").wait(function(){
                 console.log("Załadowano - Bootstrap")
-                console.log("Załadowano skrypty")
+                console.log("-----Załadowano skrypty-----")
             });
     </script>
     </body>

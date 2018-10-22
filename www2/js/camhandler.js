@@ -1,4 +1,4 @@
-function camload(type = 0){
+function camload(info, type = 0){
 	var offlinelink = "images/offline.jpg";
 	var actuallink = $("#cam_1_mini > img").attr('src');
 	//console.log("offline: " + offlinelink);
@@ -46,13 +46,14 @@ function camload(type = 0){
 			}
 		});
 	}
+	console.log(info);
 }
 
 //TODO: refresh kiedy kamera przestaje przesylac obraz poprawnie
 
-camload();
+camload("Loader - camhandler");
 //setTimeout(function(){ zmload("cam"); }, 100);
 //setTimeout(function(){ camload(); }, 100);
 //setInterval(function(){ zmload("cam"); }, 60000);
-setInterval(function(){ camload(1); }, 30000);
+setInterval(function(){ camload("Reloader - camhandler",1); }, 30000);
 //setInterval(function(){ camload(1); }, 60000);
