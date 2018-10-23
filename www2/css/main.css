@@ -49,3 +49,8 @@ body > div > div > div > div:nth-child(10) > div.col-md-12.row{
 .lastevent{
 	background-color: aqua;
 }
+#handlertime > div > table > tr{
+    border-top: 10px solid;
+    border-bottom: 10px solid;
+    border-color: transparent;
+}

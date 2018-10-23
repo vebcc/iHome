@@ -14,7 +14,7 @@ function buttons(romrom){
                 //console.log(resspl2);
                 //console.log("i: "+i);
                 var kuwyn2 = resspl2[i].split(":");
-                printer += "<tr><td>"+kuwyn2[4]+"</td><td><button id='"+kuwyn2[1]+"-out"+kuwyn2[2]+"-button-change'>Zmień</button></td></tr>";
+                printer += "<tr><td>"+kuwyn2[4]+"</td><td><button id='"+kuwyn2[1]+"-out"+kuwyn2[2]+"-button-change' type='button' class='btn btn-secondary'>Zmień</button></td></tr>";
                 var xor = kuwyn2[0];
             }
             //console.log("xor: "+xor);
