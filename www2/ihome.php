@@ -13,7 +13,6 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="css/main.css">
-
     </head>
     <body>
         <div class="container-fluid center">
@@ -29,11 +28,9 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                    </div>
                    <hr>
                     <div class="col-md-12 row">
-
 						<div id="cam_2_mini" class="col-md-4"><img class='cam_mini_img' src='images/offline.jpg'></div>
 						<div id="cam_3_mini" class="col-md-4"><img class='cam_mini_img' src='images/offline.jpg'></div>
 						<div id="cam_1_mini" class="col-md-4"><img class='cam_mini_img' src='images/offline.jpg'></div>
-
                    </div>
                    <hr>
                    <div class="col-md-12">
@@ -41,18 +38,15 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                    </div>
                    <div class="col-md-12 row">
                        <div class="col-md-4" id="statusall">
-
                        </div>
                        <div class="col-md-4 row">
                            <div id="czuj" class="col-md-12">
-                           	
                            </div>
 						   <div id="sett" class="col-md-12">
-
 						   </div>
                        </div>
                        <div class="col-md-4">
-                           <table id="errorlog" class="table table-striped">
+                           <table id="eventlog" class="table table-striped">
                             </table>
                        </div>
                    </div>
@@ -61,59 +55,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
                        <div class="col-md-12">
                            <h2><span class="glyphicon glyphicon-off"></span> Sterowanie przełącznikami</h2>
                        </div>
-                       <div class="col-md-12 row">
-                           <div class="col-md-3">
-                               <h2>Masło</h2>
-                               <table class="table table-striped">
-                                   <tr><td>Biurko przód ciepły</td><td><button id="1-out2-button-change">Zmień</button></td></tr>
-                                   <tr><td>Biurko przód zimny</td><td><button id="1-out3-button-change">Zmień</button></td></tr>
-                                   <tr><td>Biurko Bok</td><td><button id="1-out1-button-change">Zmień</button></td></tr>
-                                   <tr><td>Podświetlenie głośników</td><td><button id="1-out4-button-change">Zmień</button></td></tr>
-                                   <tr><td>Zimna lampa</td><td><button id="2-out2-button-change">Zmień</button></td></tr>
-                                   <tr><td>Ciepła lampa</td><td><button id="2-out3-button-change">Zmień</button></td></tr>
-                                   <tr><td>Laser dyskotekowy</td><td><button id="3-out1-button-change">Zmień</button></td></tr>
-                                   <tr><td>Ciepła słaba lampa</td><td><button id="2-out1-button-change">Zmień</button></td></tr>
-                               </table>
-                           </div>
-                           <div class="col-md-3">
-                               <h2>Szymon</h2>
-                               <table class="table table-striped">
-                                   <tr><td>Lampa główna</td><td><button id="4-out1-button-change">Zmień</button></td></tr>
-                               </table>
-                           </div>
-						   <div class="col-md-3">
-							   <h2>Na zewnątrz</h2>
-							   <table class="table table-striped">
-								   <tr><td>Lampa tył</td><td><button id="6-out1-button-change">Zmień</button></td><td><button id="6-out1-lamptype-change">Zmień</button></td><td><button id="6-out1-sensordaydec-change">Zmień</button></td></tr>
-							   </table>
-						   </div>
-                       </div>
-                   </div>
-                   <hr>
-                   <div class="col-md-12 row">
-                       <div class="col-md-12">
-                           <h2><span class="glyphicon glyphicon-signal"></span> Monitoring</h2>
-                       </div>
-                       <div class="col-md-12 row">
-                          <div class="col-md-12 row">
-							  <div id="cam_2" class="col-md-6">
-							  </div>
-							  <div id="events_2" class="col-md-6">
-
-							  </div>
-                          </div>
-						   <div class="col-md-12 row">
-							   <div id="cam_3" class="col-md-6">
-							   </div>
-							   <div id="events_3" class="col-md-6">
-							   </div>
-						   </div>
-						   <div class="col-md-12 row">
-							   <div id="cam_1" class="col-md-6">
-							   </div>
-							   <div id="events_1" class="col-md-6">
-							   </div>
-						   </div>
+                       <div class="col-md-12 row" id="handlertime">
                        </div>
                    </div>
                    <br>
@@ -143,11 +85,15 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
             .script("js/devstatus.js").wait(function(){console.log("Załadowano - devstatus")})
             .script("js/whereissun.js").wait(function(){console.log("Załadowano - whereissun")})
             .script("js/camhandler.js").wait(function(){console.log("Załadowano - camhandler")})
+            .script("js/zoneminder.js").wait(function(){console.log("Załadowano - zoneminder")})
+            .script("js/handler.js").wait(function(){console.log("Załadowano - handler")})
             .script("bootstrap/js/bootstrap.min.js").wait(function(){
                 console.log("Załadowano - Bootstrap")
                 console.log("-----Załadowano skrypty-----")
             });
     </script>
+    <div id="buttonscript">
+    </div>
     </body>
     <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
 </html>

@@ -18,14 +18,15 @@ while($db_row = mysqli_fetch_assoc($db_query)){
 }
 
 $i=0;
-$db_query = mysqli_query($con,"SELECT deviceouts.id, deviceouts.nr, deviceouts.name, deviceouts.type, deviceouts.negative FROM deviceouts;");
+$db_query = mysqli_query($con,"SELECT rooms.name AS room, deviceouts.id, deviceouts.nr, deviceouts.name, deviceouts.type, deviceouts.negative FROM deviceouts, rooms WHERE deviceouts.room_id=rooms.id");
 while($db_row = mysqli_fetch_assoc($db_query)){
 	$dev_id = $db_row["id"];
 	$dev_nr = $db_row["nr"];
 	$dev_name = $db_row["name"];
 	$dev_type = $db_row["type"];
 	$dev_negative = $db_row["negative"];
-	$inoutdata[$dev_id][$dev_nr] = array($dev_name, $dev_type, $dev_negative);
+	$dev_room = $db_row["room"];
+	$inoutdata[$dev_id][$dev_nr] = array($dev_name, $dev_type, $dev_negative, $dev_room);
 	$i++;
 }
 getfullstatus();
@@ -52,7 +53,7 @@ function getfullstatus(){
 			for($x=0;$x<$howtemp;$x++){
 				$datadev[$counter] = array($data[$i][0], $temp_data[$x]);
 				$nrtab = $x+1;
-				$dataout .=$data[$i][0].":".$nrtab.":".$temp_data[$x].":".$inoutdata[$data[$i][0]][$nrtab][1].":".$inoutdata[$data[$i][0]][$nrtab][2].":".$inoutdata[$data[$i][0]][$nrtab][0]."<br>";
+				$dataout .=$data[$i][0].":".$nrtab.":".$temp_data[$x].":".$inoutdata[$data[$i][0]][$nrtab][1].":".$inoutdata[$data[$i][0]][$nrtab][2].":".$inoutdata[$data[$i][0]][$nrtab][0].":".$inoutdata[$data[$i][0]][$nrtab][3]."<br>";
 				//$dataid .=$data[$i][0].",";
 			}
 

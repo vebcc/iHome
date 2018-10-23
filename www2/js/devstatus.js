@@ -2,9 +2,9 @@ function statusall(info){
 	//console.log("yoyo");
 	$.get('data', function(result) {
 		//console.log("yoyo2");
-		var dataout_nyn = "<table class='table table-striped'><tr><th>Włączniki</th><th></th><th></th></tr>";
-		var dataout_cz = "<table class='table table-striped'><tr><th>Czujniki</th><th> </th><th> </th></tr>";
-		var dataout_set = "<table class='table table-striped'><tr><th>Ustawienia sensora</th><th></th><th></th></tr>";
+		var dataout_nyn = "<table class='table table-striped'><tr><th></th><th>Włączniki</th><th></th><th></th></tr>";
+		var dataout_cz = "<table class='table table-striped'><tr><th></th><th>Czujniki</th><th> </th><th> </th></tr>";
+		var dataout_set = "<table class='table table-striped'><tr><th></th><th>Ustawienia sensora</th><th></th><th></th></tr>";
 		var data = new Array;
 		//console.log("status1: "+result);
 		var resspl = result.split("<br>");
@@ -39,10 +39,10 @@ function statusall(info){
 					}else{
 						console.log("other: "+ wynval);
 					}
-					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
+					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
 					break;
 				case 2:
-					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
 					break;
 				case 3:
 					if(wynval==1){
@@ -52,7 +52,7 @@ function statusall(info){
 					}else{
 						console.log("other: "+ wynval);
 					}
-					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
 					break;
 				case 4:
 					if(wynval==1){
@@ -63,19 +63,19 @@ function statusall(info){
 						console.log("other: "+ wynval);
 					}
 					//console.log("wynik: "+ wynval);
-					dataout_set +="<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
+					dataout_set +="<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+wynval+"</span></td></tr>";
 					break;
 				case 5:
-				dataout_set +="<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
+				dataout_set +="<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
 					break;
 				case 6:
-					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span>*C</td></tr>";
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span>*C</td></tr>";
 					break;
 				case 7:
-					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span>%</td></tr>";
+					dataout_cz += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span>%</td></tr>";
 					break;
 				default:
-					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
+					dataout_nyn += "<tr id='"+resus[0]+"-out"+resus[1]+"-stat'><td>"+resus[0]+"</td><td>"+resus[6]+"</td><td>"+resus[5]+"</td><td><span>"+resus[2]+"</span></td></tr>";
 					break;
 			}
 			
