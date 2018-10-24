@@ -87,15 +87,14 @@ if(isset($_SESSION['token']) && isset($_SESSION['login']) && isset($_SESSION['to
             .script("js/camhandler.js").wait(function(){console.log("Załadowano - camhandler")})
             .script("js/zoneminder.js").wait(function(){console.log("Załadowano - zoneminder")})
             .script("js/handler.js").wait(function(){console.log("Załadowano - handler")})
+            .script("https://www.gstatic.com/charts/loader.js").wait(function(){console.log("Załadowano - google loader")})
+            .script("js/diagrams.js").wait(function(){console.log("Załadowano - diagrams")})
             .script("bootstrap/js/bootstrap.min.js").wait(function(){
                 console.log("Załadowano - Bootstrap")
                 console.log("-----Załadowano skrypty-----")
             });
     </script>
-    <div id="buttonscript">
-    </div>
     </body>
-    <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
 </html>
 
 
